@@ -1,6 +1,6 @@
 #include "Communicator.h"
 #include "Consts.h"
-#include "Misc.cpp"
+#include "Helper.cpp"
 #include <numeric>
 #include <exception>
 #include <iostream>
@@ -30,8 +30,8 @@ void Communicator::startHandleRequests()
 	bindAndListen();
 
 	// create new thread for handling message
-	std::thread tr(&MagshMessageServer::handleReceivedMessages, this);
-	tr.detach();
+	/*std::thread tr(&MagshMessageServer::handleReceivedMessages, this);
+	tr.detach();*/
 
 	while (true)
 	{
@@ -71,5 +71,33 @@ void Communicator::bindAndListen()
 }
 void Communicator::handleNewClient()
 {
-	
+	SOCKET client_socket = accept(m_serverSocket, NULL, NULL);
+	if (client_socket == INVALID_SOCKET)
+		throw std::exception(__FUNCTION__);
+
+	m_clients.insert({ client_socket,  new LoginRequestHandler });
+
+	debugPrint("Client accepted !");
+	// create new thread for client	and detach from it
+	std::thread tr(&Communicator::clientHandler, this, client_socket);
+	tr.detach();
+
+}
+
+
+void Communicator::clientHandler(SOCKET client_socket)
+{
+	try
+	{
+		sendData(client_socket, "Hello");
+		while(true)
+		{
+			
+		} // stay ideal
+	}
+	catch (const std::exception& e)
+	{
+		std::cout << "Exception was catch in function clientHandler. socket=" << client_socket << ", what=" << e.what() << std::endl;
+	}
+	closesocket(client_socket);
 }

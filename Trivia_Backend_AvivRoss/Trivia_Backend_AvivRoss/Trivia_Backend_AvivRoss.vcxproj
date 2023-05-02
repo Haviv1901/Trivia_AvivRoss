@@ -137,7 +137,7 @@
     <ClCompile Include="IRequestHandler.h" />
     <ClCompile Include="LoginRequestHandler.cpp" />
     <ClCompile Include="Main.cpp" />
-    <ClCompile Include="Misc.cpp" />
+    <ClCompile Include="Helper.cpp" />
     <ClCompile Include="Server.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
