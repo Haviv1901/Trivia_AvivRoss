@@ -1,8 +1,9 @@
 #include <iostream>
 #include <string>
 
-#include "Communicator.h"
 #include "Consts.h"
+#include "Helper.h"
+
 
 using std::string;
 using std::cout;
@@ -38,26 +39,26 @@ void sendData(const SOCKET sc, const std::string message)
  * \brief recieves string from socket
  * \param sc socket
  * \param bytesNum num of chars to recv
- * \param flags 
+ * \param flags usually = 0
  * \return string
  */
-std::string getPartFromSocket(const SOCKET sc, const int bytesNum, const int flags = 0)
-{
-	if (bytesNum == 0)
-	{
-		return "";
-	}
-
-	char* data = new char[bytesNum + 1];
-	int res = recv(sc, data, bytesNum, flags);
-	if (res == INVALID_SOCKET)
-	{
-		std::string s = "Error while recieving from socket: ";
-		s += std::to_string(sc);
-		throw std::exception(s.c_str());
-	}
-	data[bytesNum] = 0;
-	std::string received(data);
-	delete[] data;
-	return received;
-}
+//std::string getPartFromSocket(const SOCKET sc, const int bytesNum, const int flags)
+//{
+//	if (bytesNum == 0)
+//	{
+//		return "";
+//	}
+//
+//	char* data = new char[bytesNum + 1];
+//	int res = recv(sc, data, bytesNum, flags);
+//	if (res == INVALID_SOCKET)
+//	{
+//		std::string s = "Error while recieving from socket: ";
+//		s += std::to_string(sc);
+//		throw std::exception(s.c_str());
+//	}
+//	data[bytesNum] = 0;
+//	std::string received(data);
+//	delete[] data;
+//	return received;
+//}

@@ -1,10 +1,16 @@
 #include "Communicator.h"
 #include "Consts.h"
-#include "Helper.cpp"
 #include <numeric>
 #include <exception>
 #include <iostream>
 #include <string>
+#include "Helper.h"
+
+using std::string;
+using std::cout;
+
+//void debugPrint(string msg);
+//void sendData(const SOCKET sc, const std::string message);
 
 
 Communicator::Communicator()
@@ -101,3 +107,36 @@ void Communicator::clientHandler(SOCKET client_socket)
 	}
 	closesocket(client_socket);
 }
+
+
+
+
+
+
+//
+// // helper functions
+//void debugPrint(string msg)
+//{
+//	HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+//	if (DEBUG_MODE)
+//	{
+//		SetConsoleTextAttribute(hConsole, 12);
+//		cout << "Debug msg:" << msg << '\n';
+//		SetConsoleTextAttribute(hConsole, 15);
+//	}
+//}
+//
+///**
+// * \brief send string over the socket
+// * \param sc
+// * \param message
+// */
+//void sendData(const SOCKET sc, const std::string message)
+//{
+//	const char* data = message.c_str();
+//
+//	if (send(sc, data, message.size(), 0) == INVALID_SOCKET)
+//	{
+//		throw std::exception("Error while sending message to client");
+//	}
+//}

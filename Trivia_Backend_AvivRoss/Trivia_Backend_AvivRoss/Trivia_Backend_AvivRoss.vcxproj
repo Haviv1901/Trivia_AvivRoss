@@ -129,6 +129,7 @@
   <ItemGroup>
     <ClInclude Include="Communicator.h" />
     <ClInclude Include="Consts.h" />
+    <ClInclude Include="Helper.h" />
     <ClInclude Include="LoginRequestHandler.h" />
     <ClInclude Include="Server.h" />
   </ItemGroup>
