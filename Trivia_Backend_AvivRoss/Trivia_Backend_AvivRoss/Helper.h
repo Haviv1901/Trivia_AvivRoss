@@ -1,5 +1,5 @@
 #pragma once
-#include "Communicator.h"
+#include <WinSock2.h>
 
 
 void debugPrint(std::string msg);
