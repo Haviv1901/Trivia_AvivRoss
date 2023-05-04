@@ -6,8 +6,17 @@ PORT = 6969
 
 
 def main():
-    print(IP)
-    print(PORT)
+    sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    server_msg = ""
+
+    sock = connect_to_server()
+
+    server_msg = (sock.recv(1024).decode())  # print welcome msg
+    print("Connected to server.")
+    print("Server sent: " + server_msg)
+    if server_msg == "Hello":
+        send_msg_to_server(sock, "Hello")
+
 
 
 def connect_to_server():
@@ -23,10 +32,7 @@ def connect_to_server():
     except Exception:
         print("couldn't connect to server")
         print("Error: " + str(Exception))
-    else:
-        server_msg = (sock.recv(1024).decode())  # print welcome msg
-        print("Connected to server.")
-        print("Server sent: " + server_msg)
+
     return sock
 
 

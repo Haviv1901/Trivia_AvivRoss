@@ -3,6 +3,12 @@
 #include <WinSock2.h>
 #include "LoginRequestHandler.h"
 
+#if defined(_WIN32)
+#define GETSOCKETERRNO() (WSAGetLastError())
+#else
+#define GETSOCKETERRNO() (errno)
+#endif
+
 
 
 class Communicator

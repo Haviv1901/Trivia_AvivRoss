@@ -3,6 +3,7 @@
 #include <numeric>
 #include <exception>
 #include <iostream>
+#include <mutex>
 #include <string>
 #include <thread>
 
@@ -11,6 +12,9 @@
 
 using std::string;
 using std::cout;
+using std::mutex;
+
+std::mutex mtx;
 
 //void debugPrint(string msg);
 //void sendData(const SOCKET sc, const std::string message);
@@ -44,7 +48,7 @@ void Communicator::startHandleRequests()
 
 	while (true)
 	{
-		// the main thread is only accepting clients 
+		// this thread is only accepting clients 
 		// and add then to the list of handlers
 		debugPrint("accepting client...");
 		handleNewClient();
@@ -84,7 +88,9 @@ void Communicator::handleNewClient()
 	if (client_socket == INVALID_SOCKET)
 		throw std::exception(__FUNCTION__);
 
+	mtx.lock();
 	m_clients.insert({ client_socket,  new LoginRequestHandler });
+	mtx.unlock();
 
 	debugPrint("Client accepted !");
 	// create new thread for client	and detach from it
@@ -98,7 +104,11 @@ void Communicator::clientHandler(SOCKET client_socket)
 {
 	try
 	{
+		string user_sent;
 		sendData(client_socket, "Hello");
+		user_sent = getPartFromSocket(client_socket, 5, 0);
+
+		cout << user_sent << std::endl;
 		while(true)
 		{
 			

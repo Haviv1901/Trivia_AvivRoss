@@ -14,9 +14,10 @@ void debugPrint(string msg)
 	HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
 	if (DEBUG_MODE)
 	{
-		SetConsoleTextAttribute(hConsole, 12);
-		cout << "Debug msg:" << msg << '\n';
+		SetConsoleTextAttribute(hConsole, 10);
+		cout << "Debug message: ";
 		SetConsoleTextAttribute(hConsole, 15);
+		cout << msg << '\n';
 	}
 }
 
@@ -42,23 +43,23 @@ void sendData(const SOCKET sc, const std::string message)
  * \param flags usually = 0
  * \return string
  */
-//std::string getPartFromSocket(const SOCKET sc, const int bytesNum, const int flags)
-//{
-//	if (bytesNum == 0)
-//	{
-//		return "";
-//	}
-//
-//	char* data = new char[bytesNum + 1];
-//	int res = recv(sc, data, bytesNum, flags);
-//	if (res == INVALID_SOCKET)
-//	{
-//		std::string s = "Error while recieving from socket: ";
-//		s += std::to_string(sc);
-//		throw std::exception(s.c_str());
-//	}
-//	data[bytesNum] = 0;
-//	std::string received(data);
-//	delete[] data;
-//	return received;
-//}
+std::string getPartFromSocket(const SOCKET sc, const int bytesNum, const int flags)
+{
+	if (bytesNum == 0)
+	{
+		return "";
+	}
+
+	char* data = new char[bytesNum + 1];
+	int res = recv(sc, data, bytesNum, flags);
+	if (res == INVALID_SOCKET)
+	{
+		std::string s = "Error while recieving from socket: ";
+		s += std::to_string(sc);
+		throw std::exception(s.c_str());
+	}
+	data[bytesNum] = 0;
+	std::string received(data);
+	delete[] data;
+	return received;
+}
