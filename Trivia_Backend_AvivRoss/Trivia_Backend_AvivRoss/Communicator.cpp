@@ -42,7 +42,7 @@ void Communicator::startHandleRequests()
 {
 	bindAndListen();
 
-	// create new thread for handling message
+	// create new thread for handling message 
 	/*std::thread tr(&MagshMessageServer::handleReceivedMessages, this);
 	tr.detach();*/
 
