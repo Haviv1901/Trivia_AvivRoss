@@ -1,26 +1,15 @@
 #pragma once
-
 #include <string>
+#include "IRequestHandler.h"
 
 using std::string;
 
-struct
-{
-	string username;
-	string password;
-} typedef LoginRequest;
 
-struct
-{
-	string username;
-	string password;
-	string email;
-} typedef SignupRequest;
 
 class JsonRequestPacketDeserializer
 {
 public:
-	static LoginRequest deserializeLoginRequest(string Buffer&);
-	static SignupRequest deserializeSignupRequest(string Buffer&);
+	static LoginRequest deserializeLoginRequest(string& Buffer);
+	static SignupRequest deserializeSignupRequest(string& Buffer);
 };
 
