@@ -63,3 +63,8 @@ std::string getPartFromSocket(const SOCKET sc, const int bytesNum, const int fla
 	delete[] data;
 	return received;
 }
+
+void notImplemented()
+{
+	throw std::exception("Not implemented yet.");
+}

@@ -3,6 +3,10 @@
 class LoginRequestHandler : public IRequestHandler
 {
 public:
+
 	LoginRequestHandler();
+
+	bool isRequestRelevant(RequestInfo) override;
+	RequestInfo handleRequest(RequestInfo) override;
 };
 
