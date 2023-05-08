@@ -1,6 +1,7 @@
 #pragma once
 #include <WinSock2.h>
 #include <string>
+#include "Consts.h"
 
 
 void debugPrint(std::string msg);
