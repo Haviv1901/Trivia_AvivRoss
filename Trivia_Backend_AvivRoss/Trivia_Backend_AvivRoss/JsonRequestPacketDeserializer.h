@@ -1,6 +1,7 @@
 #pragma once
 #include <string>
 #include "IRequestHandler.h"
+#include "Consts.h"
 
 using std::string;
 
@@ -9,7 +10,7 @@ using std::string;
 class JsonRequestPacketDeserializer
 {
 public:
-	static LoginRequest deserializeLoginRequest(string& Buffer);
-	static SignupRequest deserializeSignupRequest(string& Buffer);
+	static LoginRequest deserializeLoginRequest(Buffer buffer);
+	static SignupRequest deserializeSignupRequest(Buffer buffer);
 };
 
