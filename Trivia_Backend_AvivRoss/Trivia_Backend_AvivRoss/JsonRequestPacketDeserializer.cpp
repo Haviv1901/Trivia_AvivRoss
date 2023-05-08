@@ -1,6 +1,9 @@
 #include "JsonRequestPacketDeserializer.h"
 
+#include "Helper.h"
+#include "nlohmann/json.hpp"
 
+using json = nlohmann::json;
 
 
 LoginRequest JsonRequestPacketDeserializer::deserializeLoginRequest(Buffer buffer)
@@ -11,7 +14,8 @@ LoginRequest JsonRequestPacketDeserializer::deserializeLoginRequest(Buffer buffe
 	}
 
 	LoginRequest res;
-	string pass;
+	string json = bufferToString(buffer, 4, buffer.size() - 1);
+
 }
 SignupRequest JsonRequestPacketDeserializer::deserializeSignupRequest(Buffer buffer)
 {

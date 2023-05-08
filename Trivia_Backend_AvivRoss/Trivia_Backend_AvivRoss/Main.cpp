@@ -7,7 +7,7 @@
 
 int main()
 {
-	std::string str;
+
 	try
 	{
 		debugPrint("Starting...");
@@ -28,12 +28,6 @@ int main()
 
 	
 
-	while(str != "Exit")
-	{
-		std::cin >> str;
-	}
-
-	exit(EXIT_SUCCESS);
 
 
 }
