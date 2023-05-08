@@ -68,3 +68,15 @@ void notImplemented()
 {
 	throw std::exception("Not implemented yet.");
 }
+
+
+Buffer stringToBuffer(string str)
+{
+	return Buffer(str.begin(), str.end());
+
+}
+
+string bufferToString(Buffer buffer)
+{
+	return string(buffer.begin(), buffer.end());
+}

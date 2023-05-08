@@ -1,5 +1,6 @@
 #pragma once
 #include <string>
+#include "Consts.h"
 
 using std::string;
 
@@ -20,8 +21,8 @@ struct SignupResponse
 
 class JsonResponsePacketSerializer
 {
-	static string serializeResponse(ErrorResponse);
-	static string serializeResponse(LoginResponse);
-	static string serializeResponse(SignupResponse);
+	static Buffer serializeResponse(ErrorResponse response);
+	static Buffer serializeResponse(LoginResponse response);
+	static Buffer serializeResponse(SignupResponse response);
 };
 
