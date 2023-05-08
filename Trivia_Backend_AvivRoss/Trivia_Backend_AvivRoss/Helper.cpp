@@ -80,3 +80,15 @@ string bufferToString(Buffer buffer)
 {
 	return string(buffer.begin(), buffer.end());
 }
+
+std::pair<int, int> getCodeAndLength(SOCKET soc)
+{
+	try
+	{
+		return std::pair<int, int>(stoi(getPartFromSocket(soc, 1, 0)), stoi(getPartFromSocket(soc, 4, 0)));
+	}
+	catch(...)
+	{
+		throw std::exception("Invalid msg format.");
+	}
+}

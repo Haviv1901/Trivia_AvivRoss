@@ -20,21 +20,13 @@ Server::~Server()
 
 void Server::run()
 {
+	std::string str;
+	std::thread tr(&Communicator::startHandleRequests, this);
+	tr.detach();
 
-
-	// start listening
-	m_communicator.bindAndListen();
-
-	// create new thread for handling message
-	//std::thread tr(&Communicator::message handler, m_communicator);
-	//tr.detach();
-
-
-	while (true)
+	
+	while (str != "Exit")
 	{
-		// the main thread is only accepting clients 
-		// and add then to the list of handlers
-		debugPrint("accepting client...");
-		m_communicator.handleNewClient();
+		std::cin >> str;
 	}
 }

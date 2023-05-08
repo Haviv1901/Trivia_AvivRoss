@@ -9,3 +9,4 @@ std::string getPartFromSocket(const SOCKET sc, const int bytesNum, const int fla
 void notImplemented();
 Buffer stringToBuffer(std::string str);
 std::string bufferToString(Buffer buffer);
+std::pair<int, int> getCodeAndLength(SOCKET soc);
