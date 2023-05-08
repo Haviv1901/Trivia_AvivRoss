@@ -3,6 +3,8 @@
 #include <vector>
 #include <string>
 
+#include "Consts.h"
+
 using std::string;
 
 class IRequestHandler;
@@ -24,7 +26,7 @@ struct RequestInfo
 {
 	int id; // int ???
 	time_t receivalTime; // time_t is ctime's object
-	std::vector<char> buffer;
+	Buffer buffer;
 } typedef RequestInfo;
 
 

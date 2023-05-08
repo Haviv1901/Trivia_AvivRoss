@@ -113,18 +113,12 @@ void Communicator::clientHandler(SOCKET client_socket)
 {
 	try
 	{
-		string user_sent;
-		try
-		{
-			std::pair<int, int> codeAndLen = getCodeAndLength(client_socket);
-		}
-		catch (const std::exception& e)
-		{
-			sendData(client_socket, "Invalid format. pls send in the correct format. 1 bye for code, 4 bytes for length and the rest is the msg.");
-			std::cout << "Exception was catch in function clientHandler. socket=" << client_socket << ", what=" << e.what() << std::endl;
-		}
+		int code, length;
+		string msg;
+		sendData(client_socket, "Invalid format. pls send in the correct format. 1 bye for code, 4 bytes for length and the rest is the msg.");
+		std::cout << "Exception was catch in function clientHandler. socket=" << client_socket << ", what=" << e.what() << std::endl;
 
-		cout << user_sent << std::endl;
+		cout << msg << std::endl;
 		while(true)
 		{
 			

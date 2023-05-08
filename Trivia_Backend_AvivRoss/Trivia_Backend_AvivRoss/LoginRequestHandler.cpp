@@ -10,7 +10,7 @@ LoginRequestHandler::LoginRequestHandler()
 bool LoginRequestHandler::isRequestRelevant(RequestInfo req)
 {
 	int code = req.buffer[0]; // first byte is the code.
-	if(code == LOGIN_CODE)
+	if(code == LOGIN_CODE || code == SIGN_UP_CODE)
 	{
 		return true;
 	}

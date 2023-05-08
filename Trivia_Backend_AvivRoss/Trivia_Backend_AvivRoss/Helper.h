@@ -4,9 +4,11 @@
 
 
 void debugPrint(std::string msg);
+void notImplemented();
+
 void sendData(const SOCKET sc, const std::string message);
 std::string getPartFromSocket(const SOCKET sc, const int bytesNum, const int flags);
-void notImplemented();
+
 Buffer stringToBuffer(std::string str);
 std::string bufferToString(Buffer buffer);
-std::pair<int, int> getCodeAndLength(SOCKET soc);
+std::string bufferToString(Buffer buffer, int start, int end);
