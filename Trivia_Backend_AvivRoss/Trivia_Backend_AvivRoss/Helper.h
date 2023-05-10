@@ -17,6 +17,7 @@ public:
 	static int getMessageTypeCode(const SOCKET sc);
 	static int getLengthFromSocket(const SOCKET sc);
 	static std::string getDataFromSocket(const SOCKET sc, const int bytesNum);
+	static Buffer getDataFromSocketBuffer(const SOCKET sc, const int bytesNum);
 
 	// data types convertors
 	static Buffer stringToBuffer(std::string str);
