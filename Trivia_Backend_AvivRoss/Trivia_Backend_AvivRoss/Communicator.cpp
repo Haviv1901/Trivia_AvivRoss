@@ -6,7 +6,7 @@
 #include <mutex>
 #include <string>
 #include <thread>
-
+#include <ctime>
 #include "Helper.h"
 
 
@@ -59,7 +59,7 @@ void Communicator::startHandleRequests()
 	{
 		// this thread is only accepting clients 
 		// and add then to the list of handlers
-		debugPrint("accepting client...");
+		Helper::debugPrint("accepting client...");
 		handleNewClient();
 	}
 
@@ -84,11 +84,11 @@ void Communicator::bindAndListen()
 	// again stepping out to the global namespace
 	if (::bind(m_serverSocket, (struct sockaddr*)&sa, sizeof(sa)) == SOCKET_ERROR)
 		throw std::exception(__FUNCTION__ " - bind");
-	debugPrint("binded");
+	Helper::debugPrint("binded");
 
 	if (::listen(m_serverSocket, SOMAXCONN) == SOCKET_ERROR)
 		throw std::exception(__FUNCTION__ " - listen");
-	debugPrint("listening...");
+	Helper::debugPrint("listening...");
 
 }
 void Communicator::handleNewClient()
@@ -101,7 +101,7 @@ void Communicator::handleNewClient()
 	m_clients.insert({ client_socket,  new LoginRequestHandler });
 	mtx.unlock();
 
-	debugPrint("Client accepted !");
+	Helper::debugPrint("Client accepted !");
 	// create new thread for client	and detach from it
 	std::thread tr(&Communicator::clientHandler, this, client_socket);
 	tr.detach();
@@ -111,21 +111,26 @@ void Communicator::handleNewClient()
 
 void Communicator::clientHandler(SOCKET client_socket)
 {
+
 	try
 	{
-		int code, length;
-		string msg;
-
-		code = stoi(getPartFromSocket(client_socket, 1, 0));
-
-		//sendData(client_socket, "Invalid format. pls send in the correct format. 1 bye for code, 4 bytes for length and the rest is the msg.");
-		//std::cout << "Exception was catch in function clientHandler. socket=" << client_socket << ", what=" << e.what() << std::endl;
-
-		cout << msg << std::endl;
-		while(true)
+		while (true)
 		{
-			
-		} // stay ideal
+			int i = 0;
+			int code, length;
+
+			code = Helper::getMessageTypeCode(client_socket);
+			length = Helper::getLengthFromSocket(client_socket);
+			Buffer data = Helper::getDataFromSocketBuffer(client_socket, length);
+
+			RequestInfo msg;
+			msg.buffer = data;
+			msg.id = code;
+			msg.receivalTime = time(nullptr);
+
+
+
+		}
 	}
 	catch (const std::exception& e)
 	{

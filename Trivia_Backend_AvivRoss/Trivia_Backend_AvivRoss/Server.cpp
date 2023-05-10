@@ -21,8 +21,8 @@ Server::~Server()
 void Server::run()
 {
 	std::string str;
-	std::thread tr(&Communicator::startHandleRequests, this);
-	tr.detach();
+//	std::thread tr(&Communicator::startHandleRequests, this);
+//	tr.detach();
 
 	
 	while (str != "Exit")

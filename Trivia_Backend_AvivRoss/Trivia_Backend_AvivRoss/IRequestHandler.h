@@ -33,12 +33,12 @@ struct RequestInfo
 
 struct RequestResult
 {
-	std::string respones; // buffer ?
+	Buffer respones;
 	IRequestHandler* newHandler;
 } typedef RequestResult;
 
 class IRequestHandler // virtual "" "" = 0;
 {
 	virtual bool isRequestRelevant(RequestInfo req) = 0;
-	virtual RequestInfo handleRequest(RequestInfo req) = 0;
+	virtual RequestResult handleRequest(RequestInfo req) = 0;
 };

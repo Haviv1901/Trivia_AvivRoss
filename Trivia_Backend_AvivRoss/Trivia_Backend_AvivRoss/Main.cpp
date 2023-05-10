@@ -10,7 +10,7 @@ int main()
 
 	try
 	{
-		debugPrint("Starting...");
+		Helper::debugPrint("Starting...");
 		WSAInitializer wsa_init;
 		Server server = Server();
 		server.run();
@@ -18,12 +18,12 @@ int main()
 	catch (const std::exception& e)
 	{
 		std::cout << "Exception was thrown in function: " << e.what() << std::endl;
-		debugPrint("Last error was " + std::to_string(GETSOCKETERRNO()));
+		Helper::debugPrint("Last error was " + std::to_string(GETSOCKETERRNO()));
 	}
 	catch (...)
 	{
 		std::cout << "Unknown exception in main !" << std::endl;
-		debugPrint("Last error was " + std::to_string(GETSOCKETERRNO()));
+		Helper::debugPrint("Last error was " + std::to_string(GETSOCKETERRNO()));
 	}
 
 	
