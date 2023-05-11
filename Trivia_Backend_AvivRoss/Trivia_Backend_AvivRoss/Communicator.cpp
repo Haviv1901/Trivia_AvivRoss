@@ -117,7 +117,6 @@ void Communicator::clientHandler(SOCKET client_socket)
 		LoginRequestHandler temp = LoginRequestHandler();
 		while (true)
 		{
-			
 			int i = 0;
 			int code, length;
 

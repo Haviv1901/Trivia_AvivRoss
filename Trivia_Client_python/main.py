@@ -1,4 +1,5 @@
 import socket
+import json
 
 # consts
 IP = "127.0.0.1"
@@ -10,8 +11,14 @@ def main():
     server_msg = ""
 
     sock = connect_to_server()
-
-    server_msg = (sock.recv(1024).decode())  # print welcome msg
+    data = {
+        "username": "aviv",
+        "password": "aviv123"
+    }
+    bytes_code =
+    bytes_data =  bytes(json.dumps(data))
+    length = len(bytes_data)
+    fullMsg =
     print("Connected to server.")
     print("Server sent: " + server_msg)
     if server_msg == "Hello":
