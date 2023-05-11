@@ -91,7 +91,7 @@ string Helper::bufferToString(Buffer buffer, int start, int end)
 // and returns the code. if no message found in the socket returns 0 (which means the client disconnected)
 int Helper::getMessageTypeCode(const SOCKET sc)
 {
-	Buffer buff = getPartFromSocket(sc, 1, 0);
+	Buffer buff = getPartFromSocket(sc, 2, 0);
 	if(buff.empty())
 	{
 		return 0;
