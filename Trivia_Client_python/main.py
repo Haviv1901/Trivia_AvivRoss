@@ -19,13 +19,18 @@ def main():
         "username": "aviv",
         "password": "aviv123"
     }
-    code = str(LOGIN_CODE)
+    bytes_code = bytes(str(LOGIN_CODE).encode())
     bytes_data = bytes(json.dumps(data).encode())
-    length = len(json.dumps(data))
-    encoded_length = struct.pack('>I', length)
-    full_msg_bytes = bytes(code.encode()) + encoded_length + bytes_data
+    length = len(bytes_data)
+    encoded_length = length.to_bytes(4, 'big')
+    full_msg_bytes = bytes_code + encoded_length + bytes_data
+    #my_bytes = bytearray(full_msg_bytes)
+
     print("Connected to server.")
-    send_msg_to_server(sock, full_msg_bytes)
+    send_msg_to_server(sock, bytes_code)
+    send_msg_to_server(sock, encoded_length)
+    send_msg_to_server(sock, bytes_data)
+    #send_msg_to_server(sock, full_msg_bytes)
     while(True):
         continue
 
@@ -57,9 +62,11 @@ def send_msg_to_server(client_soc, data):
     rtype: -
     """
     try:
-        client_soc.sendall(data)
+            client_soc.send(data)
     except Exception:
         print("Could not not sent msg to server.")
+    else:
+        print("message sent successfully.")
 
 def recv_message(soc):
     """

@@ -22,7 +22,7 @@ public:
 	// data types convertors
 	static Buffer stringToBuffer(std::string str);
 	static std::string bufferToString(Buffer buffer);
-	static std::string bufferToString(Buffer buffer, int start, int end);
+	//static std::string bufferToString(Buffer buffer, int start, int end);
 
 private:
 	static Buffer getPartFromSocket(const SOCKET sc, const int bytesNum, const int flags);

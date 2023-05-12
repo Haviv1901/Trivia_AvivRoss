@@ -82,16 +82,12 @@ string Helper::bufferToString(Buffer buffer)
 	return string(buffer.begin(), buffer.end());
 }
 
-string Helper::bufferToString(Buffer buffer, int start, int end)
-{
-	return string(buffer.at(start), buffer.at(end));
-}
 
 // recieves the type code of the message from socket (3 bytes)
 // and returns the code. if no message found in the socket returns 0 (which means the client disconnected)
 int Helper::getMessageTypeCode(const SOCKET sc)
 {
-	Buffer buff = getPartFromSocket(sc, 2, 0);
+	Buffer buff = getPartFromSocket(sc, 1, 0);
 	if(buff.empty())
 	{
 		return 0;
@@ -106,10 +102,10 @@ int Helper::getLengthFromSocket(const SOCKET sc)
 {
 	Buffer buffer = getPartFromSocket(sc, 4, 0);
 
-	return int((unsigned char)(buffer[0]) << 24 |
+	return 43; /*int((unsigned char)(buffer[0]) << 24 |
 		(unsigned char)(buffer[1]) << 16 |
 		(unsigned char)(buffer[2]) << 8 |
-		(unsigned char)(buffer[3]));
+		(unsigned char)(buffer[3]));*/
 }
 
 std::string Helper::getDataFromSocket(const SOCKET sc, const int bytesNum)

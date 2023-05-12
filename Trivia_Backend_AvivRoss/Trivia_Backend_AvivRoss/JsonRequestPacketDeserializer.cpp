@@ -7,13 +7,11 @@ using json = nlohmann::json;
 
 LoginRequest JsonRequestPacketDeserializer::deserializeLoginRequest(Buffer buffer)
 {
-	if(int(buffer[0]) != LOGIN_CODE)
-	{
-		throw std::exception("Error in function JsonRequestPacketDeserializer::deserializeLoginRequest, not a login request.");
-	}
 
 	LoginRequest res;
-	json json = json::parse(Helper::bufferToString(buffer, 4, buffer.size() - 1)); // creating the json object
+	string parseMe = Helper::bufferToString(buffer, 4, buffer.size() - 1);
+	Helper::debugPrint("parsing to json: " + parseMe);
+	json json = json::parse(parseMe); // creating the json object
 
 	res.password = json["password"];
 	res.username = json["username"];
