@@ -1,7 +1,5 @@
 import socket
 import json
-import struct
-import pickle
 
 # consts
 IP = "127.0.0.1"
@@ -17,9 +15,10 @@ def main():
     sock = connect_to_server()
     data = {
         "username": "aviv",
-        "password": "aviv123"
+        "password": "aviv123",
+        "email": "ross@gmail.com"
     }
-    bytes_code = bytes(str(LOGIN_CODE).encode())
+    bytes_code = bytes(str(SIGN_UP_CODE).encode())
     bytes_data = bytes(json.dumps(data).encode())
     length = len(bytes_data)
     encoded_length = length.to_bytes(4, 'big')
@@ -32,7 +31,9 @@ def main():
     send_msg_to_server(sock, bytes_data)
     #send_msg_to_server(sock, full_msg_bytes)
     while(True):
+        print(sock.recv(4048).decode())
         continue
+    sock.close()
 
 
 
@@ -64,7 +65,7 @@ def send_msg_to_server(client_soc, data):
     try:
             client_soc.send(data)
     except Exception:
-        print("Could not not sent msg to server.")
+        print("Could not sent msg to server.")
     else:
         print("message sent successfully.")
 
@@ -75,7 +76,13 @@ def recv_message(soc):
     rtype: string
     return: string containing the message from the server.
     """
-    return soc.recv(4048).decode()
+    try:
+        recv = soc.recv(4048).decode()
+    except Exception:
+        print("Could not recv msg from server.")
+        return ""
+    else:
+        return recv
 
 if __name__ == '__main__':
     main()

@@ -28,9 +28,9 @@ void Helper::debugPrint(string msg)
  */
 void Helper::sendData(const SOCKET sc, const Buffer message)
 {
-	const char* data = bufferToString(message).c_str();
+	debugPrint("sending: " + bufferToString(message));
 
-	if (send(sc, data, message.size(), 0) == INVALID_SOCKET)
+	if (send(sc, bufferToString(message).c_str(), message.size(), 0) == INVALID_SOCKET)
 	{
 		throw std::exception("Error while sending message to client");
 	}
@@ -59,9 +59,8 @@ Buffer Helper::getPartFromSocket(const SOCKET sc, const int bytesNum, const int 
 		throw std::exception(s.c_str());
 	}
 	data[bytesNum] = 0;
-	std::string received(data);
+	Buffer v(data, data + bytesNum);
 	delete[] data;
-	Buffer v(received.begin(), received.end());
 	return v;
 }
 
@@ -82,6 +81,10 @@ string Helper::bufferToString(Buffer buffer)
 	return string(buffer.begin(), buffer.end());
 }
 
+//string Helper::bufferToString(Buffer buffer, int start, int end)
+//{
+//	return string(buffer.at(start), buffer.at(end));
+//}
 
 // recieves the type code of the message from socket (3 bytes)
 // and returns the code. if no message found in the socket returns 0 (which means the client disconnected)
@@ -102,10 +105,10 @@ int Helper::getLengthFromSocket(const SOCKET sc)
 {
 	Buffer buffer = getPartFromSocket(sc, 4, 0);
 
-	return 43; /*int((unsigned char)(buffer[0]) << 24 |
+	return int((unsigned char)(buffer[0]) << 24 |
 		(unsigned char)(buffer[1]) << 16 |
 		(unsigned char)(buffer[2]) << 8 |
-		(unsigned char)(buffer[3]));*/
+		(unsigned char)(buffer[3]));
 }
 
 std::string Helper::getDataFromSocket(const SOCKET sc, const int bytesNum)

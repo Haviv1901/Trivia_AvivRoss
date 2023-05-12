@@ -4,7 +4,7 @@
 
 Buffer JsonResponsePacketSerializer::serializeResponse(ErrorResponse response)
 {
-	return Helper::stringToBuffer("{message:\"" + response.messagge + "\"}");
+	return Helper::stringToBuffer("{message:\"" + Helper::bufferToString(response.messagge )+ "\"}");
 }
 Buffer JsonResponsePacketSerializer::serializeResponse(LoginResponse response)
 {

@@ -6,7 +6,7 @@ using std::string;
 
 struct ErrorResponse
 {
-	string messagge;
+	Buffer messagge;
 } typedef ErrorResponse;
 
 struct LoginResponse

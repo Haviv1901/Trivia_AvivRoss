@@ -9,7 +9,7 @@ LoginRequest JsonRequestPacketDeserializer::deserializeLoginRequest(Buffer buffe
 {
 
 	LoginRequest res;
-	string parseMe = Helper::bufferToString(buffer, 4, buffer.size() - 1);
+	string parseMe = Helper::bufferToString(buffer);
 	Helper::debugPrint("parsing to json: " + parseMe);
 	json json = json::parse(parseMe); // creating the json object
 
@@ -21,13 +21,11 @@ LoginRequest JsonRequestPacketDeserializer::deserializeLoginRequest(Buffer buffe
 }
 SignupRequest JsonRequestPacketDeserializer::deserializeSignupRequest(Buffer buffer)
 {
-	if (int(buffer[0]) != SIGN_UP_CODE)
-	{
-		throw std::exception("Error in function JsonRequestPacketDeserializer::deserializeLoginRequest, not a sign up request.");
-	}
 
 	SignupRequest res;
-	json json = json::parse(Helper::bufferToString(buffer, 4, buffer.size() - 1)); // creating the json object
+	string parseMe = Helper::bufferToString(buffer);
+	Helper::debugPrint("parsing to json: " + parseMe);
+	json json = json::parse(parseMe); // creating the json object
 
 	res.password = json["password"];
 	res.username = json["username"];
