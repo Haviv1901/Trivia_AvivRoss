@@ -1,6 +1,8 @@
 #include "LoginRequestHandler.h"
 #include "Helper.h"
 #include "Consts.h"
+#include "JsonRequestPacketDeserializer.h"
+#include "JsonResponsePacketSerializer.h"
 
 LoginRequestHandler::LoginRequestHandler()
 {
@@ -9,26 +11,47 @@ LoginRequestHandler::LoginRequestHandler()
 
 bool LoginRequestHandler::isRequestRelevant(RequestInfo req)
 {
-	int code = req.buffer[0]; // first byte is the code.
-	if(code == LOGIN_CODE)
+	if(req.id == LOGIN_CODE || req.id == SIGN_UP_CODE)
 	{
 		return true;
 	}
 	return false;
 }
-RequestInfo LoginRequestHandler::handleRequest(RequestInfo req)
+RequestResult LoginRequestHandler::handleRequest(RequestInfo req)
 {
-	int msg_length = ((static_cast<uint32_t>(req.buffer[1]) << 24)
-	| (static_cast<uint32_t>(req.buffer[2]) << 16)
-	| (static_cast<uint32_t>(req.buffer[3]) << 8)
-	| (static_cast<uint32_t>(req.buffer[4]))); // converting 4 bytes of msg length to int
-	string msg = "";
-	int i = 0;
-	for (i = 5; i < msg_length; i++)
-	{
-		msg += req.buffer[i] + "";
-	}
+	RequestResult res;
+	res.newHandler = nullptr;
 
-	// then continue to do stuf ??? idk TODO: contiue this function
-	return req;
+	try
+	{
+		if (!isRequestRelevant(req))
+		{
+			ErrorResponse errorRes;
+			errorRes.messagge = Helper::stringToBuffer("Please send a Login code (1) or a Sign up code. (2)");
+			res.respones = JsonResponsePacketSerializer::serializeResponse(errorRes);
+		}
+		else if (req.id == LOGIN_CODE)
+		{
+			LoginRequest loginReq = JsonRequestPacketDeserializer::deserializeLoginRequest(req.buffer);
+			LoginResponse loginRes;
+			Helper::debugPrint("login msg recv, passwod: " + loginReq.password + " username: " + loginReq.username);
+			loginRes.status = 1;
+			res.respones = JsonResponsePacketSerializer::serializeResponse(loginRes);
+		}
+		else if (req.id == SIGN_UP_CODE)
+		{
+			SignupRequest signupReq = JsonRequestPacketDeserializer::deserializeSignupRequest(req.buffer);
+			SignupResponse signupRes;
+			Helper::debugPrint("signup msg recv, passwod: " + signupReq.password + " username: " + signupReq.username + " email: " + signupReq.email);
+			signupRes.status = 1;
+			res.respones = JsonResponsePacketSerializer::serializeResponse(signupRes);
+		}
+	}
+	catch(...)
+	{
+		ErrorResponse errorRes;
+		errorRes.messagge = Helper::stringToBuffer("Could not parse message. pls send it in the correct format.");
+		res.respones = JsonResponsePacketSerializer::serializeResponse(errorRes);
+	}
+	return res;
 }

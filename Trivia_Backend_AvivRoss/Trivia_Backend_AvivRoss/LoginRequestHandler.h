@@ -12,6 +12,6 @@ public:
 	LoginRequestHandler();
 
 	bool isRequestRelevant(RequestInfo req) override;
-	RequestInfo handleRequest(RequestInfo req) override;
+	RequestResult handleRequest(RequestInfo req) override;
 };
 

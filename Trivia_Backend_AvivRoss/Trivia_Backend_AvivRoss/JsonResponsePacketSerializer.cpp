@@ -4,13 +4,13 @@
 
 Buffer JsonResponsePacketSerializer::serializeResponse(ErrorResponse response)
 {
-	return stringToBuffer("{message:\"" + response.messagge + "\"}");
+	return Helper::stringToBuffer("{message:\"" + Helper::bufferToString(response.messagge )+ "\"}");
 }
 Buffer JsonResponsePacketSerializer::serializeResponse(LoginResponse response)
 {
-	return stringToBuffer("status: " + std::to_string(response.status) + "}");
+	return Helper::stringToBuffer("{status: " + std::to_string(response.status) + "}");
 }
 Buffer JsonResponsePacketSerializer::serializeResponse(SignupResponse response)
 {
-	return stringToBuffer("status: " + std::to_string(response.status) + "}");
+	return Helper::stringToBuffer("{status: " + std::to_string(response.status) + "}");
 }

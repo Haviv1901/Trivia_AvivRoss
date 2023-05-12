@@ -6,7 +6,7 @@
 #include <mutex>
 #include <string>
 #include <thread>
-
+#include <ctime>
 #include "Helper.h"
 
 
@@ -36,6 +36,15 @@ Communicator::~Communicator()
 		::closesocket(m_serverSocket);
 	}
 	catch (...) {}
+
+	if(m_clients.size() > 0) // clearing the allocated memory in the map.
+	{
+		for (auto pair : m_clients)
+		{
+			delete pair.second;
+		}
+	}
+
 }
 
 void Communicator::startHandleRequests()
@@ -50,7 +59,7 @@ void Communicator::startHandleRequests()
 	{
 		// this thread is only accepting clients 
 		// and add then to the list of handlers
-		debugPrint("accepting client...");
+		Helper::debugPrint("accepting client...");
 		handleNewClient();
 	}
 
@@ -75,11 +84,11 @@ void Communicator::bindAndListen()
 	// again stepping out to the global namespace
 	if (::bind(m_serverSocket, (struct sockaddr*)&sa, sizeof(sa)) == SOCKET_ERROR)
 		throw std::exception(__FUNCTION__ " - bind");
-	debugPrint("binded");
+	Helper::debugPrint("binded");
 
 	if (::listen(m_serverSocket, SOMAXCONN) == SOCKET_ERROR)
 		throw std::exception(__FUNCTION__ " - listen");
-	debugPrint("listening...");
+	Helper::debugPrint("listening...");
 
 }
 void Communicator::handleNewClient()
@@ -92,7 +101,7 @@ void Communicator::handleNewClient()
 	m_clients.insert({ client_socket,  new LoginRequestHandler });
 	mtx.unlock();
 
-	debugPrint("Client accepted !");
+	Helper::debugPrint("Client accepted !");
 	// create new thread for client	and detach from it
 	std::thread tr(&Communicator::clientHandler, this, client_socket);
 	tr.detach();
@@ -102,17 +111,30 @@ void Communicator::handleNewClient()
 
 void Communicator::clientHandler(SOCKET client_socket)
 {
+
 	try
 	{
-		string user_sent;
-		sendData(client_socket, "Hello");
-		user_sent = getPartFromSocket(client_socket, 5, 0);
-
-		cout << user_sent << std::endl;
-		while(true)
+		LoginRequestHandler temp = LoginRequestHandler();
+		while (true)
 		{
-			
-		} // stay ideal
+			int i = 0;
+			int code, length;
+
+			code = Helper::getMessageTypeCode(client_socket);
+			length = Helper::getLengthFromSocket(client_socket);
+			Buffer data = Helper::getDataFromSocketBuffer(client_socket, length);
+
+			RequestInfo msg;
+			msg.buffer = data;
+			msg.id = code;
+			msg.receivalTime = time(nullptr);
+
+			Helper::debugPrint("recieved msg. code: " + std::to_string(code) + " length: " + std::to_string(length) + " data: " + Helper::bufferToString(msg.buffer));
+
+			RequestResult res = temp.handleRequest(msg);
+			Helper::sendData(client_socket, res.respones);
+
+		}
 	}
 	catch (const std::exception& e)
 	{
