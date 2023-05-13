@@ -3,18 +3,14 @@
 #include <io.h>
 #include <iostream>
 #include <string>
-#include <windows.h>
-#include <list>
-#include <map>
 #include <ostream>
 #include "Consts.h"
 #include "Helper.h"
 
-using std::list;
+using std::vector;
 using std::string;
 using std::endl;
 using std::cout;
-using std::map;
 using std::to_string;
 
 void sqlRunQuery(string sqlStatement, sqlite3* db);
@@ -23,12 +19,6 @@ void createTables(sqlite3* db);
 
 int callbackUsers(void* data, int argc, char** argv, char** azColName);
 
-struct user
-{
-	string email;
-	string username;
-	string pass;
-} typedef user;
 
 bool SqliteDatabase::open()
 {
@@ -49,26 +39,54 @@ bool SqliteDatabase::open()
 }
 bool SqliteDatabase::close()
 {
-	sqlite3_close(_db);
-	_db = nullptr;
+	if(sqlite3_close(_db) == SQLITE_OK)
+	{
+		_db = nullptr;
+		return true;
+	}
+	return false;
 }
 int SqliteDatabase::doesUserExist(string userName)
 {
 	std::vector<user> users;
-	sqlRunQuery("SELECT * FROM USERS WHERE NAME=" + userName, callbackUsers, (void*)&users);
+	getUsers(&users, userName);
 	if(users.size() == 0)
 	{
-		return false;
+		return 0;
 	}
-	return true;
+	return users.size();
 }
-int SqliteDatabase::doesPasswordMatch(string pass, string pass2)
+int SqliteDatabase::doesPasswordMatch(string pass, string username)
 {
-	
+	std::vector<user> users;
+	getUsers(&users, username);
+
+	if (users.size() == 0)
+	{
+		return 0;
+	}
+
+	for(auto iter : users)
+	{
+		if(iter.pass == pass)
+		{
+			return 1;
+		}
+	}
+
+	return 0;
 }
 int SqliteDatabase::addNewUser(string username, string pass, string email)
 {
-	
+	try
+	{
+		sqlRunQuery("INSERT INTO USERS VALUES(" + username + ", '" + email + ", ' " + pass + "');");
+	}
+	catch(std::exception e)
+	{
+		return 0;
+	}
+	return 1;
 }
 
 /**
@@ -102,6 +120,7 @@ void SqliteDatabase::sqlRunQuery(string sqlStatement, int(*callback)(void*, int,
 		SetConsoleTextAttribute(hConsole, 12);
 		cout << " - could not run query: " << errMessage << endl;
 		SetConsoleTextAttribute(hConsole, 15);
+		throw std::exception("could not run query");
 	}
 	else if (DEBUG_MODE)
 	{
@@ -141,33 +160,51 @@ void SqliteDatabase::createTables() const
 	sqlRunQuery(sqlStatement);
 }
 
+void SqliteDatabase::getUsers(std::vector<user>* usersList, string prefix)
+{
+	if(prefix == "")
+	{
+		sqlRunQuery("SELECT * FROM USERS", callbackUsers, (void*)usersList);
+	}
+	else
+	{
+		sqlRunQuery("SELECT * FROM USERS WHERE NAME=" + prefix, callbackUsers, (void*)usersList);
+	}
+}
+
+
 int callbackUsers(void* data, int argc, char** argv, char** azColName)
 {
-	int id;
 	// id name
-	string name;
+	string name, email, pass;
 
 	if(data != nullptr)
 	{
 		throw std::exception("null data was given.");
 	}
 
-
+	vector<user>* usersList = (vector<user>*)data;
 
 	for (int i = 0; i < argc; i++)
 	{
-		if (string(azColName[i]) == "ID")
-		{
-			id = atoi(argv[i]);
-		}
-		else if (string(azColName[i]) == "NAME")
+		if (string(azColName[i]) == "NAME")
 		{
 			name = argv[i];
-			User user(id, name);
-			usersList.push_back(user);
+		}
+		if (string(azColName[i]) == "EMAIL")
+		{
+			email = argv[i];
+		}
+		if (string(azColName[i]) == "PASSWORD")
+		{
+			pass = argv[i];
 		}
 
 	}
-
+	user temp;
+	temp.email = email;
+	temp.pass = pass;
+	temp.username = pass;
+	usersList->push_back(temp);
 	return 0;
 }
