@@ -1,6 +1,7 @@
 #pragma once
 #include <vector>
 
+#define DB_PATH "TriviaDB.sqlite"
 
 static const unsigned short PORT = 6969; // port to bind
 static const unsigned int IFACE = 0;
