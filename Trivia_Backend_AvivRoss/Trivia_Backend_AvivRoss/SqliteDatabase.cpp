@@ -54,7 +54,7 @@ int SqliteDatabase::doesUserExist(string userName)
 	{
 		return 0;
 	}
-	return users.size();
+	return 1;
 }
 int SqliteDatabase::doesPasswordMatch(string pass, string username)
 {
@@ -153,8 +153,7 @@ void SqliteDatabase::sqlRunQuery(string sqlStatement, int(*callback)(void*, int,
 
 void SqliteDatabase::createTables() const
 {
-	string sqlStatement = "CREATE TABLE USERS (ID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,"
-		" NAME TEXT NOT NULL,"
+	string sqlStatement = "CREATE TABLE USERS (NAME TEXT PRIMARY KEY NOT NULL,"
 		" EMAIL TEXT NOT NULL,"
 		" PASSWORD TEXT NOT NULL); ";
 	sqlRunQuery(sqlStatement);

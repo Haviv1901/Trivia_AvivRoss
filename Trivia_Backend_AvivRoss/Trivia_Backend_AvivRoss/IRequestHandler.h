@@ -39,6 +39,6 @@ struct RequestResult
 
 class IRequestHandler // virtual "" "" = 0;
 {
-	virtual bool isRequestRelevant(RequestInfo req) = 0;
-	virtual RequestResult handleRequest(RequestInfo req) = 0;
+	virtual bool isRequestRelevant(RequestInfo req) const = 0;
+	virtual RequestResult handleRequest(RequestInfo req) const = 0;
 };

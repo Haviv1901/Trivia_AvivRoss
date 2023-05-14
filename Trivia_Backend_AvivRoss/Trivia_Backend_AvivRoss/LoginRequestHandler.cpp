@@ -9,7 +9,7 @@ LoginRequestHandler::LoginRequestHandler()
 	
 }
 
-bool LoginRequestHandler::isRequestRelevant(RequestInfo req)
+bool LoginRequestHandler::isRequestRelevant(RequestInfo req) const
 {
 	if(req.id == LOGIN_CODE || req.id == SIGN_UP_CODE)
 	{
@@ -17,7 +17,7 @@ bool LoginRequestHandler::isRequestRelevant(RequestInfo req)
 	}
 	return false;
 }
-RequestResult LoginRequestHandler::handleRequest(RequestInfo req)
+RequestResult LoginRequestHandler::handleRequest(RequestInfo req) const
 {
 	RequestResult res;
 	res.newHandler = nullptr;
