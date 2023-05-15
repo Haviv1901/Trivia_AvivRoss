@@ -89,7 +89,7 @@ int SqliteDatabase::addNewUser(string username, string pass, string email)
 {
 	try
 	{
-		sqlRunQuery("INSERT INTO USERS VALUES(" + username + ", '" + email + ", ' " + pass + "');");
+		sqlRunQuery("INSERT INTO USERS VALUES('" + username + "', '" + email + "', '" + pass + "');");
 	}
 	catch(std::exception e)
 	{
@@ -116,7 +116,7 @@ void SqliteDatabase::sqlRunQuery(string sqlStatement, int(*callback)(void*, int,
 	try
 	{
 		if (callback != nullptr)
-			res = sqlite3_exec(_db, sqlStatement.c_str(), callback, nullptr, &errMessage);
+			res = sqlite3_exec(_db, sqlStatement.c_str(), callback, data, &errMessage);
 		else
 			res = sqlite3_exec(_db, sqlStatement.c_str(), nullptr, nullptr, &errMessage);
 	}
@@ -176,7 +176,7 @@ void SqliteDatabase::getUsers(std::vector<user>* usersList, string prefix)
 	}
 	else
 	{
-		sqlRunQuery("SELECT * FROM USERS WHERE NAME=" + prefix, callbackUsers, (void*)usersList);
+		sqlRunQuery("SELECT * FROM USERS WHERE NAME='" + prefix + "'", callbackUsers, (void*)usersList);
 	}
 }
 
@@ -186,7 +186,7 @@ int callbackUsers(void* data, int argc, char** argv, char** azColName)
 	// id name
 	string name, email, pass;
 
-	if(data != nullptr)
+	if(data == nullptr)
 	{
 		throw std::exception("null data was given.");
 	}

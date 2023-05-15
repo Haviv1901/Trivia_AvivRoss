@@ -39,6 +39,7 @@ struct RequestResult
 
 class IRequestHandler // virtual "" "" = 0;
 {
+public:
 	virtual bool isRequestRelevant(RequestInfo req) = 0;
 	virtual RequestResult handleRequest(RequestInfo req) = 0;
 };

@@ -115,6 +115,9 @@ void Communicator::clientHandler(SOCKET client_socket)
 	try
 	{
 		LoginRequestHandler temp = LoginRequestHandler(m_handlerFactory);
+		RequestInfo msg;
+		RequestResult res;
+		res.newHandler = m_handlerFactory.createLoginRequestHandler();
 		while (true)
 		{
 			int i = 0;
@@ -124,14 +127,14 @@ void Communicator::clientHandler(SOCKET client_socket)
 			length = Helper::getLengthFromSocket(client_socket);
 			Buffer data = Helper::getDataFromSocketBuffer(client_socket, length);
 
-			RequestInfo msg;
+			
 			msg.buffer = data;
 			msg.id = code;
 			msg.receivalTime = time(nullptr);
 
 			Helper::debugPrint("recieved msg. code: " + std::to_string(code) + " length: " + std::to_string(length) + " data: " + Helper::bufferToString(msg.buffer));
 
-			RequestResult res = temp.handleRequest(msg);
+			res = res.newHandler->handleRequest(msg);
 			Helper::sendData(client_socket, res.respones);
 
 		}

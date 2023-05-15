@@ -62,13 +62,13 @@ RequestResult LoginRequestHandler::login(RequestInfo req)
 	Helper::debugPrint("login msg recv, passwod: " + loginReq.password + " username: " + loginReq.username);
 	if (!m_handlerFactory.getLoginManager().login(loginReq.username, loginReq.password)) // login user
 	{
-		throw std::exception("Error logging in.");
+		throw std::exception("Username or password do not match.");
 	}
 	Helper::debugPrint("login succesfully.");
 	LoginResponse loginRes;
 	loginRes.status = MENU;
 	res.respones = JsonResponsePacketSerializer::serializeResponse(loginRes);
-	res.newHandler = new MenuRequestHandler();
+	res.newHandler = m_handlerFactory.createMenuRequestHandler();
 	return res;
 }
 
@@ -89,7 +89,7 @@ RequestResult LoginRequestHandler::signup(RequestInfo req)
 	SignupResponse signupRes;
 	signupRes.status = MENU;
 	res.respones = JsonResponsePacketSerializer::serializeResponse(signupRes);
-	res.newHandler = new MenuRequestHandler();
+	res.newHandler = m_handlerFactory.createMenuRequestHandler();
 	return res;
 }
 

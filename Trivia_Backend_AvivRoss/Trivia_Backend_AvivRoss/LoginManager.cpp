@@ -33,9 +33,9 @@ bool LoginManager::signup(const string& email, const string&  username, const st
  * \param passowrd 
  * \return 
  */
-bool LoginManager::login(string const username&, string const password&)
+bool LoginManager::login(const string& username, const string& password)
 {
-	if (m_database->doesUserExist(username))
+	if (!m_database->doesUserExist(username))
 	{
 		return false;
 	}
@@ -55,7 +55,7 @@ bool LoginManager::login(string const username&, string const password&)
  * \param username 
  * \return 
  */
-bool LoginManager::logout(string username)
+bool LoginManager::logout(const string& username)
 {
 	for(auto iter = m_loggedUsers.begin() ; iter != m_loggedUsers.end() ; iter++)
 	{
