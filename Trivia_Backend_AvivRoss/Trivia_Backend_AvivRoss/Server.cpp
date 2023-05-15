@@ -1,5 +1,6 @@
 #include "Server.h"
 #include "Helper.h"
+#include "SqliteDataBase.h"
 
 #include <iostream>
 #include <string>
@@ -7,12 +8,10 @@
 
 
 // dtor ctor
-Server::Server()
+Server::Server() : m_database(new SqliteDatabase()), m_handlerFactory(m_database), m_communicator(m_handlerFactory)
 {
-
-	m_communicator = Communicator();
-
 }
+
 Server::~Server()
 {
 	
@@ -20,21 +19,13 @@ Server::~Server()
 
 void Server::run()
 {
+	std::string str;
+	std::thread tr(&Communicator::startHandleRequests, this->m_communicator);
+	tr.detach();
 
-
-	// start listening
-	m_communicator.bindAndListen();
-
-	// create new thread for handling message
-	//std::thread tr(&Communicator::message handler, m_communicator);
-	//tr.detach();
-
-
-	while (true)
+	
+	while (str != "Exit")
 	{
-		// the main thread is only accepting clients 
-		// and add then to the list of handlers
-		debugPrint("accepting client...");
-		m_communicator.handleNewClient();
+		std::cin >> str;
 	}
 }

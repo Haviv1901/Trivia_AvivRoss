@@ -6,7 +6,7 @@
 #include <mutex>
 #include <string>
 #include <thread>
-
+#include <ctime>
 #include "Helper.h"
 
 
@@ -20,7 +20,7 @@ std::mutex mtx;
 //void sendData(const SOCKET sc, const std::string message);
 
 
-Communicator::Communicator()
+Communicator::Communicator(RequestHandlerFactory& handlerFactory) : m_handlerFactory(handlerFactory)
 {
 	// create socket handle
 	m_serverSocket = ::socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
@@ -36,6 +36,15 @@ Communicator::~Communicator()
 		::closesocket(m_serverSocket);
 	}
 	catch (...) {}
+
+	if(m_clients.size() > 0) // clearing the allocated memory in the map.
+	{
+		for (auto pair : m_clients)
+		{
+			delete pair.second;
+		}
+	}
+
 }
 
 void Communicator::startHandleRequests()
@@ -50,7 +59,7 @@ void Communicator::startHandleRequests()
 	{
 		// this thread is only accepting clients 
 		// and add then to the list of handlers
-		debugPrint("accepting client...");
+		Helper::debugPrint("accepting client...");
 		handleNewClient();
 	}
 
@@ -75,11 +84,11 @@ void Communicator::bindAndListen()
 	// again stepping out to the global namespace
 	if (::bind(m_serverSocket, (struct sockaddr*)&sa, sizeof(sa)) == SOCKET_ERROR)
 		throw std::exception(__FUNCTION__ " - bind");
-	debugPrint("binded");
+	Helper::debugPrint("binded");
 
 	if (::listen(m_serverSocket, SOMAXCONN) == SOCKET_ERROR)
 		throw std::exception(__FUNCTION__ " - listen");
-	debugPrint("listening...");
+	Helper::debugPrint("listening...");
 
 }
 void Communicator::handleNewClient()
@@ -89,10 +98,10 @@ void Communicator::handleNewClient()
 		throw std::exception(__FUNCTION__);
 
 	mtx.lock();
-	m_clients.insert({ client_socket,  new LoginRequestHandler });
+	m_clients.insert({ client_socket,  m_handlerFactory.createLoginRequestHandler() });
 	mtx.unlock();
 
-	debugPrint("Client accepted !");
+	Helper::debugPrint("Client accepted !");
 	// create new thread for client	and detach from it
 	std::thread tr(&Communicator::clientHandler, this, client_socket);
 	tr.detach();
@@ -102,17 +111,33 @@ void Communicator::handleNewClient()
 
 void Communicator::clientHandler(SOCKET client_socket)
 {
+
 	try
 	{
-		string user_sent;
-		sendData(client_socket, "Hello");
-		user_sent = getPartFromSocket(client_socket, 5, 0);
-
-		cout << user_sent << std::endl;
-		while(true)
+		LoginRequestHandler temp = LoginRequestHandler(m_handlerFactory);
+		RequestInfo msg;
+		RequestResult res;
+		res.newHandler = m_handlerFactory.createLoginRequestHandler();
+		while (true)
 		{
+			int i = 0;
+			int code, length;
+
+			code = Helper::getMessageTypeCode(client_socket);
+			length = Helper::getLengthFromSocket(client_socket);
+			Buffer data = Helper::getDataFromSocketBuffer(client_socket, length);
+
 			
-		} // stay ideal
+			msg.buffer = data;
+			msg.id = code;
+			msg.receivalTime = time(nullptr);
+
+			Helper::debugPrint("recieved msg. code: " + std::to_string(code) + " length: " + std::to_string(length) + " data: " + Helper::bufferToString(msg.buffer));
+
+			res = res.newHandler->handleRequest(msg);
+			Helper::sendData(client_socket, res.respones);
+
+		}
 	}
 	catch (const std::exception& e)
 	{

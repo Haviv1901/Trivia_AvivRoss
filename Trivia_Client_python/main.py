@@ -1,21 +1,47 @@
 import socket
+import json
 
 # consts
 IP = "127.0.0.1"
 PORT = 6969
 
+LOGIN_CODE = 1
+SIGN_UP_CODE = 2
 
 def main():
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     server_msg = ""
 
     sock = connect_to_server()
+    # example valid password:
+    # example invalid password:
+    data = {
+        "username": "notAvivRoss",
+        "password": "S3cr3t#K",
+        "email": "ross@gmail.com"
+    }
+    login = {
+        "username": "aviv",
+        "password": "aviv123"
+    }
+   # bytes_code = bytes(str(LOGIN_CODE).encode())
+   # bytes_data = bytes(json.dumps(login).encode())
+    bytes_code = bytes(str(SIGN_UP_CODE).encode())
+    bytes_data = bytes(json.dumps(data).encode())
+    length = len(bytes_data)
+    encoded_length = length.to_bytes(4, 'big')
+    full_msg_bytes = bytes_code + encoded_length + bytes_data
+    #my_bytes = bytearray(full_msg_bytes)
 
-    server_msg = (sock.recv(1024).decode())  # print welcome msg
     print("Connected to server.")
-    print("Server sent: " + server_msg)
-    if server_msg == "Hello":
-        send_msg_to_server(sock, "Hello")
+    send_msg_to_server(sock, bytes_code)
+    send_msg_to_server(sock, encoded_length)
+    send_msg_to_server(sock, bytes_data)
+    #send_msg_to_server(sock, full_msg_bytes)
+    while(True):
+        print(sock.recv(4048).decode())
+        continue
+    sock.close()
 
 
 
@@ -45,10 +71,26 @@ def send_msg_to_server(client_soc, data):
     rtype: -
     """
     try:
-        client_soc.sendall(data.encode())
+            client_soc.send(data)
     except Exception:
-        print("Could not not sent msg to server.")
+        print("Could not sent msg to server.")
+    else:
+        print("message sent successfully.")
 
+def recv_message(soc):
+    """
+    recv a message from the server.
+    soc: socket to recv from.
+    rtype: string
+    return: string containing the message from the server.
+    """
+    try:
+        recv = soc.recv(4048).decode()
+    except Exception:
+        print("Could not recv msg from server.")
+        return ""
+    else:
+        return recv
 
 if __name__ == '__main__':
     main()
