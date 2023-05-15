@@ -13,9 +13,11 @@ def main():
     server_msg = ""
 
     sock = connect_to_server()
+    # example valid password:
+    # example invalid password:
     data = {
-        "username": "aviv",
-        "password": "aviv123",
+        "username": "notAvivRoss",
+        "password": "S3cr3t#K",
         "email": "ross@gmail.com"
     }
     login = {
