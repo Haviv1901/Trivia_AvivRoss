@@ -15,7 +15,7 @@ class Communicator
 {
 public:
 
-	Communicator();
+	Communicator(RequestHandlerFactory& handlerFactory);
 	~Communicator();
 
 	void startHandleRequests();
@@ -28,5 +28,6 @@ public:
 private:
 	SOCKET m_serverSocket;
 	std::map<SOCKET, IRequestHandler*> m_clients;
+	RequestHandlerFactory& m_handlerFactory;
 };
 

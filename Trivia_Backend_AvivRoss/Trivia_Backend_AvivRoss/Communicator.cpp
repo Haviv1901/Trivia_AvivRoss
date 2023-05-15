@@ -20,7 +20,7 @@ std::mutex mtx;
 //void sendData(const SOCKET sc, const std::string message);
 
 
-Communicator::Communicator()
+Communicator::Communicator(RequestHandlerFactory& handlerFactory) : m_handlerFactory(handlerFactory)
 {
 	// create socket handle
 	m_serverSocket = ::socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
@@ -98,7 +98,7 @@ void Communicator::handleNewClient()
 		throw std::exception(__FUNCTION__);
 
 	mtx.lock();
-	m_clients.insert({ client_socket,  new LoginRequestHandler });
+	m_clients.insert({ client_socket,  m_handlerFactory.createLoginRequestHandler() });
 	mtx.unlock();
 
 	Helper::debugPrint("Client accepted !");
@@ -114,7 +114,10 @@ void Communicator::clientHandler(SOCKET client_socket)
 
 	try
 	{
-		LoginRequestHandler temp = LoginRequestHandler();
+		LoginRequestHandler temp = LoginRequestHandler(m_handlerFactory);
+		RequestInfo msg;
+		RequestResult res;
+		res.newHandler = m_handlerFactory.createLoginRequestHandler();
 		while (true)
 		{
 			int i = 0;
@@ -124,14 +127,14 @@ void Communicator::clientHandler(SOCKET client_socket)
 			length = Helper::getLengthFromSocket(client_socket);
 			Buffer data = Helper::getDataFromSocketBuffer(client_socket, length);
 
-			RequestInfo msg;
+			
 			msg.buffer = data;
 			msg.id = code;
 			msg.receivalTime = time(nullptr);
 
 			Helper::debugPrint("recieved msg. code: " + std::to_string(code) + " length: " + std::to_string(length) + " data: " + Helper::bufferToString(msg.buffer));
 
-			RequestResult res = temp.handleRequest(msg);
+			res = res.newHandler->handleRequest(msg);
 			Helper::sendData(client_socket, res.respones);
 
 		}

@@ -24,7 +24,7 @@ struct SignupRequest
 
 struct RequestInfo
 {
-	int id; // int ???
+	int id;
 	time_t receivalTime; // time_t is ctime's object
 	Buffer buffer;
 } typedef RequestInfo;
@@ -39,6 +39,7 @@ struct RequestResult
 
 class IRequestHandler // virtual "" "" = 0;
 {
+public:
 	virtual bool isRequestRelevant(RequestInfo req) = 0;
 	virtual RequestResult handleRequest(RequestInfo req) = 0;
 };

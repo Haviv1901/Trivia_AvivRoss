@@ -18,6 +18,12 @@ def main():
         "password": "aviv123",
         "email": "ross@gmail.com"
     }
+    login = {
+        "username": "aviv",
+        "password": "aviv123"
+    }
+   # bytes_code = bytes(str(LOGIN_CODE).encode())
+   # bytes_data = bytes(json.dumps(login).encode())
     bytes_code = bytes(str(SIGN_UP_CODE).encode())
     bytes_data = bytes(json.dumps(data).encode())
     length = len(bytes_data)
