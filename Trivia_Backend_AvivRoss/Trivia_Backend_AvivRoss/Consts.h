@@ -11,5 +11,5 @@ typedef std::vector<byte> Buffer;
 
 #define DEBUG_MODE true // on or off debug prints
 
-enum {ERROR_CODE=256, LOGIN_CODE=1, SIGN_UP_CODE=2, MENU=3};
+enum {ERROR_CODE=0, LOGIN_CODE=1, SIGN_UP_CODE=2, MENU=3};
 

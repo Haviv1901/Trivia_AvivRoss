@@ -22,8 +22,10 @@ def main():
         "username": "aviv",
         "password": "aviv123"
     }
-    bytes_code = bytes(str(LOGIN_CODE).encode())
-    bytes_data = bytes(json.dumps(login).encode())
+   # bytes_code = bytes(str(LOGIN_CODE).encode())
+   # bytes_data = bytes(json.dumps(login).encode())
+    bytes_code = bytes(str(SIGN_UP_CODE).encode())
+    bytes_data = bytes(json.dumps(data).encode())
     length = len(bytes_data)
     encoded_length = length.to_bytes(4, 'big')
     full_msg_bytes = bytes_code + encoded_length + bytes_data
