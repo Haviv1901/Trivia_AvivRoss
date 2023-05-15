@@ -10,8 +10,8 @@ using std::string;
 class LoginManager
 {
 public:
-	LoginManager();
-	bool signup(string mail, string username, string pass);
+	LoginManager(IDatabase* database);
+	bool signup(string email, string username, string pass);
 	bool login(string username, string passowrd);
 	bool logout(string username);
 
