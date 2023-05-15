@@ -1,5 +1,9 @@
 #include "LoginManager.h"
+#include "Consts.h"
 #include <vector>
+#include <regex>
+
+const char emailRegEx[] = "^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$";
 
 LoginManager::LoginManager(IDatabase* database)
 {
@@ -15,6 +19,14 @@ LoginManager::LoginManager(IDatabase* database)
  */
 bool LoginManager::signup(const string& email, const string&  username, const string& pass)
 {
+	if (!regex_match(email, std::regex(EMAIL_REGEX)))
+	{
+		throw std::exception("invalid email. ->  **@**.**  ");
+	}
+	if (!regex_match(pass, std::regex(PASSWORD_REGEX)))
+	{
+		throw std::exception("Password must be 8 chars long, atleast 1 big char, 1 small char, 1 number, and one of these chars: ! @ # $ % ^ & *");
+	}
 	if(m_database->doesUserExist(username))
 	{
 		return false;
