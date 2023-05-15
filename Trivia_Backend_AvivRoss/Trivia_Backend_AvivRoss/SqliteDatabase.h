@@ -19,6 +19,7 @@ class SqliteDatabase :
 public:
 
     SqliteDatabase();
+	~SqliteDatabase() override;
 
 	bool open() override;
 	bool close() override;

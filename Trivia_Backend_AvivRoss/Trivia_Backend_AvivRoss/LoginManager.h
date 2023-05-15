@@ -11,9 +11,9 @@ class LoginManager
 {
 public:
 	LoginManager(IDatabase* database);
-	bool signup(string email, string username, string pass);
-	bool login(string username, string passowrd);
-	bool logout(string username);
+	bool signup(const string& email, const string& username, const string& pass);
+	bool login(const string& username, const string& password);
+	bool logout(const string& username);
 
 private:
 	std::vector<LoggedUser> m_loggedUsers;

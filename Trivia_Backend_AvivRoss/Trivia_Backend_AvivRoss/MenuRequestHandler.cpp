@@ -6,11 +6,11 @@ MenuRequestHandler::MenuRequestHandler()
 	
 }
 
-bool MenuRequestHandler::isRequestRelevant(RequestInfo req) const
+bool MenuRequestHandler::isRequestRelevant(RequestInfo req)
 {
 	return true;
 }
-RequestResult MenuRequestHandler::handleRequest(RequestInfo req) const
+RequestResult MenuRequestHandler::handleRequest(RequestInfo req)
 {
 	RequestResult res;
 	return res;

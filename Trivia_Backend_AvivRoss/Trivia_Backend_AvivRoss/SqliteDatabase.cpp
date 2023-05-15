@@ -19,6 +19,15 @@ void createTables(sqlite3* db);
 
 int callbackUsers(void* data, int argc, char** argv, char** azColName);
 
+SqliteDatabase::SqliteDatabase()
+{
+	open();
+}
+
+SqliteDatabase::~SqliteDatabase()
+{
+	close();
+}
 
 bool SqliteDatabase::open()
 {
@@ -27,7 +36,7 @@ bool SqliteDatabase::open()
 	if (res != SQLITE_OK)
 	{
 		_db = nullptr;
-		std::cout << "Failed to open DB" << std::endl;
+		throw std::exception("error opening data base");
 		return false;
 	}
 	if (file_exist != 0)

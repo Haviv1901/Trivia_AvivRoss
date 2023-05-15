@@ -6,11 +6,11 @@
 #include "MenuRequestHandler.h"
 
 
-LoginRequestHandler::LoginRequestHandler()
+LoginRequestHandler::LoginRequestHandler(RequestHandlerFactory& handlerFactory) : m_handlerFactory(handlerFactory)
 {
 }
 
-bool LoginRequestHandler::isRequestRelevant(RequestInfo req) const
+bool LoginRequestHandler::isRequestRelevant(RequestInfo req) 
 {
 	if(req.id == LOGIN_CODE || req.id == SIGN_UP_CODE)
 	{
@@ -18,7 +18,7 @@ bool LoginRequestHandler::isRequestRelevant(RequestInfo req) const
 	}
 	return false;
 }
-RequestResult LoginRequestHandler::handleRequest(RequestInfo req) const
+RequestResult LoginRequestHandler::handleRequest(RequestInfo req) 
 {
 	RequestResult res;
 	res.newHandler = nullptr;
@@ -27,45 +27,83 @@ RequestResult LoginRequestHandler::handleRequest(RequestInfo req) const
 	{
 		if (!isRequestRelevant(req))
 		{
-			ErrorResponse errorRes;
-			errorRes.messagge = Helper::stringToBuffer("Please send a Login code (1) or a Sign up code. (2)");
-			res.respones = JsonResponsePacketSerializer::serializeResponse(errorRes);
+			res = error(req, "Please send a Login code (1) or a Sign up code. (2)");
 		}
 		else if (req.id == LOGIN_CODE)
 		{
-			LoginRequest loginReq = JsonRequestPacketDeserializer::deserializeLoginRequest(req.buffer);
-			Helper::debugPrint("login msg recv, passwod: " + loginReq.password + " username: " + loginReq.username);
-			if(!m_handlerFactory.getLoginManager().login(loginReq.username, loginReq.password)) // login user
-			{
-				throw std::exception("Error logging in.");
-			}
-			LoginResponse loginRes;
-			Helper::debugPrint("login succesfully.");
-			res.respones = JsonResponsePacketSerializer::serializeResponse(loginRes);
-			res.newHandler = new MenuRequestHandler();
-
+			res = login(req);
 		}
 		else if (req.id == SIGN_UP_CODE)
 		{
-			SignupRequest signupReq = JsonRequestPacketDeserializer::deserializeSignupRequest(req.buffer);
-			SignupResponse signupRes;
-			Helper::debugPrint("signup msg recv, passwod: " + signupReq.password + " username: " + signupReq.username + " email: " + signupReq.email);
-			signupRes.status = 1;
-			res.respones = JsonResponsePacketSerializer::serializeResponse(signupRes);
+			res = signup(req);
 		}
 	}
 	catch(std::exception e)
 	{
-		ErrorResponse errorRes;
 		Helper::debugPrint(e.what());
-		errorRes.messagge = Helper::stringToBuffer(e.what());
-		res.respones = JsonResponsePacketSerializer::serializeResponse(errorRes);
+		res = error(req, e.what());
 	}
 	catch(...)
 	{
-		ErrorResponse errorRes;
-		errorRes.messagge = Helper::stringToBuffer("Could not parse message. pls send it in the correct format.");
-		res.respones = JsonResponsePacketSerializer::serializeResponse(errorRes);
+		res = error(req, "Could not parse message. pls send it in the correct format.");
 	}
+	return res;
+}
+
+/**
+ * \brief login user
+ * \param req 
+ * \return 
+ */
+RequestResult LoginRequestHandler::login(RequestInfo req)
+{
+	RequestResult res;
+	LoginRequest loginReq = JsonRequestPacketDeserializer::deserializeLoginRequest(req.buffer);
+	Helper::debugPrint("login msg recv, passwod: " + loginReq.password + " username: " + loginReq.username);
+	if (!m_handlerFactory.getLoginManager().login(loginReq.username, loginReq.password)) // login user
+	{
+		throw std::exception("Error logging in.");
+	}
+	Helper::debugPrint("login succesfully.");
+	LoginResponse loginRes;
+	loginRes.status = MENU;
+	res.respones = JsonResponsePacketSerializer::serializeResponse(loginRes);
+	res.newHandler = new MenuRequestHandler();
+	return res;
+}
+
+/**
+ * \brief sign in user
+ * \param req 
+ * \return 
+ */
+RequestResult LoginRequestHandler::signup(RequestInfo req)
+{
+	RequestResult res;
+	SignupRequest signupReq = JsonRequestPacketDeserializer::deserializeSignupRequest(req.buffer);
+	Helper::debugPrint("signup msg recv, passwod: " + signupReq.password + " username: " + signupReq.username + " email: " + signupReq.email);
+	if (!m_handlerFactory.getLoginManager().signup(signupReq.email, signupReq.username, signupReq.password)) // sign-up user
+	{
+		throw std::exception("Error signing in.");
+	}
+	SignupResponse signupRes;
+	signupRes.status = MENU;
+	res.respones = JsonResponsePacketSerializer::serializeResponse(signupRes);
+	res.newHandler = new MenuRequestHandler();
+	return res;
+}
+
+/**
+ * \brief error accored, return to communicator an error result.
+ * \param req 
+ * \param errorMessage 
+ * \return 
+ */
+RequestResult LoginRequestHandler::error(RequestInfo req, string errorMessage)
+{
+	RequestResult res;
+	ErrorResponse errorRes;
+	errorRes.messagge = Helper::stringToBuffer("Could not parse message. pls send it in the correct format.");
+	res.respones = JsonResponsePacketSerializer::serializeResponse(errorRes);
 	return res;
 }

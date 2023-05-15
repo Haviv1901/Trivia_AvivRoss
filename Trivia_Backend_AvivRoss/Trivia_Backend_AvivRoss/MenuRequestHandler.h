@@ -6,8 +6,8 @@ public:
 
 	MenuRequestHandler();
 
-	bool isRequestRelevant(RequestInfo req) const override;
-	RequestResult handleRequest(RequestInfo req) const override;
+	bool isRequestRelevant(RequestInfo req) override;
+	RequestResult handleRequest(RequestInfo req) override;
 
 };
 

@@ -13,7 +13,7 @@ LoginManager::LoginManager(IDatabase* database)
  * \param pass 
  * \return 
  */
-bool LoginManager::signup(string email, string username, string pass)
+bool LoginManager::signup(const string& email, const string&  username, const string& pass)
 {
 	if(m_database->doesUserExist(username))
 	{
@@ -33,13 +33,13 @@ bool LoginManager::signup(string email, string username, string pass)
  * \param passowrd 
  * \return 
  */
-bool LoginManager::login(string username, string passowrd)
+bool LoginManager::login(string const username&, string const password&)
 {
 	if (m_database->doesUserExist(username))
 	{
 		return false;
 	}
-	if(!m_database->doesPasswordMatch(passowrd, username))
+	if(!m_database->doesPasswordMatch(password, username))
 	{
 		return false;
 	}

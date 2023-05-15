@@ -1,5 +1,6 @@
 #include "Server.h"
 #include "Helper.h"
+#include "SqliteDataBase.h"
 
 #include <iostream>
 #include <string>
@@ -7,12 +8,10 @@
 
 
 // dtor ctor
-Server::Server()
+Server::Server() : m_database(new SqliteDatabase()), m_handlerFactory(m_database), m_communicator(m_handlerFactory)
 {
-
-	m_communicator = Communicator();
-
 }
+
 Server::~Server()
 {
 	

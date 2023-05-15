@@ -8,7 +8,7 @@ RequestHandlerFactory::RequestHandlerFactory(IDatabase* database) : m_loginManag
 
 LoginRequestHandler* RequestHandlerFactory::createLoginRequestHandler()
 {
-	
+	return new LoginRequestHandler(*this);
 }
 LoginManager& RequestHandlerFactory::getLoginManager()
 {
