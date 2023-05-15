@@ -3,10 +3,11 @@
 #include "Consts.h"
 #include "JsonRequestPacketDeserializer.h"
 #include "JsonResponsePacketSerializer.h"
+#include "MenuRequestHandler.h"
+
 
 LoginRequestHandler::LoginRequestHandler()
 {
-	
 }
 
 bool LoginRequestHandler::isRequestRelevant(RequestInfo req) const
@@ -33,10 +34,16 @@ RequestResult LoginRequestHandler::handleRequest(RequestInfo req) const
 		else if (req.id == LOGIN_CODE)
 		{
 			LoginRequest loginReq = JsonRequestPacketDeserializer::deserializeLoginRequest(req.buffer);
-			LoginResponse loginRes;
 			Helper::debugPrint("login msg recv, passwod: " + loginReq.password + " username: " + loginReq.username);
-			loginRes.status = 1;
+			if(!m_handlerFactory.getLoginManager().login(loginReq.username, loginReq.password)) // login user
+			{
+				throw std::exception("Error logging in.");
+			}
+			LoginResponse loginRes;
+			Helper::debugPrint("login succesfully.");
 			res.respones = JsonResponsePacketSerializer::serializeResponse(loginRes);
+			res.newHandler = new MenuRequestHandler();
+
 		}
 		else if (req.id == SIGN_UP_CODE)
 		{
@@ -46,6 +53,13 @@ RequestResult LoginRequestHandler::handleRequest(RequestInfo req) const
 			signupRes.status = 1;
 			res.respones = JsonResponsePacketSerializer::serializeResponse(signupRes);
 		}
+	}
+	catch(std::exception e)
+	{
+		ErrorResponse errorRes;
+		Helper::debugPrint(e.what());
+		errorRes.messagge = Helper::stringToBuffer(e.what());
+		res.respones = JsonResponsePacketSerializer::serializeResponse(errorRes);
 	}
 	catch(...)
 	{

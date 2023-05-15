@@ -13,8 +13,8 @@ public:
 
 	bool isRequestRelevant(RequestInfo req) const override;
 	RequestResult handleRequest(RequestInfo req) const override;
-	RequestResult login(RequestInfo req) const;
-	RequestResult signup(RequestInfo req) const;
+	RequestResult login(RequestInfo req);
+	RequestResult signup(RequestInfo req);
 
 private:
 	RequestHandlerFactory& m_handlerFactory;

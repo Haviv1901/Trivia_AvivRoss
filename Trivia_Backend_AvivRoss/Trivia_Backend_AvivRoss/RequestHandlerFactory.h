@@ -6,9 +6,12 @@ class RequestHandlerFactory
 {
 public:
 
-	RequestHandlerFactory();
-
-	LoginRequestHandler* creaateLoginRequestHandler();
+	RequestHandlerFactory(IDatabase* database);
+	LoginRequestHandler* createLoginRequestHandler();
 	LoginManager& getLoginManager();
+
+private:
+	LoginManager m_loginManager;
+	IDatabase* m_database;
 };
 

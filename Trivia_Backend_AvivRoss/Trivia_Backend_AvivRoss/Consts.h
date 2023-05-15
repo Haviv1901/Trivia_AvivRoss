@@ -10,7 +10,6 @@ typedef unsigned char byte;
 typedef std::vector<byte> Buffer;
 
 #define DEBUG_MODE true // on or off debug prints
-#define ERROR_CODE 256
-#define LOGIN_CODE 1
-#define SIGN_UP_CODE 2
+
+enum {ERROR_CODE=256, LOGIN_CODE=1, SIGN_UP_CODE=2, MENU=3};
 
