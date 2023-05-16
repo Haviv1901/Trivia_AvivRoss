@@ -21,7 +21,6 @@ LoginRequest JsonRequestPacketDeserializer::deserializeLoginRequest(Buffer buffe
 }
 SignupRequest JsonRequestPacketDeserializer::deserializeSignupRequest(Buffer buffer)
 {
-
 	SignupRequest res;
 	string parseMe = Helper::bufferToString(buffer);
 	Helper::debugPrint("parsing to json: " + parseMe);

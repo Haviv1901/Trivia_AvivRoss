@@ -29,6 +29,10 @@ SqliteDatabase::~SqliteDatabase()
 	close();
 }
 
+/**
+ * \brief opens data base
+ * \return 
+ */
 bool SqliteDatabase::open()
 {
 	int file_exist = _access(DB_PATH, 0);
@@ -46,6 +50,11 @@ bool SqliteDatabase::open()
 	}
 	return true;
 }
+
+/**
+ * \brief close data base
+ * \return 
+ */
 bool SqliteDatabase::close()
 {
 	if(sqlite3_close(_db) == SQLITE_OK)
@@ -55,6 +64,12 @@ bool SqliteDatabase::close()
 	}
 	return false;
 }
+
+/**
+ * \brief checks if user exist
+ * \param userName 
+ * \return return 0 if doesnt exist - 1 if user do exist
+ */
 int SqliteDatabase::doesUserExist(string userName)
 {
 	std::vector<user> users;
@@ -65,6 +80,13 @@ int SqliteDatabase::doesUserExist(string userName)
 	}
 	return 1;
 }
+
+/**
+ * \brief checks if a password is matching the username
+ * \param pass 
+ * \param username 
+ * \return 
+ */
 int SqliteDatabase::doesPasswordMatch(string pass, string username)
 {
 	std::vector<user> users;
@@ -85,6 +107,14 @@ int SqliteDatabase::doesPasswordMatch(string pass, string username)
 
 	return 0;
 }
+
+/**
+ * \brief add new user to the data base
+ * \param username 
+ * \param pass 
+ * \param email 
+ * \return 0 if failed, 1 if succeded
+ */
 int SqliteDatabase::addNewUser(string username, string pass, string email)
 {
 	try
@@ -141,7 +171,6 @@ void SqliteDatabase::sqlRunQuery(string sqlStatement, int(*callback)(void*, int,
 /**
  * \brief will call the same function with nullptr as the calback function
  * \param sqlStatement
- * \param db
  */
 void SqliteDatabase::sqlRunQuery(string sqlStatement) const
 {
@@ -159,7 +188,9 @@ void SqliteDatabase::sqlRunQuery(string sqlStatement, int(*callback)(void*, int,
 }
 
 
-
+/**
+ * \brief creates the tables
+ */
 void SqliteDatabase::createTables() const
 {
 	string sqlStatement = "CREATE TABLE USERS (NAME TEXT PRIMARY KEY NOT NULL,"
@@ -168,6 +199,11 @@ void SqliteDatabase::createTables() const
 	sqlRunQuery(sqlStatement);
 }
 
+/**
+ * \brief function to get all users in database and return them in a structre type data
+ * \param usersList 
+ * \param prefix 
+ */
 void SqliteDatabase::getUsers(std::vector<user>* usersList, string prefix)
 {
 	if(prefix == "")
@@ -180,7 +216,14 @@ void SqliteDatabase::getUsers(std::vector<user>* usersList, string prefix)
 	}
 }
 
-
+/**
+ * \brief callback - for users
+ * \param data 
+ * \param argc 
+ * \param argv 
+ * \param azColName 
+ * \return 
+ */
 int callbackUsers(void* data, int argc, char** argv, char** azColName)
 {
 	// id name

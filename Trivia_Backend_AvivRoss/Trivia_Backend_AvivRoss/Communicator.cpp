@@ -19,7 +19,7 @@ std::mutex mtx;
 //void debugPrint(string msg);
 //void sendData(const SOCKET sc, const std::string message);
 
-
+// ctor
 Communicator::Communicator(RequestHandlerFactory& handlerFactory) : m_handlerFactory(handlerFactory)
 {
 	// create socket handle
@@ -28,6 +28,7 @@ Communicator::Communicator(RequestHandlerFactory& handlerFactory) : m_handlerFac
 		throw std::exception(__FUNCTION__ " - socket");
 }
 
+// dotr
 Communicator::~Communicator()
 {
 	// close socket handle
@@ -47,6 +48,9 @@ Communicator::~Communicator()
 
 }
 
+/**
+ * \brief server thread
+ */
 void Communicator::startHandleRequests()
 {
 	bindAndListen();
@@ -91,6 +95,10 @@ void Communicator::bindAndListen()
 	Helper::debugPrint("listening...");
 
 }
+
+/**
+ * \brief function recevies new client, add an handle to the sockets client to the clients list.
+ */
 void Communicator::handleNewClient()
 {
 	SOCKET client_socket = accept(m_serverSocket, NULL, NULL);
@@ -108,7 +116,10 @@ void Communicator::handleNewClient()
 
 }
 
-
+/**
+ * \brief client's function thread.
+ * \param client_socket 
+ */
 void Communicator::clientHandler(SOCKET client_socket)
 {
 

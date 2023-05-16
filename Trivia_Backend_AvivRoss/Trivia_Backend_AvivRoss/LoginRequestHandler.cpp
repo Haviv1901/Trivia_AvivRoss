@@ -10,6 +10,11 @@ LoginRequestHandler::LoginRequestHandler(RequestHandlerFactory& handlerFactory) 
 {
 }
 
+/**
+ * \brief checks if the request is a login or a register
+ * \param req 
+ * \return 
+ */
 bool LoginRequestHandler::isRequestRelevant(RequestInfo req) 
 {
 	if(req.id == LOGIN_CODE || req.id == SIGN_UP_CODE)
@@ -18,6 +23,12 @@ bool LoginRequestHandler::isRequestRelevant(RequestInfo req)
 	}
 	return false;
 }
+
+/**
+ * \brief handle the login / signup request
+ * \param req 
+ * \return 
+ */
 RequestResult LoginRequestHandler::handleRequest(RequestInfo req) 
 {
 	RequestResult res;

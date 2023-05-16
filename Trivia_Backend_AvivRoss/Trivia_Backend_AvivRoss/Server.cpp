@@ -19,8 +19,9 @@ Server::~Server()
 
 void Server::run()
 {
+
 	std::string str;
-	std::thread tr(&Communicator::startHandleRequests, this->m_communicator);
+	std::thread tr(&Communicator::startHandleRequests, this->m_communicator); // server thread
 	tr.detach();
 
 	
