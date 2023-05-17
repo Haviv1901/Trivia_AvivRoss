@@ -20,11 +20,12 @@ class Room
 {
 
 public:
-	Room(RoomData roomData);
+	Room(LoggedUser creator, RoomData roomData);
 
 	void addUser(LoggedUser user);
 	void removeUser(LoggedUser user);
-	std::vector<string> getAllUsers();
+	std::vector<string> getAllUsers() const;
+	RoomData getData() const;
 
 private:
 	//RoomData m_metadat; ????? what is that name

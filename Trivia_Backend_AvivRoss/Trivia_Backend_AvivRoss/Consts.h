@@ -12,5 +12,5 @@ static const unsigned int IFACE = 0;
 typedef unsigned char byte;
 typedef std::vector<byte> Buffer;
 
-enum {ERROR_CODE=0, LOGIN_CODE=1, SIGN_UP_CODE=2, MENU=3};
+enum {ERROR_CODE=0, LOGIN_CODE=1, SIGN_UP_CODE=2, MENU_CODE =3};
 

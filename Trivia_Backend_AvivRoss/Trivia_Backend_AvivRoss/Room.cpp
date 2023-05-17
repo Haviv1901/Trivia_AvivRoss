@@ -1,8 +1,10 @@
 #include "Room.h"
 
 // ctor
-Room::Room(RoomData roomData) : m_roomData(roomData)
+// create room and insert the creator to he list.
+Room::Room(LoggedUser creator, RoomData roomData) : m_roomData(roomData)
 {
+	m_users.push_back(creator);
 }
 
 /**
@@ -27,7 +29,7 @@ void Room::removeUser(LoggedUser user)
  * \brief return all names of users in room
  * \return vector with all the names as strings.
  */
-std::vector<string> Room::getAllUsers()
+std::vector<string> Room::getAllUsers() const
 {
 	std::vector<string> names;
 	for (auto name : m_users)
@@ -35,4 +37,9 @@ std::vector<string> Room::getAllUsers()
 		names.push_back(name.getUsername());
 	}
 	return names;
+}
+
+RoomData Room::getData() const
+{
+	return m_roomData;
 }
