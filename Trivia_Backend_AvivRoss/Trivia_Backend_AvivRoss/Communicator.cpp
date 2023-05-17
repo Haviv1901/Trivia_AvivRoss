@@ -125,7 +125,6 @@ void Communicator::clientHandler(SOCKET client_socket)
 
 	try
 	{
-		LoginRequestHandler temp = LoginRequestHandler(m_handlerFactory);
 		RequestInfo msg;
 		RequestResult res;
 		res.newHandler = m_handlerFactory.createLoginRequestHandler();
