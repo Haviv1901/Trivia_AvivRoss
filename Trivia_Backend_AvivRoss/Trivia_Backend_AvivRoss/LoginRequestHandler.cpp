@@ -114,7 +114,8 @@ RequestResult LoginRequestHandler::error(RequestInfo req, string errorMessage)
 {
 	RequestResult res;
 	ErrorResponse errorRes;
-	errorRes.messagge = Helper::stringToBuffer("Could not parse message. pls send it in the correct format.");
+	errorRes.messagge = Helper::stringToBuffer(errorMessage);
 	res.respones = JsonResponsePacketSerializer::serializeResponse(errorRes);
+	res.newHandler = nullptr;
 	return res;
 }

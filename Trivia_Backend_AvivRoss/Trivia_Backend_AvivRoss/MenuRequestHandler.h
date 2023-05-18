@@ -11,6 +11,7 @@ class MenuRequestHandler : public IRequestHandler
 {
 public:
 
+
 	MenuRequestHandler(LoggedUser user, RoomManager roomManager, StatisticsManager statsManager, RequestHandlerFactory reqHandlerFac);
 
 	bool isRequestRelevant(RequestInfo req) override;
@@ -23,6 +24,9 @@ public:
 	RequestResult getHighScore(RequestInfo req);
 	RequestResult joinRoom(RequestInfo req);
 	RequestResult createRoom(RequestInfo req);
+
+	// not in uml
+	RequestResult LoginRequestHandler::error(RequestInfo req, string errorMessage);
 
 private:
 	LoggedUser m_user;
