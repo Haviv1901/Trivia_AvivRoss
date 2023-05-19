@@ -13,7 +13,7 @@ public:
 
 	RequestHandlerFactory(IDatabase* database);
 	LoginRequestHandler* createLoginRequestHandler();
-	MenuRequestHandler* createMenuRequestHandler();
+	MenuRequestHandler* createMenuRequestHandler(LoggedUser user);
 	LoginManager& getLoginManager();
 
 	//StatisticsManager& getStaticsManager() const;
@@ -24,6 +24,6 @@ private:
 	IDatabase* m_database;
 
 	RoomManager m_roomManager;
-	//StatisticsManager m_statisticsManager;
+	StatisticsManager m_statisticsManager;
 };
 

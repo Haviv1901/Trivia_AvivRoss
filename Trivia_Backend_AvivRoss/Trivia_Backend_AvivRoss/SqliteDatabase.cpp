@@ -199,11 +199,18 @@ void SqliteDatabase::createTables() const
 	string sqlStatement = "CREATE TABLE USERS (NAME TEXT PRIMARY KEY NOT NULL,"
 		" EMAIL TEXT NOT NULL,"
 		" PASSWORD TEXT NOT NULL); ";
+	sqlRunQuery(sqlStatement);
 
+	sqlStatement = "CREATE TABLE QUESTIONS (QUESTION TEXT PRIMARY KEY NOT NULL," 
+		" CURR_ANSWER TEXT NOT NULL,"
+		" WRONG_ANSWER1 TEXT NOT NULL,"
+		" WRONG_ANSWER2 TEXT NOT NULL,"
+		" WRONG_ANSWER3 TEXT NOT NULL); ";
+	sqlRunQuery(sqlStatement);
 
 	try // get questions from server
 	{
-		http::Request request{ "https://opentdb.com/api.php?amount=50&category=15" };
+		http::Request request{ "https://opentdb.com/api.php?amount=10&category=15" };
 
 		// send a get request
 		const auto response = request.send("GET");
@@ -215,9 +222,21 @@ void SqliteDatabase::createTables() const
 	}
 
 	Helper::debugPrint("parsing to json: " + questions);
-	nlohmann::json json = nlohmann::json::parse(questions); // creating the json object
+	nlohmann::json jsonQuestions = nlohmann::json::parse(questions); // creating the json object
 
-	sqlRunQuery(sqlStatement);
+	if (jsonQuestions["response_code"] != 0)
+	{
+		throw std::exception("could not get questions from server");
+	}
+
+	// iterate over the questions and insert them to the data base
+	for (auto it = jsonQuestions["results"][0].begin(); it != jsonQuestions["results"][0].end(); ++it)
+	{
+		sqlStatement = "INSERT INTO QUESTIONS VALUES('" + it.value()["question"].get<string>() + "', '" + it.value()["correct_answer"].get<string>() + "', '" + it.value()["incorrect_answers"][0].get<string>() + "', '" + it.value()["incorrect_answers"][1].get<string>() + "', '" + it.value()["incorrect_answers"][2].get<string>() + "'); ";
+		sqlRunQuery(sqlStatement); 
+	}
+
+	
 }
 
 /**
