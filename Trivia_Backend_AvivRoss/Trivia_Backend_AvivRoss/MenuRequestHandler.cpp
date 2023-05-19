@@ -35,6 +35,7 @@ RequestResult MenuRequestHandler::handleRequest(RequestInfo req)
 		{
 		case(SIGNOUT_CODE):
 			res = signout(req);
+			break;
 		}
 
 

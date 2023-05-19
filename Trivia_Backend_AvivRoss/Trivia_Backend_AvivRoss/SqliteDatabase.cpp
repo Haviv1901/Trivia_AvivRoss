@@ -6,6 +6,8 @@
 #include <ostream>
 #include "Consts.h"
 #include "Helper.h"
+#include "HTTPRequest.hpp"
+#include "nlohmann/json.hpp"
 
 using std::vector;
 using std::string;
@@ -193,9 +195,28 @@ void SqliteDatabase::sqlRunQuery(string sqlStatement, int(*callback)(void*, int,
  */
 void SqliteDatabase::createTables() const
 {
+	string questions;
 	string sqlStatement = "CREATE TABLE USERS (NAME TEXT PRIMARY KEY NOT NULL,"
 		" EMAIL TEXT NOT NULL,"
 		" PASSWORD TEXT NOT NULL); ";
+
+
+	try // get questions from server
+	{
+		http::Request request{ "https://opentdb.com/api.php?amount=50&category=15" };
+
+		// send a get request
+		const auto response = request.send("GET");
+		questions = std::string{ response.body.begin(), response.body.end() };
+	}
+	catch (const std::exception& e)
+	{
+		throw std::exception("could not get questions from server");
+	}
+
+	Helper::debugPrint("parsing to json: " + questions);
+	nlohmann::json json = nlohmann::json::parse(questions); // creating the json object
+
 	sqlRunQuery(sqlStatement);
 }
 

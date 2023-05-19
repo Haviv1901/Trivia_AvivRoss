@@ -146,6 +146,7 @@ void Communicator::clientHandler(SOCKET client_socket)
 
 			res = res.newHandler->handleRequest(msg);
 			Helper::sendData(client_socket, res.respones);
+			delete res.newHandler;
 
 		}
 	}
