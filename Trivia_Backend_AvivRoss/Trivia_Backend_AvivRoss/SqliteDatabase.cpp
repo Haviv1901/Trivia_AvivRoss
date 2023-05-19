@@ -11,6 +11,7 @@
 
 using std::vector;
 using std::string;
+using std::list;
 using std::endl;
 using std::cout;
 using std::to_string;
@@ -20,6 +21,7 @@ void sqlRunQuery(string sqlStatement, sqlite3* db, int(*callback)(void*, int, ch
 void createTables(sqlite3* db);
 
 int callbackUsers(void* data, int argc, char** argv, char** azColName);
+int callbackQuestions(void* data, int argc, char** argv, char** azColName);
 
 SqliteDatabase::SqliteDatabase()
 {
@@ -119,6 +121,7 @@ int SqliteDatabase::doesPasswordMatch(string pass, string username)
  */
 int SqliteDatabase::addNewUser(string username, string pass, string email)
 {
+	doesUserExist(username);
 	try
 	{
 		sqlRunQuery("INSERT INTO USERS VALUES('" + username + "', '" + email + "', '" + pass + "');");
@@ -129,6 +132,7 @@ int SqliteDatabase::addNewUser(string username, string pass, string email)
 	}
 	return 1;
 }
+
 
 /**
  * \brief function will run an sql query and prints the result and error message if needed
@@ -254,6 +258,93 @@ void SqliteDatabase::getUsers(std::vector<user>* usersList, string prefix)
 	{
 		sqlRunQuery("SELECT * FROM USERS WHERE NAME='" + prefix + "'", callbackUsers, (void*)usersList);
 	}
+}
+
+void SqliteDatabase::getQuestions(std::list<Question>* questionsList, string prefix)
+{
+	sqlRunQuery("SELECT * FROM QUESTIONS", callbackQuestions, (void*)questionsList);
+}
+
+
+std::list<Question> SqliteDatabase::getQuestion(int num)
+{
+	std::list<Question> res;
+
+	getQuestions(&res);
+
+	return res;
+
+}
+
+float SqliteDatabase::getPlayerAverageAnswerTime(string username)
+{
+	
+}
+int getNumOfCorrectAnswers(string username);
+int getNumOfTotalAnswers(string username);
+int getNumOfPlayerGames(string username);
+int getPlayerScore(string username);
+std::vector<string> getHighScores();
+
+
+/**
+ * \brief callback - for Questions
+ * \param data
+ * \param argc
+ * \param argv
+ * \param azColName
+ * \return
+ */
+int callbackQuestions(void* data, int argc, char** argv, char** azColName)
+{
+	// id name
+	string question, currAnswer, wrongAnswer1, wrongAnswer2, wrongAnswer3;
+
+	if (data == nullptr)
+	{
+		throw std::exception("null data was given.");
+	}
+
+	//sqlStatement = "CREATE TABLE QUESTIONS (QUESTION TEXT PRIMARY KEY NOT NULL,"
+	//	" CURR_ANSWER TEXT NOT NULL,"
+	//	" WRONG_ANSWER1 TEXT NOT NULL,"
+	//	" WRONG_ANSWER2 TEXT NOT NULL,"
+	//	" WRONG_ANSWER3 TEXT NOT NULL); ";
+
+	list<Question>* questionsList = (list<Question>*)data;
+
+	for (int i = 0; i < argc; i++)
+	{
+		if (string(azColName[i]) == "QUESTION")
+		{
+			question = argv[i];
+		}
+		if (string(azColName[i]) == "CURR_ANSWER")
+		{
+			currAnswer = argv[i];
+		}
+		if (string(azColName[i]) == "WRONG_ANSWER1")
+		{
+			wrongAnswer1 = argv[i];
+		}
+		if (string(azColName[i]) == "WRONG_ANSWER2")
+		{
+			wrongAnswer2 = argv[i];
+		}
+		if (string(azColName[i]) == "WRONG_ANSWER3")
+		{
+			wrongAnswer3 = argv[i];
+		}
+
+	}
+	Question temp;
+	temp.question = question;
+	temp.answers.push_back(currAnswer);
+	temp.answers.push_back(wrongAnswer1);
+	temp.answers.push_back(wrongAnswer2);
+	temp.answers.push_back(wrongAnswer3);
+	questionsList->push_back(temp);
+	return 0;
 }
 
 /**

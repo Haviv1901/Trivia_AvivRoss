@@ -55,7 +55,6 @@ bool LoginManager::login(const string& username, const string& password)
 	{
 		return false;
 	}
-	
 
 	m_loggedUsers.push_back(LoggedUser(username));
 

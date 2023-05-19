@@ -7,7 +7,7 @@ using std::string;
 struct Question
 {
 	string question;
-	std::vector<string> answers;
+	std::vector<string> answers; // first answer is the correct one
 };
 
 class IDatabase
@@ -21,5 +21,13 @@ public:
 	virtual int doesPasswordMatch(string pass, string username) = 0;
 	virtual int addNewUser(string username, string pass, string email) = 0;
 
+	// stats
 	virtual std::list<Question> getQuestion(int num) = 0;
+	virtual float getPlayerAverageAnswerTime(string username) = 0;
+	virtual int getNumOfCorrectAnswers(string username) = 0;
+	virtual int getNumOfTotalAnswers(string username) = 0;
+	virtual int getNumOfPlayerGames(string username) = 0;
+	virtual int getPlayerScore(string username) = 0;
+	virtual std::vector<string> getHighScores() = 0;
+
 };
