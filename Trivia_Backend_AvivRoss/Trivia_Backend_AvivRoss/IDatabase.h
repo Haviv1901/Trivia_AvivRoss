@@ -10,6 +10,16 @@ struct Question
 	std::vector<string> answers; // first answer is the correct one
 };
 
+struct Statistics
+{
+	string username;
+	float avgAnswerTime;
+	int numOfCorrectAnswers;
+	int numOfTotalAnswers;
+	int numOfPlayerGames;
+	float playerScore;
+} typedef Statistics;
+
 class IDatabase
 {
 public:
@@ -27,7 +37,10 @@ public:
 	virtual int getNumOfCorrectAnswers(string username) = 0;
 	virtual int getNumOfTotalAnswers(string username) = 0;
 	virtual int getNumOfPlayerGames(string username) = 0;
-	virtual int getPlayerScore(string username) = 0;
-	virtual std::vector<string> getHighScores() = 0;
+	virtual float getPlayerScore(string username) = 0;
+	virtual std::vector<Statistics> getHighScores() = 0;
+
+	// not in uml
+	virtual Statistics getStats(string username) = 0;
 
 };

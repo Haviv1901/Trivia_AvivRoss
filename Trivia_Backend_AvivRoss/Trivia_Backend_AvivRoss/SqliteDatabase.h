@@ -27,19 +27,23 @@ public:
 	int doesPasswordMatch(string pass, string username) override;
 	int addNewUser(string username, string pass, string email) override;
 
-	std::list<Question> getQuestion(int num);
-	float getPlayerAverageAnswerTime(string username);
-	int getNumOfCorrectAnswers(string username);
-	int getNumOfTotalAnswers(string username);
-	int getNumOfPlayerGames(string username);
-	int getPlayerScore(string username);
-	std::vector<string> getHighScores();
+	std::list<Question> getQuestion(int num) override;
+	float getPlayerAverageAnswerTime(string username) override;
+	int getNumOfCorrectAnswers(string username) override;
+	int getNumOfTotalAnswers(string username) override;
+	int getNumOfPlayerGames(string username) override;
+	float getPlayerScore(string username) override;
+	std::vector<Statistics> getHighScores() override;
+
+	// not in uml
+	Statistics getStats(string username) override;
 
 private:
 
 	void sqlRunQuery(string sqlStatement, int(*callback)(void*, int, char**, char**), void* data) const;
 	void sqlRunQuery(string sqlStatement, int(*callback)(void*, int, char**, char**)) const;
 	void sqlRunQuery(string sqlStatement) const;
+	void getStatistics(std::vector<Statistics>* usersList, string username = "");
 	void getUsers(std::vector<user>* usersList, string prefix = "");
 	void getQuestions(std::list<Question>* questionsList, string prefix = "");
 	void createTables() const;

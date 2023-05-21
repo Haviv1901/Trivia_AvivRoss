@@ -213,7 +213,7 @@ void SqliteDatabase::createTables() const
 	sqlRunQuery(sqlStatement);
 
 	sqlStatement = "CREATE TABLE STATISTICS (USERNAME TEXT PRIMARY KEY NOT NULL,"
-		" AVG_ANSWER_TIME INT NOT NULL,"
+		" AVG_ANSWER_TIME FLOAT NOT NULL,"
 		" TOTAL_CORRECT_ANSWERS INT NOT NULL,"
 		" TOTAL_ANSWERS INT NOT NULL,"
 		" TOTAL_GAMES INT NOT NULL); ";
@@ -285,14 +285,178 @@ std::list<Question> SqliteDatabase::getQuestion(int num)
 
 float SqliteDatabase::getPlayerAverageAnswerTime(string username)
 {
-	
-}
-int getNumOfCorrectAnswers(string username);
-int getNumOfTotalAnswers(string username);
-int getNumOfPlayerGames(string username);
-int getPlayerScore(string username);
-std::vector<string> getHighScores();
+	vector<Statistics> stats;
 
+	getStatistics(&stats, username);
+
+	if (stats.size() == 1)
+	{
+		return stats[0].avgAnswerTime;
+	}
+
+	throw std::exception("2 usernames found. ERORR ?? HOW??? WTF????? NOT SUPPOSED TO HAPPEND");
+
+}
+int SqliteDatabase::getNumOfCorrectAnswers(string username)
+{
+	vector<Statistics> stats;
+
+	getStatistics(&stats, username);
+
+	if (stats.size() == 1)
+	{
+		return stats[0].numOfCorrectAnswers;
+	}
+
+	throw std::exception("2 usernames found. ERORR ?? HOW??? WTF????? NOT SUPPOSED TO HAPPEND");
+
+}
+
+
+int SqliteDatabase::getNumOfTotalAnswers(string username)
+{
+	vector<Statistics> stats;
+
+	getStatistics(&stats, username);
+
+	if (stats.size() == 1)
+	{
+		return stats[0].numOfTotalAnswers;
+	}
+
+	throw std::exception("2 usernames found. ERORR ?? HOW??? WTF????? NOT SUPPOSED TO HAPPEND");
+}
+
+
+int SqliteDatabase::getNumOfPlayerGames(string username)
+{
+	vector<Statistics> stats;
+
+	getStatistics(&stats, username);
+
+	if (stats.size() == 1)
+	{
+		return stats[0].numOfPlayerGames;
+	}
+
+	throw std::exception("2 usernames found. ERORR ?? HOW??? WTF????? NOT SUPPOSED TO HAPPEND");
+}
+
+
+float SqliteDatabase::getPlayerScore(string username)
+{
+	vector<Statistics> stats;
+
+	getStatistics(&stats, username);
+
+	if (stats.size() == 1)
+	{
+		return stats[0].playerScore;
+	}
+
+	throw std::exception("2 usernames found. ERORR ?? HOW??? WTF????? NOT SUPPOSED TO HAPPEND");
+}
+
+std::vector<Statistics> SqliteDatabase::getHighScores()
+{
+	vector<Statistics> stats;
+
+	getStatistics(&stats);
+
+	std::sort(stats.begin(), stats.end(), [](Statistics a, Statistics b) { return a.playerScore > b.playerScore; });
+
+	return vector<Statistics>(stats.begin(), stats.begin() + 5);
+}
+
+Statistics SqliteDatabase::getStats(string username)
+{
+	vector<Statistics> stats;
+
+	getStatistics(&stats, username);
+
+	if (stats.size() == 1)
+	{
+		return stats[0];
+	}
+
+	throw std::exception("2 usernames found. ERORR ?? HOW??? WTF????? NOT SUPPOSED TO HAPPEND");
+}
+
+void SqliteDatabase::getStatistics(std::vector<Statistics>* usersList, string username)
+{
+	if (username == "")
+	{
+		sqlRunQuery("SELECT * FROM STATISTICS", callbackUsers, (void*)usersList);
+	}
+	else
+	{
+		sqlRunQuery("SELECT * FROM STATISTICS WHERE USERNAME='" + username + "'", callbackUsers, (void*)usersList);
+	}
+}
+
+/**
+ * \brief callback - for Questions
+ * \param data
+ * \param argc
+ * \param argv
+ * \param azColName
+ * \return
+ */
+int callbackStatistics(void* data, int argc, char** argv, char** azColName)
+{
+	// id name
+	string username, avgAnswerTime, totalCorrectAnswers, totalAnswers, totalGames;
+
+	if (data == nullptr)
+	{
+		throw std::exception("null data was given.");
+	}
+
+	vector<Statistics>* questionsList = (vector<Statistics>*)data;
+
+	for (int i = 0; i < argc; i++)
+	{
+		if (string(azColName[i]) == "USERNAME")
+		{
+			username = argv[i];
+		}
+		if (string(azColName[i]) == "AVG_ANSWER_TIME")
+		{
+			avgAnswerTime = argv[i];
+		}
+		if (string(azColName[i]) == "TOTAL_CORRECT_ANSWERS")
+		{
+			totalCorrectAnswers = argv[i];
+		}
+		if (string(azColName[i]) == "totalAnswers")
+		{
+			totalAnswers = argv[i];
+		}
+		if (string(azColName[i]) == "totalGames")
+		{
+			totalGames = argv[i];
+		}
+
+	}
+	Statistics temp;
+	temp.username = username;
+	temp.avgAnswerTime = stoi(avgAnswerTime);
+	temp.numOfCorrectAnswers = stoi(totalCorrectAnswers);
+	temp.numOfTotalAnswers = stoi(totalAnswers);
+	temp.numOfPlayerGames = stoi(totalGames);
+
+	if(temp.numOfCorrectAnswers == 0)
+	{
+		temp.playerScore = 0;
+	}
+	else
+	{
+		temp.playerScore = (temp.numOfCorrectAnswers / temp.numOfTotalAnswers) * 100.0;
+	}
+
+	questionsList->push_back(temp);
+	return 0;
+}
 
 /**
  * \brief callback - for Questions

@@ -9,8 +9,8 @@ public:
 
 	StatisticsManager(IDatabase* database);
 
-	std::vector<string> getHighScore();
-	std::vector<string> getUserStatistics(string username);
+	std::vector<Statistics> getHighScore();
+	Statistics getUserStatistics(string username);
 
 private:
 	IDatabase* m_database;
