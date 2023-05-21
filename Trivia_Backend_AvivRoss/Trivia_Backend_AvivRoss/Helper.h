@@ -3,6 +3,15 @@
 #include <string>
 #include "Consts.h"
 
+struct Statistics
+{
+	std::string username;
+	float avgAnswerTime;
+	int numOfCorrectAnswers;
+	int numOfTotalAnswers;
+	int numOfPlayerGames;
+	float playerScore;
+} typedef Statistics;
 
 class Helper
 {

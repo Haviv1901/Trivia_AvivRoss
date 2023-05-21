@@ -2,6 +2,8 @@
 #include <string>
 #include <list>
 
+#include "Helper.h"
+
 using std::string;
 
 struct Question
@@ -10,15 +12,7 @@ struct Question
 	std::vector<string> answers; // first answer is the correct one
 };
 
-struct Statistics
-{
-	string username;
-	float avgAnswerTime;
-	int numOfCorrectAnswers;
-	int numOfTotalAnswers;
-	int numOfPlayerGames;
-	float playerScore;
-} typedef Statistics;
+
 
 class IDatabase
 {

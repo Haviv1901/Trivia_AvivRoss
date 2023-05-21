@@ -2,6 +2,7 @@
 #include <string>
 #include <vector>
 #include "Consts.h"
+#include "helper.h"
 
 using std::string;
 using std::vector;
@@ -21,6 +22,8 @@ struct SignupResponse
 	unsigned int status;
 } typedef SignupResponse;
 
+
+//v2
 struct LogoutResponse
 {
 	unsigned int status;
@@ -29,17 +32,32 @@ struct LogoutResponse
 struct GetRoomsResponse
 {
 	unsigned int status;
-	//vector<RoomData> rooms
+	vector<RoomData> rooms;
 } typedef GetRoomsResponse;
+
+struct GetPlayersInRoomResponse
+{
+	vector<string> players;
+} typedef GetPlayersInRoomResponse;
 
 struct GetHighScoreResponse
 {
 	unsigned int status;
-	std::vector<std::string> statistics;
+	vector<Statistics> statistics;
 } typedef GetHighScoreResponse;
 
 struct GetPersonalStatsResponse
 {
 	unsigned int status;
-	vector<string> statistics;
+	Statistics statistics;
 } typedef GetPersonalStatsResponse;
+
+struct JoinRoomResponse
+{
+	unsigned int status;
+} typedef JoinRoomResponse;
+
+struct CreateRoomResponse
+{
+	unsigned int status;
+} typedef CreateRoomResponse;
