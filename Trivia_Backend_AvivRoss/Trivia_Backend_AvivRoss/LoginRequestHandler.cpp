@@ -77,7 +77,7 @@ RequestResult LoginRequestHandler::login(RequestInfo req)
 	}
 	Helper::debugPrint("login succesfully.");
 	LoginResponse loginRes;
-	loginRes.status = MENU;
+	loginRes.status = 1;
 	res.respones = JsonResponsePacketSerializer::serializeResponse(loginRes);
 	res.newHandler = m_handlerFactory.createMenuRequestHandler();
 	return res;
@@ -98,7 +98,7 @@ RequestResult LoginRequestHandler::signup(RequestInfo req)
 		throw std::exception("Error signing in.");
 	}
 	SignupResponse signupRes;
-	signupRes.status = MENU;
+	signupRes.status = 1;
 	res.respones = JsonResponsePacketSerializer::serializeResponse(signupRes);
 	res.newHandler = m_handlerFactory.createMenuRequestHandler();
 	return res;

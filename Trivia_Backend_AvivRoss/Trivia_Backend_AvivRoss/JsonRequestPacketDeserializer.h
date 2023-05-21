@@ -14,8 +14,8 @@ public:
 	static SignupRequest deserializeSignupRequest(Buffer buffer);
 
 	//v2
-	GetPlayersInRoomRequest deserializeGetPlayersRequest(Buffer buffer);
-	JoinRoomRequest deserializeJoinRoomRequest(Buffer buffer);
-	CreateRoomRequest deserializeCreateRoomRequest(Buffer buffer);
+	static GetPlayersInRoomRequest deserializeGetPlayersRequest(Buffer buffer);
+	static JoinRoomRequest deserializeJoinRoomRequest(Buffer buffer);
+	static CreateRoomRequest deserializeCreateRoomRequest(Buffer buffer);
 };
 

@@ -11,17 +11,18 @@ Buffer JsonResponsePacketSerializer::serializeResponse(ErrorResponse response)
 	Buffer data = Helper::stringToBuffer("{message:\"" + Helper::bufferToString(response.messagge) + "\"}");
 	return createResponse(ERROR_CODE, data);
 }
+
 Buffer JsonResponsePacketSerializer::serializeResponse(LoginResponse response)
 {
 	Buffer data = Helper::stringToBuffer("{status: " + std::to_string(response.status) + "}");
 	return createResponse(LOGIN_CODE, data);
 }
+
 Buffer JsonResponsePacketSerializer::serializeResponse(SignupResponse response)
 {
 	Buffer data = Helper::stringToBuffer("{status: " + std::to_string(response.status) + "}");
 	return createResponse(SIGN_UP_CODE, data);
 }
-
 
 Buffer JsonResponsePacketSerializer::serializeResponse(LogoutResponse response)
 {
@@ -56,16 +57,19 @@ Buffer JsonResponsePacketSerializer::serializeResponse(GetPlayersInRoomResponse 
 
 	return createResponse(GET_PLAYERS_IN_ROOM_CODE, data);
 }
+
 Buffer JsonResponsePacketSerializer::serializeResponse(JoinRoomResponse response)
 {
 	Buffer data = Helper::stringToBuffer("{status: " + std::to_string(response.status) + "}");
 	return createResponse(JOIN_ROOM_CODE, data);
 }
+
 Buffer JsonResponsePacketSerializer::serializeResponse(CreateRoomResponse response)
 {
 	Buffer data = Helper::stringToBuffer("{status: " + std::to_string(response.status) + "}");
 	return createResponse(CREATE_ROOM_CODE, data);
 }
+
 Buffer JsonResponsePacketSerializer::serializeResponse(GetHighScoreResponse response)
 {
 	string strData = "{HighScores: {";
@@ -79,6 +83,7 @@ Buffer JsonResponsePacketSerializer::serializeResponse(GetHighScoreResponse resp
 	Buffer data = Helper::stringToBuffer(strData);
 	return createResponse(GET_HIGH_SCORE_CODE, data);
 }
+
 Buffer JsonResponsePacketSerializer::serializeResponse(GetPersonalStatsResponse response)
 {
 	// players full statistics, for example: {Average Answer Time: 5, Correct Answers: 5, Total Answers: 10, Total Games: 2, Total Score: 10}
@@ -97,7 +102,6 @@ Buffer JsonResponsePacketSerializer::serializeResponse(GetPersonalStatsResponse 
 	Buffer data = Helper::stringToBuffer(strData);
 	return createResponse(GET_PERSONAL_STATS_CODE, data);
 }
-
 
 /**
  * \brief function will generate a response packet with the given code and data, adding headers to the data.
