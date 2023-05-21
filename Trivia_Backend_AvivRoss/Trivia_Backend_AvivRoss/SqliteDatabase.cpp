@@ -206,10 +206,17 @@ void SqliteDatabase::createTables() const
 	sqlRunQuery(sqlStatement);
 
 	sqlStatement = "CREATE TABLE QUESTIONS (QUESTION TEXT PRIMARY KEY NOT NULL," 
-		" CURR_ANSWER TEXT NOT NULL,"
+		" CORR_ANSWER TEXT NOT NULL,"
 		" WRONG_ANSWER1 TEXT NOT NULL,"
 		" WRONG_ANSWER2 TEXT NOT NULL,"
 		" WRONG_ANSWER3 TEXT NOT NULL); ";
+	sqlRunQuery(sqlStatement);
+
+	sqlStatement = "CREATE TABLE STATISTICS (USERNAME TEXT PRIMARY KEY NOT NULL,"
+		" AVG_ANSWER_TIME INT NOT NULL,"
+		" TOTAL_CORRECT_ANSWERS INT NOT NULL,"
+		" TOTAL_ANSWERS INT NOT NULL,"
+		" TOTAL_GAMES INT NOT NULL); ";
 	sqlRunQuery(sqlStatement);
 
 	try // get questions from server
