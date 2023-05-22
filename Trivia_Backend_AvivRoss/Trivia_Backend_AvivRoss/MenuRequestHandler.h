@@ -1,11 +1,12 @@
 #pragma once
 #include "IRequestHandler.h"
 #include "LoggedUser.h"
-#include "RequestHandlerFactory.h"
 #include "RoomManager.h"
 #include "StatisticsManager.h"
+#include "LoginRequestHandler.h"
 
 class RequestHandlerFactory;
+
 
 class MenuRequestHandler : public IRequestHandler
 {
@@ -26,7 +27,7 @@ public:
 	RequestResult createRoom(RequestInfo req);
 
 	// not in uml
-	RequestResult LoginRequestHandler::error(RequestInfo req, string errorMessage);
+	RequestResult error(RequestInfo req, string errorMessage);
 
 private:
 	LoggedUser m_user;

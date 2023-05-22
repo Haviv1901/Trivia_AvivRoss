@@ -292,7 +292,7 @@ namespace http
                 }
             };
 
-            inline const ErrorCategory errorCategory;
+            const ErrorCategory errorCategory;
 
             class Api final
             {

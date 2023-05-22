@@ -22,7 +22,14 @@ void Room::addUser(LoggedUser user)
  */
 void Room::removeUser(LoggedUser user)
 {
-	m_users.erase(std::remove(m_users.begin(), m_users.end(), user), m_users.end());
+	for (auto it = m_users.begin(); it != m_users.end(); ++it)
+	{
+		if (it->getUsername() == user.getUsername())
+		{
+			m_users.erase(it);
+			break;
+		}
+	}
 }
 
 /**

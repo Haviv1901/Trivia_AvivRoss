@@ -5,7 +5,7 @@
 #include "RoomManager.h"
 
 class LoginRequestHandler;
-class MenueRequestHandler;
+class MenuRequestHandler;
 
 class RequestHandlerFactory
 {
@@ -16,7 +16,7 @@ public:
 	MenuRequestHandler* createMenuRequestHandler(LoggedUser user);
 	LoginManager& getLoginManager();
 
-	//StatisticsManager& getStaticsManager() const;
+	StatisticsManager& getStaticsManager();
 	RoomManager& getRoomManager();
 
 private:

@@ -3,6 +3,7 @@
 #include <vector>
 #include "Consts.h"
 #include "helper.h"
+#include "Room.h"
 
 using std::string;
 using std::vector;

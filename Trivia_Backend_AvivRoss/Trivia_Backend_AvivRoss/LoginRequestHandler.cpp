@@ -79,14 +79,14 @@ RequestResult LoginRequestHandler::login(RequestInfo req)
 	LoginResponse loginRes;
 	loginRes.status = 1;
 	res.respones = JsonResponsePacketSerializer::serializeResponse(loginRes);
-	res.newHandler = m_handlerFactory.createMenuRequestHandler();
+	res.newHandler = m_handlerFactory.createMenuRequestHandler(LoggedUser{ loginReq.username });
 	return res;
 }
 
 /**
  * \brief sign in user
- * \param req 
- * \return 
+ * \param req
+ * \return
  */
 RequestResult LoginRequestHandler::signup(RequestInfo req)
 {
@@ -100,13 +100,13 @@ RequestResult LoginRequestHandler::signup(RequestInfo req)
 	SignupResponse signupRes;
 	signupRes.status = 1;
 	res.respones = JsonResponsePacketSerializer::serializeResponse(signupRes);
-	res.newHandler = m_handlerFactory.createMenuRequestHandler();
+	res.newHandler = m_handlerFactory.createMenuRequestHandler(LoggedUser{ signupReq.username });
 	return res;
 }
 
 /**
  * \brief error accored, return to communicator an error result.
- * \param req 
+ * \param req
  * \param errorMessage 
  * \return 
  */

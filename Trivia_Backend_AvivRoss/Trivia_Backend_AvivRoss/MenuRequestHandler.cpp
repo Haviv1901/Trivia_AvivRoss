@@ -34,7 +34,7 @@ RequestResult MenuRequestHandler::handleRequest(RequestInfo req)
 		switch (req.id)
 		{
 		case(SIGNOUT_CODE):
-			res = signout(req);
+			//res = signout(req);
 			break;
 		}
 
@@ -54,13 +54,6 @@ RequestResult MenuRequestHandler::handleRequest(RequestInfo req)
 
 
 
-RequestResult signout(RequestInfo req);
-RequestResult getRooms(RequestInfo req);
-RequestResult getPlayersInRoom(RequestInfo req);
-RequestResult getPersonalStats(RequestInfo req);
-RequestResult getHighScore(RequestInfo req);
-RequestResult joinRoom(RequestInfo req);
-RequestResult createRoom(RequestInfo req);
 
 /**
  * \brief error accored, return to communicator an error result.
@@ -68,7 +61,7 @@ RequestResult createRoom(RequestInfo req);
  * \param errorMessage
  * \return
  */
-RequestResult LoginRequestHandler::error(RequestInfo req, string errorMessage)
+RequestResult MenuRequestHandler::error(RequestInfo req, string errorMessage)
 {
 	RequestResult res;
 	ErrorResponse errorRes;

@@ -18,6 +18,7 @@ LoginRequest JsonRequestPacketDeserializer::deserializeLoginRequest(Buffer buffe
 	return res;
 
 }
+
 SignupRequest JsonRequestPacketDeserializer::deserializeSignupRequest(Buffer buffer)
 {
 	SignupRequest res;
@@ -30,8 +31,6 @@ SignupRequest JsonRequestPacketDeserializer::deserializeSignupRequest(Buffer buf
 	return res;
 
 }
-
-
 
 GetPlayersInRoomRequest JsonRequestPacketDeserializer::deserializeGetPlayersRequest(Buffer buffer)
 {
