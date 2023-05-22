@@ -27,6 +27,7 @@ string getQuestionsFromWeb();
 
 int callbackUsers(void* data, int argc, char** argv, char** azColName);
 int callbackQuestions(void* data, int argc, char** argv, char** azColName);
+int callbackStatistics(void* data, int argc, char** argv, char** azColName);
 
 SqliteDatabase::SqliteDatabase()
 {
@@ -407,9 +408,19 @@ Statistics SqliteDatabase::getStats(string username)
 
 	getStatistics(&stats, username);
 
+	
+
 	if (stats.size() == 1)
 	{
-		return stats[0];
+		Statistics s;
+		s.avgAnswerTime = stats[0].avgAnswerTime;
+		s.numOfCorrectAnswers = stats[0].numOfCorrectAnswers;
+		s.numOfPlayerGames = stats[0].numOfPlayerGames;
+		s.numOfTotalAnswers = stats[0].numOfTotalAnswers;
+		s.playerScore = stats[0].playerScore;
+		s.username = username;
+
+		return s;
 	}
 
 	throw std::exception("2 usernames found. ERORR ?? HOW??? WTF????? NOT SUPPOSED TO HAPPEND");
@@ -419,11 +430,11 @@ void SqliteDatabase::getStatistics(std::vector<Statistics>* usersList, string us
 {
 	if (username == "")
 	{
-		sqlRunQuery("SELECT * FROM STATISTICS", callbackUsers, (void*)usersList);
+		sqlRunQuery("SELECT * FROM STATISTICS", callbackStatistics, (void*)usersList);
 	}
 	else
 	{
-		sqlRunQuery("SELECT * FROM STATISTICS WHERE USERNAME='" + username + "'", callbackUsers, (void*)usersList);
+		sqlRunQuery("SELECT * FROM STATISTICS WHERE USERNAME='" + username + "'", callbackStatistics, (void*)usersList);
 	}
 }
 
@@ -461,11 +472,11 @@ int callbackStatistics(void* data, int argc, char** argv, char** azColName)
 		{
 			totalCorrectAnswers = argv[i];
 		}
-		if (string(azColName[i]) == "totalAnswers")
+		if (string(azColName[i]) == "TOTAL_ANSWERS")
 		{
 			totalAnswers = argv[i];
 		}
-		if (string(azColName[i]) == "totalGames")
+		if (string(azColName[i]) == "TOTAL_GAMES")
 		{
 			totalGames = argv[i];
 		}
@@ -473,10 +484,10 @@ int callbackStatistics(void* data, int argc, char** argv, char** azColName)
 	}
 	Statistics temp;
 	temp.username = username;
-	temp.avgAnswerTime = stoi(avgAnswerTime);
-	temp.numOfCorrectAnswers = stoi(totalCorrectAnswers);
-	temp.numOfTotalAnswers = stoi(totalAnswers);
-	temp.numOfPlayerGames = stoi(totalGames);
+	temp.avgAnswerTime = std::stof(avgAnswerTime);
+	temp.numOfCorrectAnswers = std::stoi(totalCorrectAnswers);
+	temp.numOfTotalAnswers = std::stoi(totalAnswers);
+	temp.numOfPlayerGames = std::stoi(totalGames);
 
 	if(temp.numOfCorrectAnswers == 0)
 	{
@@ -484,7 +495,7 @@ int callbackStatistics(void* data, int argc, char** argv, char** azColName)
 	}
 	else
 	{
-		temp.playerScore = (temp.numOfCorrectAnswers / temp.numOfTotalAnswers) * 100.0;
+		temp.playerScore = (float)(temp.numOfCorrectAnswers / temp.numOfTotalAnswers) * (float)100;
 	}
 
 	questionsList->push_back(temp);
@@ -508,12 +519,6 @@ int callbackQuestions(void* data, int argc, char** argv, char** azColName)
 	{
 		throw std::exception("null data was given.");
 	}
-
-	//sqlStatement = "CREATE TABLE QUESTIONS (QUESTION TEXT PRIMARY KEY NOT NULL,"
-	//	" CURR_ANSWER TEXT NOT NULL,"
-	//	" WRONG_ANSWER1 TEXT NOT NULL,"
-	//	" WRONG_ANSWER2 TEXT NOT NULL,"
-	//	" WRONG_ANSWER3 TEXT NOT NULL); ";
 
 	list<Question>* questionsList = (list<Question>*)data;
 

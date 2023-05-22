@@ -7,10 +7,9 @@
 
 unsigned int MenuRequestHandler::m_idGenerator = 1;
 
-MenuRequestHandler::MenuRequestHandler(LoggedUser user, RoomManager roomManager, StatisticsManager statsManager, RequestHandlerFactory reqHandlerFac)
-	: m_handlerFactory(reqHandlerFac), m_user(user), m_roomManager(roomManager), m_statisticsManager(statsManager)
+MenuRequestHandler::MenuRequestHandler(LoggedUser user, RoomManager& roomManager, StatisticsManager& statsManager, RequestHandlerFactory& reqHandlerFac)
+	: m_user(user), m_roomManager(roomManager), m_statisticsManager(statsManager), m_handlerFactory(reqHandlerFac)
 {
-	
 }
 
 bool MenuRequestHandler::isRequestRelevant(RequestInfo req)
@@ -114,7 +113,7 @@ RequestResult MenuRequestHandler::getPlayersInRoom(RequestInfo req)
 	GetPlayersInRoomRequest request = JsonRequestPacketDeserializer::deserializeGetPlayersRequest(req.buffer);
 	GetPlayersInRoomResponse response;
 
-	response.players = m_handlerFactory.getRoomManager().getRoom(request.roomId).getAllUsers();
+	response.players = m_roomManager.getRoom(request.roomId).getAllUsers();
 
 	res.respones = JsonResponsePacketSerializer::serializeResponse(response);
 	res.newHandler = m_handlerFactory.createMenuRequestHandler(m_user); 
@@ -125,7 +124,7 @@ RequestResult MenuRequestHandler::getPersonalStats(RequestInfo req)
 	RequestResult res;
 	GetPersonalStatsResponse response;
 
-	response.statistics = m_handlerFactory.getStatisticsManager().getUserStatistics(m_user.getUsername());
+	response.statistics = m_statisticsManager.getUserStatistics(m_user.getUsername());
 	response.status = 1;
 
 	res.respones = JsonResponsePacketSerializer::serializeResponse(response);
@@ -162,7 +161,7 @@ RequestResult MenuRequestHandler::createRoom(RequestInfo req)
 	CreateRoomRequest request = JsonRequestPacketDeserializer::deserializeCreateRoomRequest(req.buffer);
 	CreateRoomResponse response;
 
-	m_handlerFactory.getRoomManager().createRoom(m_user, RoomData{ ++m_idGenerator , request.roomName, request.maxUsers, request.questionCount, request.answerTimeout, 1 });
+	m_roomManager.createRoom(m_user, RoomData{ ++m_idGenerator , request.roomName, request.maxUsers, request.questionCount, request.answerTimeout, 1 });
 
 	response.status = 1;
 	res.respones = JsonResponsePacketSerializer::serializeResponse(response);

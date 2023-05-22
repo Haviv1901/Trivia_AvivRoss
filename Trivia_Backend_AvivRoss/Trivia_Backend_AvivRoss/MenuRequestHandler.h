@@ -13,7 +13,7 @@ class MenuRequestHandler : public IRequestHandler
 public:
 
 
-	MenuRequestHandler(LoggedUser user, RoomManager roomManager, StatisticsManager statsManager, RequestHandlerFactory reqHandlerFac);
+	MenuRequestHandler(LoggedUser user, RoomManager& roomManager, StatisticsManager& statsManager, RequestHandlerFactory& reqHandlerFac);
 
 	bool isRequestRelevant(RequestInfo req) override;
 	RequestResult handleRequest(RequestInfo req) override;
