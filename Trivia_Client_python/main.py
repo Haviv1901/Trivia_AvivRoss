@@ -1,5 +1,6 @@
 import socket
 import json
+import time
 
 # consts
 IP = "127.0.0.1"
@@ -25,31 +26,46 @@ def main():
     #if not sign_in("notAvivRoss", "S3cr3t@s", "ross@gmail.com", sock):
     #    print("could not sign in")
     login("notAvivRoss", "S3cr3t@s", sock)
-    get_personal_stats(sock)
+    #create_room(5, 5, 5, "roomName", sock)
+    join_room(2, sock)
+    while(True):
+        print("Ideal in socket.")
+        time.sleep(5)
+
     sock.close()
 
+
+def join_room(room_id, soc):
+    data = {
+        "roomId" : room_id
+    }
+    send_message(JOIN_ROOM_CODE, data, soc)
+    code, len, x = parse_data(soc)
+    print(x)
+
+
+def create_room(time_out, max_users, question_count, name, soc):
+    data = {
+        "Answer Time Out" : time_out,
+        "Max Users" : max_users,
+        "Question Count" : question_count,
+        "Room Name" : name
+    }
+    send_message(CREATE_ROOM_CODE, data, soc)
+    code, len, x = parse_data(soc)
+    print(x)
+    return x["Room Id"]
 
 def get_personal_stats(soc):
     data = {
     }
     send_message(GET_PERSONAL_STATS_CODE, data, soc)
-    code = int(soc.recv(1))
-    len = int(soc.recv(4))
-    x = soc.recv(4096).decode()
-    x = json.loads(x)
+    code, len, x = parse_data(soc)
     print(x)
     if x["status"] == 1:
         return True
     return False
 
-
-def send_message(code, data, soc):
-    bytes_code = int(code).to_bytes(1, 'big')
-    bytes_data = bytes(json.dumps(data).encode())
-    length = len(bytes_data)
-    encoded_length = length.to_bytes(4, 'big')
-    full_msg_bytes = bytes_code + encoded_length + bytes_data
-    send_msg_to_server(soc, full_msg_bytes)
 
 
 def sign_in(username, password, email, soc):
@@ -59,10 +75,7 @@ def sign_in(username, password, email, soc):
         "email": email
     }
     send_message(SIGN_UP_CODE, data, soc)
-    code = int(soc.recv(1))
-    len = int(soc.recv(4))
-    x = soc.recv(4096).decode()
-    x = json.loads(x)
+    code, len, x = parse_data(soc)
     print(x)
     if x["status"] == 1:
         return True
@@ -75,14 +88,19 @@ def login(username, password, soc):
         "password": password
     }
     send_message(LOGIN_CODE, login, soc)
-    code = int.from_bytes(soc.recv(1), 'big')
-    len = int.from_bytes(soc.recv(4), 'big')
-    x = soc.recv(4096).decode()
-    x = json.loads(x)
+    code, len, x = parse_data(soc)
     print(x)
     if x["status"] == 1:
         return True
     return False
+
+
+def parse_data(soc):
+    code = int.from_bytes(soc.recv(1), 'big')
+    len = int.from_bytes(soc.recv(4), 'big')
+    x = soc.recv(4096).decode()
+    x = json.loads(x)
+    return code, len, x
 
 
 def connect_to_server():
@@ -114,8 +132,6 @@ def send_msg_to_server(client_soc, data):
             client_soc.send(data)
     except Exception:
         print("Could not sent msg to server.")
-    else:
-        print("message sent successfully.")
 
 def recv_message(soc):
     """
@@ -131,6 +147,16 @@ def recv_message(soc):
         return ""
     else:
         return recv
+
+
+def send_message(code, data, soc):
+    print("sending: " + str(data))
+    bytes_code = int(code).to_bytes(1, 'big')
+    bytes_data = bytes(json.dumps(data).encode())
+    length = len(bytes_data)
+    encoded_length = length.to_bytes(4, 'big')
+    full_msg_bytes = bytes_code + encoded_length + bytes_data
+    send_msg_to_server(soc, full_msg_bytes)
 
 if __name__ == '__main__':
     main()

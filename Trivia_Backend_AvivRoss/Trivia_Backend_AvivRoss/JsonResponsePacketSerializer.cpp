@@ -66,7 +66,7 @@ Buffer JsonResponsePacketSerializer::serializeResponse(JoinRoomResponse response
 
 Buffer JsonResponsePacketSerializer::serializeResponse(CreateRoomResponse response)
 {
-	Buffer data = Helper::stringToBuffer("{\"status\": " + std::to_string(response.status) + "}");
+	Buffer data = Helper::stringToBuffer("{\"Room Id\": " + std::to_string(response.roomId) + "}");
 	return createResponse(CREATE_ROOM_CODE, data);
 }
 
