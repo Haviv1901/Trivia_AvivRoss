@@ -23,16 +23,48 @@ def main():
 
     sock = connect_to_server()
 
-    #if not sign_in("notAvivRoss", "S3cr3t@s", "ross@gmail.com", sock):
-    #    print("could not sign in")
     login("notAvivRoss", "S3cr3t@s", sock)
-    #create_room(5, 5, 5, "roomName", sock)
-    join_room(2, sock)
+    get_high_score(sock)
+
+    #sign_in("notAvivRoss", "S3cr3t@s", "ross@gmail.com", sock)
+    # create_room(5, 5, 5, "nameroom1", sock)
+    #login("Lidan", "Ror1234$", sock)
+    #join_room(2, sock)
+    #get_players_in_room(2, sock)
+
+    #sign_out(sock)
+
+    
+    #sign_in("Lidan", "Ror1234$", "lidan@gmail.com")
+
     while(True):
         print("Ideal in socket.")
         time.sleep(5)
 
     sock.close()
+
+
+def get_high_score(soc):
+    data = {}
+    send_message(GET_HIGH_SCORE_CODE, data, soc)
+    code, len, x = parse_data(soc)
+    print(x)
+
+
+def get_players_in_room(room_id, soc):
+    data = {
+        "roomId" : room_id
+    }
+    send_message(GET_PLAYERS_INROOM_CODE, data, soc)
+    code, len, x = parse_data(soc)
+    print(x)
+
+
+def sign_out(soc):
+    data = {}
+    send_message(SIGNOUT_CODE, data, soc)
+    code, len, x = parse_data(soc)
+    print(x)
 
 
 def join_room(room_id, soc):

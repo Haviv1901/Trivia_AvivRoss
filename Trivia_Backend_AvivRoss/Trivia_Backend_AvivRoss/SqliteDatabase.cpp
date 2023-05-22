@@ -393,13 +393,23 @@ float SqliteDatabase::getPlayerScore(string username)
 
 std::vector<Statistics> SqliteDatabase::getHighScores()
 {
+	int i = 0;
+	int max = 5;
 	vector<Statistics> stats;
 
 	getStatistics(&stats);
 
 	std::sort(stats.begin(), stats.end(), [](Statistics a, Statistics b) { return a.playerScore > b.playerScore; });
 
-	return vector<Statistics>(stats.begin(), stats.begin() + 5);
+	vector<Statistics> res;
+	stats.size() > 5 ? max = 5 : max = stats.size();
+
+	for (i = 0; i < max; i++)
+	{
+		res.push_back(stats[i]);
+	}
+
+	return res;
 }
 
 Statistics SqliteDatabase::getStats(string username)

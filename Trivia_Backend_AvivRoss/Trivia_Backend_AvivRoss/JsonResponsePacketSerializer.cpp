@@ -50,8 +50,10 @@ Buffer JsonResponsePacketSerializer::serializeResponse(GetPlayersInRoomResponse 
 	// list of players, like such : {PlayersInRoom: “user1, user2, ... userN”}
 	for (int i = 0; i < response.players.size(); i++)
 	{
-		strData += response.players[i] + ",";
+		strData += response.players[i] + ", ";
 	}
+	strData.pop_back();
+	strData.pop_back();
 	strData += "\"}";
 	Buffer data = Helper::stringToBuffer(strData);
 
@@ -73,13 +75,15 @@ Buffer JsonResponsePacketSerializer::serializeResponse(CreateRoomResponse respon
 Buffer JsonResponsePacketSerializer::serializeResponse(GetHighScoreResponse response)
 {
 	string strData = "{\"HighScores\": {";
-	// top 5 high scores, usernames and score. {HighScores: {user1: 5, user2: 4, user3: 3, user4: 2, user5: 1} }
-	for (int i = 0; i < 5; i++)
+	int max = response.statistics.size() > 5 ? max = 5 : max = response.statistics.size();
+	for (int i = 0; i < max; i++)
 	{
 		strData += response.statistics[i].username + ": ";
 		strData += to_string(response.statistics[i].playerScore) + ", ";
 	}
-	strData += "}}";
+	strData.pop_back();
+	strData.pop_back();
+	strData += "}";
 	Buffer data = Helper::stringToBuffer(strData);
 	return createResponse(GET_HIGH_SCORE_CODE, data);
 }
