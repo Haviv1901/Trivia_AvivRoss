@@ -8,31 +8,31 @@ Buffer createResponse(unsigned char code, Buffer data);
 
 Buffer JsonResponsePacketSerializer::serializeResponse(ErrorResponse response)
 {
-	Buffer data = Helper::stringToBuffer("{message:\"" + Helper::bufferToString(response.messagge) + "\"}");
+	Buffer data = Helper::stringToBuffer("{\"message\":\"" + Helper::bufferToString(response.messagge) + "\"}");
 	return createResponse(ERROR_CODE, data);
 }
 
 Buffer JsonResponsePacketSerializer::serializeResponse(LoginResponse response)
 {
-	Buffer data = Helper::stringToBuffer("{status: " + std::to_string(response.status) + "}");
+	Buffer data = Helper::stringToBuffer("{\"status\": " + std::to_string(response.status) + "}");
 	return createResponse(LOGIN_CODE, data);
 }
 
 Buffer JsonResponsePacketSerializer::serializeResponse(SignupResponse response)
 {
-	Buffer data = Helper::stringToBuffer("{status: " + std::to_string(response.status) + "}");
+	Buffer data = Helper::stringToBuffer("{\"status\": " + std::to_string(response.status) + "}");
 	return createResponse(SIGN_UP_CODE, data);
 }
 
 Buffer JsonResponsePacketSerializer::serializeResponse(LogoutResponse response)
 {
-	Buffer data = Helper::stringToBuffer("{status: " + std::to_string(response.status) + "}");
+	Buffer data = Helper::stringToBuffer("{\"status\": " + std::to_string(response.status) + "}");
 	return createResponse(SIGNOUT_CODE, data);
 }
 
 Buffer JsonResponsePacketSerializer::serializeResponse(GetRoomsResponse response)
 {
-	string strData = "{Rooms:\"";
+	string strData = "{\"Rooms\":\"";
 	// list of rooms, like such : {Rooms: “room1, room2, ... roomN”}
 	for (int i = 0; i < response.rooms.size(); i++) 
 	{
@@ -46,7 +46,7 @@ Buffer JsonResponsePacketSerializer::serializeResponse(GetRoomsResponse response
 
 Buffer JsonResponsePacketSerializer::serializeResponse(GetPlayersInRoomResponse response)
 {
-	string strData = "{PlayersInRoom:\"";
+	string strData = "{\"PlayersInRoom\":\"";
 	// list of players, like such : {PlayersInRoom: “user1, user2, ... userN”}
 	for (int i = 0; i < response.players.size(); i++)
 	{
@@ -60,19 +60,19 @@ Buffer JsonResponsePacketSerializer::serializeResponse(GetPlayersInRoomResponse 
 
 Buffer JsonResponsePacketSerializer::serializeResponse(JoinRoomResponse response)
 {
-	Buffer data = Helper::stringToBuffer("{status: " + std::to_string(response.status) + "}");
+	Buffer data = Helper::stringToBuffer("{\"status\": " + std::to_string(response.status) + "}");
 	return createResponse(JOIN_ROOM_CODE, data);
 }
 
 Buffer JsonResponsePacketSerializer::serializeResponse(CreateRoomResponse response)
 {
-	Buffer data = Helper::stringToBuffer("{status: " + std::to_string(response.status) + "}");
+	Buffer data = Helper::stringToBuffer("{\"status\": " + std::to_string(response.status) + "}");
 	return createResponse(CREATE_ROOM_CODE, data);
 }
 
 Buffer JsonResponsePacketSerializer::serializeResponse(GetHighScoreResponse response)
 {
-	string strData = "{HighScores: {";
+	string strData = "{\"HighScores\": {";
 	// top 5 high scores, usernames and score. {HighScores: {user1: 5, user2: 4, user3: 3, user4: 2, user5: 1} }
 	for (int i = 0; i < 5; i++)
 	{
@@ -87,15 +87,15 @@ Buffer JsonResponsePacketSerializer::serializeResponse(GetHighScoreResponse resp
 Buffer JsonResponsePacketSerializer::serializeResponse(GetPersonalStatsResponse response)
 {
 	// players full statistics, for example: {Average Answer Time: 5, Correct Answers: 5, Total Answers: 10, Total Games: 2, Total Score: 10}
-	string strData = "{Average Answer Time:";
+	string strData = "{\"Average Answer Time\":";
 	strData += std::to_string(response.statistics.avgAnswerTime) + ",";
-	strData += "Correct Answers:";
+	strData += "\"Correct Answers\":";
 	strData += std::to_string(response.statistics.numOfCorrectAnswers) + ",";
-	strData += "Total Answers:";
+	strData += "\"Total Answers\":";
 	strData += std::to_string(response.statistics.numOfTotalAnswers) + ",";
-	strData += "Total Games:";
+	strData += "\"Total Games\":";
 	strData += std::to_string(response.statistics.numOfPlayerGames) + ",";
-	strData += "Total Score:";
+	strData += "\"Total Score\":";
 	strData += std::to_string(response.statistics.playerScore) + ",";
 	strData += "\"}";
 

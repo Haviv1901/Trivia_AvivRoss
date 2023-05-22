@@ -5,44 +5,84 @@ import json
 IP = "127.0.0.1"
 PORT = 6969
 
-LOGIN_CODE = 1
-SIGN_UP_CODE = 2
+LOGIN_CODE = 10
+SIGN_UP_CODE = 12
+MENU_CODE = 20
+SIGNOUT_CODE = 21
+GET_ROOMS_CODE = 22
+GET_PLAYERS_INROOM_CODE = 23
+GET_PERSONAL_STATS_CODE = 24
+GET_HIGH_SCORE_CODE = 25
+JOIN_ROOM_CODE = 26
+CREATE_ROOM_CODE = 27
 
 def main():
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     server_msg = ""
 
     sock = connect_to_server()
-    # example valid password:
-    # example invalid password:
+
+    #if not sign_in("notAvivRoss", "S3cr3t@s", "ross@gmail.com", sock):
+    #    print("could not sign in")
+    login("notAvivRoss", "S3cr3t@s", sock)
+    get_personal_stats(sock)
+    sock.close()
+
+
+def get_personal_stats(soc):
     data = {
-        "username": "notAvivRoss",
-        "password": "S3cr3t#K",
-        "email": "ross@gmail.com"
     }
-    login = {
-        "username": "aviv",
-        "password": "aviv123"
-    }
-    bytes_code = bytes(str(LOGIN_CODE).encode())
-    bytes_data = bytes(json.dumps(login).encode())
-    #bytes_code = bytes(str(SIGN_UP_CODE).encode())
-    #bytes_data = bytes(json.dumps(data).encode())
+    send_message(GET_PERSONAL_STATS_CODE, data, soc)
+    code = int(soc.recv(1))
+    len = int(soc.recv(4))
+    x = soc.recv(4096).decode()
+    x = json.loads(x)
+    print(x)
+    if x["status"] == 1:
+        return True
+    return False
+
+
+def send_message(code, data, soc):
+    bytes_code = int(code).to_bytes(1, 'big')
+    bytes_data = bytes(json.dumps(data).encode())
     length = len(bytes_data)
     encoded_length = length.to_bytes(4, 'big')
     full_msg_bytes = bytes_code + encoded_length + bytes_data
-    #my_bytes = bytearray(full_msg_bytes)
+    send_msg_to_server(soc, full_msg_bytes)
 
-    print("Connected to server.")
-    send_msg_to_server(sock, bytes_code)
-    send_msg_to_server(sock, encoded_length)
-    send_msg_to_server(sock, bytes_data)
-    #send_msg_to_server(sock, full_msg_bytes)
-    while(True):
-        print(sock.recv(4048).decode())
-        continue
-    sock.close()
 
+def sign_in(username, password, email, soc):
+    data = {
+        "username": username,
+        "password": password,
+        "email": email
+    }
+    send_message(SIGN_UP_CODE, data, soc)
+    code = int(soc.recv(1))
+    len = int(soc.recv(4))
+    x = soc.recv(4096).decode()
+    x = json.loads(x)
+    print(x)
+    if x["status"] == 1:
+        return True
+    return False
+
+
+def login(username, password, soc):
+    login = {
+        "username": username,
+        "password": password
+    }
+    send_message(LOGIN_CODE, login, soc)
+    code = int.from_bytes(soc.recv(1), 'big')
+    len = int.from_bytes(soc.recv(4), 'big')
+    x = soc.recv(4096).decode()
+    x = json.loads(x)
+    print(x)
+    if x["status"] == 1:
+        return True
+    return False
 
 
 def connect_to_server():

@@ -131,7 +131,8 @@ void Communicator::clientHandler(SOCKET client_socket)
 		while (true)
 		{
 			int i = 0;
-			int code, length;
+			int code;
+			int length;
 
 			code = Helper::getMessageTypeCode(client_socket);
 			length = Helper::getLengthFromSocket(client_socket);
@@ -146,16 +147,14 @@ void Communicator::clientHandler(SOCKET client_socket)
 
 			res = res.newHandler->handleRequest(msg);
 			Helper::sendData(client_socket, res.respones);
-			if (res.newHandler != nullptr)
-			{
-				delete res.newHandler;
-			}
+			
 
 		}
 	}
 	catch (const std::exception& e)
 	{
 		std::cout << "Exception was catch in function clientHandler. socket=" << client_socket << ", what=" << e.what() << std::endl;
+
 	}
 	closesocket(client_socket);
 }

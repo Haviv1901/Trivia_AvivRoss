@@ -24,7 +24,6 @@ bool MenuRequestHandler::isRequestRelevant(RequestInfo req)
 RequestResult MenuRequestHandler::handleRequest(RequestInfo req)
 {
 	RequestResult res;
-	res.newHandler = nullptr;
 
 	try
 	{
@@ -124,9 +123,10 @@ RequestResult MenuRequestHandler::getPlayersInRoom(RequestInfo req)
 RequestResult MenuRequestHandler::getPersonalStats(RequestInfo req)
 {
 	RequestResult res;
-	GetPlayersInRoomResponse response;
+	GetPersonalStatsResponse response;
 
-	response.players = m_handlerFactory.getRoomManager().getRoom(req.id).getAllUsers();
+	response.statistics = m_handlerFactory.getStatisticsManager().getUserStatistics(m_user.getUsername());
+	response.status = 1;
 
 	res.respones = JsonResponsePacketSerializer::serializeResponse(response);
 	res.newHandler = m_handlerFactory.createMenuRequestHandler(m_user);

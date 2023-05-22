@@ -38,7 +38,7 @@ RequestResult LoginRequestHandler::handleRequest(RequestInfo req)
 	{
 		if (!isRequestRelevant(req))
 		{
-			res = error(req, "Please send a Login code (1) or a Sign up code. (2)");
+			res = error(req, "Please send a Login code (10) or a Sign up code. (12)");
 		}
 		else if (req.id == LOGIN_CODE)
 		{

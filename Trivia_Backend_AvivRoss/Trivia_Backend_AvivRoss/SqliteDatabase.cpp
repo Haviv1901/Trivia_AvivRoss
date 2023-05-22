@@ -1,3 +1,4 @@
+#pragma comment(lib, "urlmon.lib")
 #include "SqliteDatabase.h"
 #include "sqlite3.h"
 #include <io.h>
@@ -6,8 +7,10 @@
 #include <ostream>
 #include "Consts.h"
 #include "Helper.h"
-#include "HTTPRequest.hpp"
 #include "nlohmann/json.hpp"
+#include <urlmon.h>
+#include <sstream>
+
 
 using std::vector;
 using std::string;
@@ -19,6 +22,8 @@ using std::to_string;
 void sqlRunQuery(string sqlStatement, sqlite3* db);
 void sqlRunQuery(string sqlStatement, sqlite3* db, int(*callback)(void*, int, char**, char**));
 void createTables(sqlite3* db);
+
+string getQuestionsFromWeb();
 
 int callbackUsers(void* data, int argc, char** argv, char** azColName);
 int callbackQuestions(void* data, int argc, char** argv, char** azColName);
@@ -121,16 +126,21 @@ int SqliteDatabase::doesPasswordMatch(string pass, string username)
  */
 int SqliteDatabase::addNewUser(string username, string pass, string email)
 {
-	doesUserExist(username);
+	if(doesUserExist(username))
+	{
+		return 0;
+	}
 	try
 	{
 		sqlRunQuery("INSERT INTO USERS VALUES('" + username + "', '" + email + "', '" + pass + "');");
+		sqlRunQuery("INSERT INTO STATISTICS VALUES('" + username + "', 0, 0, 0, 0); ");
 	}
 	catch(std::exception e)
 	{
 		return 0;
 	}
 	return 1;
+
 }
 
 
@@ -219,13 +229,11 @@ void SqliteDatabase::createTables() const
 		" TOTAL_GAMES INT NOT NULL); ";
 	sqlRunQuery(sqlStatement);
 
+	
+
 	try // get questions from server
 	{
-		http::Request request{ "https://opentdb.com/api.php?amount=10&category=15" };
-
-		// send a get request
-		const auto response = request.send("GET");
-		questions = std::string{ response.body.begin(), response.body.end() };
+		questions = getQuestionsFromWeb();
 	}
 	catch (const std::exception& e)
 	{
@@ -234,17 +242,41 @@ void SqliteDatabase::createTables() const
 
 	Helper::debugPrint("parsing to json: " + questions);
 	nlohmann::json jsonQuestions = nlohmann::json::parse(questions); // creating the json object
+	Helper::debugPrint("parsed successfully");
 
 	if (jsonQuestions["response_code"] != 0)
 	{
 		throw std::exception("could not get questions from server");
 	}
-
-	// iterate over the questions and insert them to the data base
-	for (auto it = jsonQuestions["results"][0].begin(); it != jsonQuestions["results"][0].end(); ++it)
+	
+	string question, correctAnswer, wrongAnswer1, wrongAnswer2, wrongAnswer3;
+	for (int i = 0; i < 10; i++)
 	{
-		sqlStatement = "INSERT INTO QUESTIONS VALUES('" + it.value()["question"].get<string>() + "', '" + it.value()["correct_answer"].get<string>() + "', '" + it.value()["incorrect_answers"][0].get<string>() + "', '" + it.value()["incorrect_answers"][1].get<string>() + "', '" + it.value()["incorrect_answers"][2].get<string>() + "'); ";
-		sqlRunQuery(sqlStatement); 
+		for (auto it = jsonQuestions["results"][i].begin(); it != jsonQuestions["results"][i].end(); ++it)
+		{
+			if (it.key() == "question")
+			{
+				question = it.value();
+			}
+			else if (it.key() == "correct_answer")
+			{
+				correctAnswer = it.value();
+			}
+			else if (it.key() == "incorrect_answers")
+			{
+				wrongAnswer1 = it.value()[0];
+				wrongAnswer2 = it.value()[1];
+				wrongAnswer3 = it.value()[2];
+			}
+			//question = (*it)["question"].get<string>();
+			//correctAnswer = (*it)["correct_answer"].get<string>();
+			//wrongAnswer1 = (*it)["incorrect_answers"][0].get<string>();
+			//wrongAnswer2 = (*it)["incorrect_answers"][1].get<string>();
+			//wrongAnswer3 = (*it)["incorrect_answers"][2].get<string>();
+			
+		}
+		sqlStatement = "INSERT INTO QUESTIONS VALUES('" + question + "', '" + correctAnswer + "', '" + wrongAnswer1 + "', '" + wrongAnswer2 + "', '" + wrongAnswer3 + "'); ";
+		sqlRunQuery(sqlStatement);
 	}
 
 	
@@ -276,10 +308,11 @@ void SqliteDatabase::getQuestions(std::list<Question>* questionsList, string pre
 std::list<Question> SqliteDatabase::getQuestion(int num)
 {
 	std::list<Question> res;
-
 	getQuestions(&res);
 
-	return res;
+	auto end = std::next(res.begin(), num);
+
+	return std::list<Question>(res.begin(), end);
 
 }
 
@@ -560,4 +593,26 @@ int callbackUsers(void* data, int argc, char** argv, char** azColName)
 	temp.username = pass;
 	usersList->push_back(temp);
 	return 0;
+}
+
+string getQuestionsFromWeb()
+{
+	IStream* stream;
+	//Also works with https URL's - unsure about the extent of SSL support though.
+	HRESULT result = URLOpenBlockingStream(0, API_ADDRESS, &stream, 0, 0);
+	if (result != 0)
+	{
+		return "{}";
+	}
+	char buffer[100];
+	unsigned long bytesRead;
+	std::stringstream ss;
+	stream->Read(buffer, 100, &bytesRead);
+	while (bytesRead > 0U)
+	{
+		ss.write(buffer, (long long)bytesRead);
+		stream->Read(buffer, 100, &bytesRead);
+	}
+	stream->Release();
+	return ss.str();
 }
