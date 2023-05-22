@@ -21,7 +21,7 @@ LoginManager& RequestHandlerFactory::getLoginManager()
 	return m_loginManager;
 }
 
-StatisticsManager& RequestHandlerFactory::getStaticsManager()
+StatisticsManager& RequestHandlerFactory::getStatisticsManager()
 {
 	return m_statisticsManager;
 }

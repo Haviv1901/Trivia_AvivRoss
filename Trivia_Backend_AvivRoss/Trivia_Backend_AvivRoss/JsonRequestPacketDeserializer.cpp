@@ -41,7 +41,7 @@ GetPlayersInRoomRequest JsonRequestPacketDeserializer::deserializeGetPlayersRequ
 
 	return res;
 }
-JoinRoomRequest deserializeJoinRoomRequest(Buffer buffer)
+JoinRoomRequest JsonRequestPacketDeserializer::deserializeJoinRoomRequest(Buffer buffer)
 {
 	JoinRoomRequest res;
 	json json = parseToJson(buffer);
@@ -50,7 +50,7 @@ JoinRoomRequest deserializeJoinRoomRequest(Buffer buffer)
 
 	return res;
 }
-CreateRoomRequest deserializeCreateRoomRequest(Buffer buffer)
+CreateRoomRequest JsonRequestPacketDeserializer::deserializeCreateRoomRequest(Buffer buffer)
 {
 	CreateRoomRequest res;
 	json json = parseToJson(buffer);

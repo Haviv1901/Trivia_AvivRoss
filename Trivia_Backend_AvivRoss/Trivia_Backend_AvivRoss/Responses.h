@@ -43,7 +43,7 @@ struct GetPlayersInRoomResponse
 
 struct GetHighScoreResponse
 {
-	unsigned int status;
+	//unsigned int status;
 	vector<Statistics> statistics;
 } typedef GetHighScoreResponse;
 

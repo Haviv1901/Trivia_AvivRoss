@@ -70,7 +70,6 @@ RequestResult LoginRequestHandler::login(RequestInfo req)
 {
 	RequestResult res;
 	LoginRequest loginReq = JsonRequestPacketDeserializer::deserializeLoginRequest(req.buffer);
-	Helper::debugPrint("login msg recv, passwod: " + loginReq.password + " username: " + loginReq.username);
 	if (!m_handlerFactory.getLoginManager().login(loginReq.username, loginReq.password)) // login user
 	{
 		throw std::exception("Username or password do not match.");
@@ -92,7 +91,6 @@ RequestResult LoginRequestHandler::signup(RequestInfo req)
 {
 	RequestResult res;
 	SignupRequest signupReq = JsonRequestPacketDeserializer::deserializeSignupRequest(req.buffer);
-	Helper::debugPrint("signup msg recv, passwod: " + signupReq.password + " username: " + signupReq.username + " email: " + signupReq.email);
 	if (!m_handlerFactory.getLoginManager().signup(signupReq.email, signupReq.username, signupReq.password)) // sign-up user
 	{
 		throw std::exception("Error signing in.");

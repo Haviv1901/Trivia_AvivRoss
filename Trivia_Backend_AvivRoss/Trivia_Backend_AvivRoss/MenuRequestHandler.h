@@ -34,6 +34,7 @@ private:
 	RoomManager& m_roomManager;
 	StatisticsManager& m_statisticsManager;
 	RequestHandlerFactory& m_handlerFactory;
+	static unsigned int m_idGenerator;
 
 };
 

@@ -16,7 +16,7 @@ public:
 	MenuRequestHandler* createMenuRequestHandler(LoggedUser user);
 	LoginManager& getLoginManager();
 
-	StatisticsManager& getStaticsManager();
+	StatisticsManager& getStatisticsManager();
 	RoomManager& getRoomManager();
 
 private:
