@@ -28,6 +28,8 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.FormClosed += Form1_FormClosed;
+
             components = new System.ComponentModel.Container();
             TXTpassword = new TextBox();
             BTNlogin = new Button();

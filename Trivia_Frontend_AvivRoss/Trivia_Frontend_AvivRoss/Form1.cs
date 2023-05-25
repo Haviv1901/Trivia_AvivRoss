@@ -29,7 +29,15 @@ namespace Trivia_Frontend_AvivRoss
             if (_requestHandler.Login(username, password))
             {
                 Console.WriteLine("Login successful.");
-                MessageBox.Show("Login successful.");
+
+                _requestHandler.SetStatus(Constants.MainMenu);
+
+                MainMenuUtis mainMenuUtis = new MainMenuUtis(username);
+                MainMenu mainMenu = new MainMenu(mainMenuUtis);
+
+                mainMenu.Show();
+                this.Hide();
+
             }
             else
             {
@@ -60,6 +68,11 @@ namespace Trivia_Frontend_AvivRoss
             RegisterForm register = new RegisterForm(this);
             this.Hide();
             register.Show();
+        }
+
+        private void Form1_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            _requestHandler.Disconnect();
         }
     }
 }

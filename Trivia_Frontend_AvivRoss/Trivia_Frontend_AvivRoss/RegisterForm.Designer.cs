@@ -28,6 +28,8 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.FormClosed += RegisterForm_FormClosed;
+
             INusername = new TextBox();
             INemail = new TextBox();
             INpass = new TextBox();

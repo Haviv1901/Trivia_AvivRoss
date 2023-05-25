@@ -13,7 +13,6 @@ namespace Trivia_Frontend_AvivRoss
     {
         public static TriviaRequests? instance = null;
         
-        private string username;
         private int status;
         
         private Communicator _communicator;
@@ -38,11 +37,7 @@ namespace Trivia_Frontend_AvivRoss
                 throw;
             }
         }
-
-        public void SetUsername(string username)
-        {
-            this.username = username;
-        }
+        
         public void SetStatus(int status)
         {
             this.status = status;
@@ -50,10 +45,6 @@ namespace Trivia_Frontend_AvivRoss
         public int GetStatus()
         {
             return status;
-        }
-        public string GetUsername()
-        {
-            return username;
         }
         public void Disconnect()
         {
@@ -95,7 +86,7 @@ namespace Trivia_Frontend_AvivRoss
             send.Add("username", username);
             send.Add("password", password);
             send.Add("email", email);
-            _communicator.SendMessage(send, Constants.LoginCode);
+            _communicator.SendMessage(send, Constants.SignUpCode);
             Message recvMessage = _communicator.RecvMessage();
 
             JObject json = JObject.Parse(recvMessage.data);

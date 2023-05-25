@@ -40,11 +40,12 @@ namespace Trivia_Frontend_AvivRoss
             {
                 Console.WriteLine("Sign In successfuly.");
                 MessageBox.Show("Sign In successfuly.");
-
-                TriviaRequests.instance.SetUsername(username);
+                
                 TriviaRequests.instance.SetStatus(Constants.MainMenu);
 
-                MainMenu mainMenu = new MainMenu();
+                MainMenuUtis mainMenuUtis = new MainMenuUtis(username);
+                MainMenu mainMenu = new MainMenu(mainMenuUtis);
+                
                 mainMenu.Show();
                 this.Close();
             }
@@ -64,6 +65,11 @@ namespace Trivia_Frontend_AvivRoss
         {
             _loginForm.Show();
             this.Close();
+        }
+
+        private void RegisterForm_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            TriviaRequests.instance.Disconnect();
         }
     }
 }
