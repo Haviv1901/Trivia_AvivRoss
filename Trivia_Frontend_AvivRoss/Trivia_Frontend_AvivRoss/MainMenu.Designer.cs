@@ -30,7 +30,11 @@
         {
             label1 = new Label();
             BTNsound = new Button();
-            button1 = new Button();
+            BTNjoinRoom = new Button();
+            BTNcreateRoom = new Button();
+            BTNstats = new Button();
+            button4 = new Button();
+            TXTwelcome = new Label();
             SuspendLayout();
             // 
             // label1
@@ -38,7 +42,7 @@
             label1.AutoSize = true;
             label1.Font = new Font("Segoe UI", 50F, FontStyle.Regular, GraphicsUnit.Point);
             label1.ForeColor = SystemColors.ActiveCaption;
-            label1.Location = new Point(266, 43);
+            label1.Location = new Point(305, 43);
             label1.Name = "label1";
             label1.Size = new Size(188, 89);
             label1.TabIndex = 0;
@@ -55,27 +59,75 @@
             BTNsound.UseVisualStyleBackColor = false;
             BTNsound.Click += BTNsound_Click;
             // 
-            // button1
+            // BTNjoinRoom
             // 
-            button1.BackColor = Color.Khaki;
-            button1.Location = new Point(279, 179);
-            button1.Name = "button1";
-            button1.Size = new Size(155, 35);
-            button1.TabIndex = 2;
-            button1.Text = "Join Room";
-            button1.UseVisualStyleBackColor = false;
-            button1.Click += button1_Click;
+            BTNjoinRoom.BackColor = Color.Khaki;
+            BTNjoinRoom.Location = new Point(325, 180);
+            BTNjoinRoom.Name = "BTNjoinRoom";
+            BTNjoinRoom.Size = new Size(155, 35);
+            BTNjoinRoom.TabIndex = 2;
+            BTNjoinRoom.Text = "Join Room";
+            BTNjoinRoom.UseVisualStyleBackColor = false;
+            BTNjoinRoom.Click += button1_Click;
+            // 
+            // BTNcreateRoom
+            // 
+            BTNcreateRoom.BackColor = Color.Khaki;
+            BTNcreateRoom.Location = new Point(325, 235);
+            BTNcreateRoom.Name = "BTNcreateRoom";
+            BTNcreateRoom.Size = new Size(155, 35);
+            BTNcreateRoom.TabIndex = 3;
+            BTNcreateRoom.Text = "Create Rom";
+            BTNcreateRoom.UseVisualStyleBackColor = false;
+            BTNcreateRoom.Click += button2_Click;
+            // 
+            // BTNstats
+            // 
+            BTNstats.BackColor = Color.Khaki;
+            BTNstats.Location = new Point(325, 290);
+            BTNstats.Name = "BTNstats";
+            BTNstats.Size = new Size(155, 35);
+            BTNstats.TabIndex = 4;
+            BTNstats.Text = "Stats";
+            BTNstats.UseVisualStyleBackColor = false;
+            BTNstats.Click += button3_Click;
+            // 
+            // button4
+            // 
+            button4.BackColor = Color.Red;
+            button4.Location = new Point(722, 0);
+            button4.Name = "button4";
+            button4.Size = new Size(75, 23);
+            button4.TabIndex = 5;
+            button4.Text = "LogOut";
+            button4.UseVisualStyleBackColor = false;
+            button4.Click += button4_Click;
+            // 
+            // TXTwelcome
+            // 
+            TXTwelcome.AutoSize = true;
+            TXTwelcome.Location = new Point(348, 117);
+            TXTwelcome.Name = "TXTwelcome";
+            TXTwelcome.Size = new Size(90, 15);
+            TXTwelcome.TabIndex = 6;
+            TXTwelcome.Text = "Welcome Guest";
             // 
             // MainMenu
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
-            Controls.Add(button1);
+            Controls.Add(TXTwelcome);
+            Controls.Add(button4);
+            Controls.Add(BTNstats);
+            Controls.Add(BTNcreateRoom);
+            Controls.Add(BTNjoinRoom);
             Controls.Add(BTNsound);
             Controls.Add(label1);
             Name = "MainMenu";
             Text = "MainMenu";
+            FormClosed += MainMenu_FormClosed;
+            Load += MainMenu_Load;
             ResumeLayout(false);
             PerformLayout();
         }
@@ -84,6 +136,10 @@
 
         private Label label1;
         private Button BTNsound;
-        private Button button1;
+        private Button BTNjoinRoom;
+        private Button BTNcreateRoom;
+        private Button BTNstats;
+        private Button button4;
+        private Label TXTwelcome;
     }
 }

@@ -44,8 +44,9 @@ namespace Trivia_Frontend_AvivRoss
                 TriviaRequests.instance.SetStatus(Constants.MainMenu);
 
                 MainMenuUtis mainMenuUtis = new MainMenuUtis(username);
-                MainMenu mainMenu = new MainMenu(mainMenuUtis);
-                
+                MainMenu mainMenu = new MainMenu(mainMenuUtis, _loginForm);
+
+
                 mainMenu.Show();
                 this.Close();
             }

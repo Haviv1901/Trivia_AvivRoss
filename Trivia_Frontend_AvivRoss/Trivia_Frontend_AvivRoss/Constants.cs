@@ -29,11 +29,7 @@ namespace Trivia_Frontend_AvivRoss
 
         public const int LoginMenu = 100;
         public const int MainMenu = 200;
-
-        public const string ButtonClick =
-            "C:\\Users\\UserPC\\Desktop\\ekronot\\טריוויה\\trivia_avivross\\Trivia_Frontend_AvivRoss\\Trivia_Frontend_AvivRoss\\music\\ButtonClick.mp3";
-        public const string BackgroundMusic =
-            "C:\\Users\\UserPC\\Desktop\\ekronot\\טריוויה\\trivia_avivross\\Trivia_Frontend_AvivRoss\\Trivia_Frontend_AvivRoss\\music\\MainMenuMusic.mp3";
+        
 
     }
 }

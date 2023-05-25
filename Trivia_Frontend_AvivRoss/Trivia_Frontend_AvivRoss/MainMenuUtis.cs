@@ -10,45 +10,58 @@ namespace Trivia_Frontend_AvivRoss
     public class MainMenuUtis
     {
         private string _username;
-        private bool _sound;
+
         private TriviaRequests _triviaRequests;
 
-        private SoundPlayer _Button;
-        private SoundPlayer _BackgroundMusic;
+        private SoundManager _SoundManager;
 
         public MainMenuUtis(string username)
         {
-            this._sound = true;
             this._username = username;
-
-            _Button = new SoundPlayer(Constants.ButtonClick);
-            _BackgroundMusic = new SoundPlayer(Constants.BackgroundMusic);
-
             if (TriviaRequests.instance == null)
                 _triviaRequests = new TriviaRequests();
             else
                 _triviaRequests = TriviaRequests.instance;
 
+            _SoundManager = new SoundManager();
+            _SoundManager.PlayMusic(); // start background music
         }
 
-        public void PlayButton()
+        public TriviaRequests GetTriviaRequests()
         {
-            _Button.Play();
-        }
-
-        public void SetSound(bool sound)
-        {
-            this._sound = sound;
-        }
-
-        public bool GetSound()
-        {
-            return _sound;
+            return _triviaRequests;
         }
 
         public string GetUsername()
         {
             return _username;
+        }
+
+
+
+
+        public void PlayMusic()
+        {
+            _SoundManager.PlayMusic();
+        }
+        public void StopMusic()
+        {
+            _SoundManager.StopMusic();
+        }
+
+        public void PlayButton()
+        {
+            _SoundManager.PlayButton();
+        }
+
+        public void SetSound(bool sound)
+        {
+            _SoundManager.SetSound(sound);
+        }
+
+        public bool GetSound()
+        {
+            return _SoundManager.GetSound();
         }
     }
 }

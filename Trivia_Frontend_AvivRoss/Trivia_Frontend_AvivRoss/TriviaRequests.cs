@@ -6,10 +6,11 @@ using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
 
 namespace Trivia_Frontend_AvivRoss
 {
-    internal class TriviaRequests
+    public class TriviaRequests
     {
         public static TriviaRequests? instance = null;
         
@@ -37,15 +38,31 @@ namespace Trivia_Frontend_AvivRoss
                 throw;
             }
         }
-        
-        public void SetStatus(int status)
+
+        public int CreateRoom(string roomName, int maxPlayers, int questionsCount, int answerTimeOut)
         {
-            this.status = status;
+            JObject send = new JObject();
+            send.Add("Room Name", roomName);
+            send.Add("Answer Time Out", questionsCount);
+            send.Add("Max Users", maxPlayers);
+            send.Add("Question Count", answerTimeOut);
+
+            _communicator.SendMessage(send, Constants.CreateRoomCode);
+            Message recvMessage = _communicator.RecvMessage();
+
+
+            JObject json = JObject.Parse(recvMessage.data);
+            try
+            {
+                return int.Parse(json["Room Id"].ToString());
+            }
+            catch (Exception e)
+            {
+                return -1;
+            }
         }
-        public int GetStatus()
-        {
-            return status;
-        }
+
+
         public void Disconnect()
         {
             _communicator.Disconnect();
@@ -54,6 +71,15 @@ namespace Trivia_Frontend_AvivRoss
         public bool IsConnected()
         {
             return _connected;
+        }
+
+        public void Logout()
+        {
+            JObject send = new JObject();
+            _communicator.SendMessage(send, Constants.SignOutCode);
+            Message recvMessage = _communicator.RecvMessage();
+
+            JObject json = JObject.Parse(recvMessage.data);
         }
 
         public bool Login(string username, string password)
@@ -102,6 +128,15 @@ namespace Trivia_Frontend_AvivRoss
             {
                 return false;
             }
+        }
+
+        public void SetStatus(int status)
+        {
+            this.status = status;
+        }
+        public int GetStatus()
+        {
+            return status;
         }
 
     }

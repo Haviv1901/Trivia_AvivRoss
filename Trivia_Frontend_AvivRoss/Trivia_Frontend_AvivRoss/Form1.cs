@@ -33,7 +33,7 @@ namespace Trivia_Frontend_AvivRoss
                 _requestHandler.SetStatus(Constants.MainMenu);
 
                 MainMenuUtis mainMenuUtis = new MainMenuUtis(username);
-                MainMenu mainMenu = new MainMenu(mainMenuUtis);
+                MainMenu mainMenu = new MainMenu(mainMenuUtis, this);
 
                 mainMenu.Show();
                 this.Hide();
