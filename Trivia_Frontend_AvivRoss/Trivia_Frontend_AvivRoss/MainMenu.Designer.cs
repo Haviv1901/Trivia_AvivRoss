@@ -77,7 +77,7 @@
             BTNcreateRoom.Name = "BTNcreateRoom";
             BTNcreateRoom.Size = new Size(155, 35);
             BTNcreateRoom.TabIndex = 3;
-            BTNcreateRoom.Text = "Create Rom";
+            BTNcreateRoom.Text = "Create Room";
             BTNcreateRoom.UseVisualStyleBackColor = false;
             BTNcreateRoom.Click += button2_Click;
             // 

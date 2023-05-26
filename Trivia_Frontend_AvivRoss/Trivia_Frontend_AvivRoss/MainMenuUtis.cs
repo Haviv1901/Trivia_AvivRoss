@@ -26,6 +26,10 @@ namespace Trivia_Frontend_AvivRoss
             _SoundManager = new SoundManager();
             _SoundManager.PlayMusic(); // start background music
         }
+        public SoundManager GetSoundManager()
+        {
+            return _SoundManager;
+        }
 
         public TriviaRequests GetTriviaRequests()
         {

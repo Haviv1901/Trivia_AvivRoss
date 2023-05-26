@@ -46,16 +46,37 @@ namespace Trivia_Frontend_AvivRoss
         private void button1_Click(object sender, EventArgs e)
         {
             _mainMenuUtis.PlayButton();
+
+            int roomId;
+
+            JoinRoomDialog joinRoomDialog = new JoinRoomDialog();
+            var result = joinRoomDialog.ShowDialog();
+            if (result != DialogResult.OK)
+            {
+                MessageBox.Show("Error joining room", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            roomId = joinRoomDialog.RoomId;
+            if (!TriviaRequests.instance.JoinRoom(roomId))
+            {
+                MessageBox.Show("Error joining room", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            Room room = new Room(roomId, _mainMenuUtis.GetSoundManager(), this);
+            room.Show();
+            this.Hide();
         }
 
         private void button2_Click(object sender, EventArgs e)
         {
+            _mainMenuUtis.PlayButton();
             string roomName = "";
             int maxPlayers = 0;
             int answerTimeOut = 0;
             int questionCount = 0;
             int roomId;
-            _mainMenuUtis.PlayButton();
 
             CreateRoomData roomData = new CreateRoomData();
             var result = roomData.ShowDialog();
@@ -78,7 +99,7 @@ namespace Trivia_Frontend_AvivRoss
                 return;
             }
 
-            Room room = new Room(_mainMenuUtis.GetUsername(), roomName, maxPlayers, answerTimeOut, questionCount, roomId);
+            Room room = new Room(roomId, _mainMenuUtis.GetSoundManager(), this);
             room.Show();
             this.Hide();
         }

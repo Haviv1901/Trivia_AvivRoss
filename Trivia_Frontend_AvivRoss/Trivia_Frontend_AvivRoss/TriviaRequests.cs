@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
@@ -37,6 +38,54 @@ namespace Trivia_Frontend_AvivRoss
                 Console.WriteLine(e);
                 throw;
             }
+        }
+
+        public bool JoinRoom(int roomId)
+        {
+            JObject send = new JObject();
+            send.Add("Room Id", roomId);
+
+            _communicator.SendMessage(send, Constants.JoinRoomCode);
+            Message recvMessage = _communicator.RecvMessage();
+
+            JObject json = JObject.Parse(recvMessage.data);
+            try
+            {
+                if (json["status"].ToString() == "1")
+                {
+                    return true;
+                }
+                return false;
+            }
+            catch (Exception e)
+            {
+                return false;
+            }
+        }
+        public List<string> GetPlayersInRoom(int roomId)
+        {
+            JObject send = new JObject();
+            send.Add("Room Id", roomId);
+
+            _communicator.SendMessage(send, Constants.GetPlayersInRoomCode);
+            Message recvMessage = _communicator.RecvMessage();
+
+            //JObject json = JObject.Parse(recvMessage.data);
+            //string jsonSTR = json.ToString();
+
+            var root = (JContainer)JToken.Parse(recvMessage.data);
+            var list = root.DescendantsAndSelf().OfType<JProperty>().Where(p => p.Name == "PlayersInRoom").Select(p => p.Value.Value<string>());
+
+            List<string> players = new List<string>();
+            players = list.ToList();
+
+            return players;
+
+            //foreach (var player in json["PlayersInRoom"].ToList())
+            //{
+            //    players.Add(player.ToString());
+            //}
+            //return players;
         }
 
         public int CreateRoom(string roomName, int maxPlayers, int questionsCount, int answerTimeOut)

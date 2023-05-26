@@ -5,6 +5,9 @@ using System.Media;
 using System.Text;
 using System.Threading.Tasks;
 
+using NAudio.Wave;
+using NAudio.Wave.SampleProviders;
+
 namespace Trivia_Frontend_AvivRoss
 {
     public class SoundManager
@@ -12,6 +15,9 @@ namespace Trivia_Frontend_AvivRoss
         private SoundPlayer _Button;
         private SoundPlayer _BackgroundMusic;
         private bool _sound;
+
+        private WaveOutEvent outputDevice;
+        private AudioFileReader audioFile;
 
         public SoundManager()
         {
@@ -36,10 +42,26 @@ namespace Trivia_Frontend_AvivRoss
         {
             if (_sound)
             {
-                _Button.Play();
-                Thread.Sleep(1000);
-                PlayMusic();
+                if (outputDevice == null)
+                {
+                    outputDevice = new WaveOutEvent();
+                    outputDevice.PlaybackStopped += OnPlaybackStopped;
+                }
+                if (audioFile == null)
+                {
+                    audioFile = new AudioFileReader(@"C:\Users\UserPC\Desktop\ekronot\Trivia\trivia_avivross\Trivia_Frontend_AvivRoss\Trivia_Frontend_AvivRoss\music\ButtonClick.wav");
+                    outputDevice.Init(audioFile);
+                }
+                outputDevice.Play();
             }
+        }
+
+        private void OnPlaybackStopped(object sender, StoppedEventArgs args)
+        {
+            outputDevice.Dispose();
+            outputDevice = null;
+            audioFile.Dispose();
+            audioFile = null;
         }
 
         public void SetSound(bool sound)
