@@ -41,7 +41,7 @@ namespace Trivia_Frontend_AvivRoss
 
             // if the user exiting the room is the creator kick all ?
 
-            _soundManager.PlayButton();
+            SoundManager.instance.PlayButton();
             this.Close();
         }
 
