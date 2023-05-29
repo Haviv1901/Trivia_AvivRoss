@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
@@ -40,9 +41,26 @@ namespace Trivia_Frontend_AvivRoss
             }
         }
 
-        public bool JoinRoom(int roomId)
+        public Dictionary<string, int> GetRooms()
         {
             JObject send = new JObject();
+
+            _communicator.SendMessage(send, Constants.GetRoomsCode);
+            Message recvMessage = _communicator.RecvMessage();
+
+            JObject json = JObject.Parse(recvMessage.data);
+
+            Dictionary<string, int> rooms;
+
+            string jsonSTR = json.ToString();
+            rooms = JsonConvert.DeserializeObject<Dictionary<string, int>>(jsonSTR);
+
+            return rooms;
+        }
+
+        public bool JoinRoom(int roomId)
+        {
+            JObject send = new JObject(); 
             send.Add("Room Id", roomId);
 
             _communicator.SendMessage(send, Constants.JoinRoomCode);
@@ -70,22 +88,14 @@ namespace Trivia_Frontend_AvivRoss
             _communicator.SendMessage(send, Constants.GetPlayersInRoomCode);
             Message recvMessage = _communicator.RecvMessage();
 
-            //JObject json = JObject.Parse(recvMessage.data);
-            //string jsonSTR = json.ToString();
-
-            var root = (JContainer)JToken.Parse(recvMessage.data);
-            var list = root.DescendantsAndSelf().OfType<JProperty>().Where(p => p.Name == "PlayersInRoom").Select(p => p.Value.Value<string>());
+            JObject json = JObject.Parse(recvMessage.data);
 
             List<string> players = new List<string>();
-            players = list.ToList();
+
+            players = json["PlayersInRoom"].ToString().Split(',').ToList();
 
             return players;
-
-            //foreach (var player in json["PlayersInRoom"].ToList())
-            //{
-            //    players.Add(player.ToString());
-            //}
-            //return players;
+            
         }
 
         public int CreateRoom(string roomName, int maxPlayers, int questionsCount, int answerTimeOut)

@@ -32,13 +32,18 @@ Buffer JsonResponsePacketSerializer::serializeResponse(LogoutResponse response)
 
 Buffer JsonResponsePacketSerializer::serializeResponse(GetRoomsResponse response)
 {
-	string strData = "{\"Rooms\":\"";
+	string strData = "{";
 	// list of rooms, like such : {Rooms: “room1, room2, ... roomN”}
 	for (int i = 0; i < response.rooms.size(); i++) 
 	{
-		strData += response.rooms[i].name + ",";
+		strData += "\"" + response.rooms[i].name + "\":";
+		strData += to_string(response.rooms[i].id) + ",";
 	}
-	strData += "\"}";
+	if (response.rooms.size() > 0)
+	{
+		strData.pop_back();
+	}
+	strData += "}";
 	Buffer data = Helper::stringToBuffer(strData);
 
 	return createResponse(GET_ROOMS_CODE, data);

@@ -23,14 +23,13 @@ namespace Trivia_Frontend_AvivRoss
 
         public Room(int roomId, SoundManager soundManager, MainMenu main)
         {
-
+            _roomId = roomId;
             _soundManager = soundManager;
             _mainMenu = main;
 
-            this._roomId = roomId;
-            InitializeComponent();
-            TXTroomId.Text += roomId.ToString();
 
+            InitializeComponent();
+            TXTroomId.Text += _roomId.ToString();
             RefreshPlayers();
 
         }

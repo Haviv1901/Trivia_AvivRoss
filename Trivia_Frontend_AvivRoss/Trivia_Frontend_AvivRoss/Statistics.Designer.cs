@@ -1,6 +1,6 @@
 ﻿namespace Trivia_Frontend_AvivRoss
 {
-    partial class Room
+    partial class Statistics
     {
         /// <summary>
         /// Required designer variable.
@@ -28,62 +28,49 @@
         /// </summary>
         private void InitializeComponent()
         {
+            TXTstats = new Label();
             button1 = new Button();
-            TXTroomId = new Label();
-            BTNrefresh = new Button();
             SuspendLayout();
+            // 
+            // TXTstats
+            // 
+            TXTstats.AutoSize = true;
+            TXTstats.Font = new Font("Segoe UI", 20F, FontStyle.Regular, GraphicsUnit.Point);
+            TXTstats.ImageAlign = ContentAlignment.MiddleRight;
+            TXTstats.Location = new Point(311, 37);
+            TXTstats.Name = "TXTstats";
+            TXTstats.Size = new Size(119, 37);
+            TXTstats.TabIndex = 0;
+            TXTstats.Text = "Statistics";
             // 
             // button1
             // 
-            button1.BackColor = Color.IndianRed;
-            button1.Location = new Point(376, 3);
+            button1.BackColor = Color.Red;
+            button1.Location = new Point(725, -2);
             button1.Name = "button1";
             button1.Size = new Size(75, 23);
-            button1.TabIndex = 4;
-            button1.Text = "Exit";
+            button1.TabIndex = 1;
+            button1.Text = "Back";
             button1.UseVisualStyleBackColor = false;
             button1.Click += button1_Click;
             // 
-            // TXTroomId
-            // 
-            TXTroomId.AutoSize = true;
-            TXTroomId.Font = new Font("Segoe UI", 15F, FontStyle.Regular, GraphicsUnit.Point);
-            TXTroomId.ForeColor = Color.ForestGreen;
-            TXTroomId.Location = new Point(171, 22);
-            TXTroomId.Name = "TXTroomId";
-            TXTroomId.Size = new Size(95, 28);
-            TXTroomId.TabIndex = 10;
-            TXTroomId.Text = "Room Id: ";
-            // 
-            // BTNrefresh
-            // 
-            BTNrefresh.BackColor = Color.Azure;
-            BTNrefresh.Location = new Point(29, 77);
-            BTNrefresh.Name = "BTNrefresh";
-            BTNrefresh.Size = new Size(80, 20);
-            BTNrefresh.TabIndex = 11;
-            BTNrefresh.Text = "Refresh";
-            BTNrefresh.UseVisualStyleBackColor = false;
-            BTNrefresh.Click += BTNrefresh_Click;
-            // 
-            // Room
+            // Statistics
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(454, 299);
-            Controls.Add(BTNrefresh);
-            Controls.Add(TXTroomId);
+            ClientSize = new Size(800, 450);
             Controls.Add(button1);
-            Name = "Room";
-            Text = "Room";
-            FormClosed += Room_FormClose;
+            Controls.Add(TXTstats);
+            FormClosed += Statistics_FormClosed;
+            Name = "Statistics";
+            Text = "Statistics";
             ResumeLayout(false);
             PerformLayout();
         }
 
         #endregion
+
+        private Label TXTstats;
         private Button button1;
-        private Label TXTroomId;
-        private Button BTNrefresh;
     }
 }

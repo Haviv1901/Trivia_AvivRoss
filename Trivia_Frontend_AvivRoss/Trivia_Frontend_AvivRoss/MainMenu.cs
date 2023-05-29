@@ -25,50 +25,19 @@ namespace Trivia_Frontend_AvivRoss
 
         }
 
-        private void BTNsound_Click(object sender, EventArgs e)
-        {
-            if (_mainMenuUtis.GetSound())
-            {
-                _mainMenuUtis.SetSound(false);
-                _mainMenuUtis.StopMusic();
-                BTNsound.Text = "🔊";
-                BTNsound.BackColor = Color.Blue;
-            }
-            else
-            {
-                _mainMenuUtis.SetSound(true);
-                _mainMenuUtis.PlayMusic();
-                BTNsound.Text = "🔇";
-                BTNsound.BackColor = Color.Red;
-            }
-        }
 
+
+        // Join room button
         private void button1_Click(object sender, EventArgs e)
         {
             _mainMenuUtis.PlayButton();
 
-            int roomId;
-
-            JoinRoomDialog joinRoomDialog = new JoinRoomDialog();
-            var result = joinRoomDialog.ShowDialog();
-            if (result != DialogResult.OK)
-            {
-                MessageBox.Show("Error joining room", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
-            }
-
-            roomId = joinRoomDialog.RoomId;
-            if (!TriviaRequests.instance.JoinRoom(roomId))
-            {
-                MessageBox.Show("Error joining room", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
-            }
-
-            Room room = new Room(roomId, _mainMenuUtis.GetSoundManager(), this);
+            RoomBrowser room = new RoomBrowser(_mainMenuUtis.GetSoundManager(), this);
             room.Show();
             this.Hide();
         }
 
+        // create room button
         private void button2_Click(object sender, EventArgs e)
         {
             _mainMenuUtis.PlayButton();
@@ -104,7 +73,7 @@ namespace Trivia_Frontend_AvivRoss
             this.Hide();
         }
 
-
+        // music button
         private void button4_Click(object sender, EventArgs e)
         {
             _mainMenuUtis.PlayButton();
@@ -123,6 +92,9 @@ namespace Trivia_Frontend_AvivRoss
         private void button3_Click(object sender, EventArgs e)
         {
             _mainMenuUtis.PlayButton();
+            Statistics statistics = new Statistics(this, _mainMenuUtis.GetSoundManager(), _mainMenuUtis.GetUsername());
+            statistics.Show();
+            this.Hide();
         }
 
         private void MainMenu_Load(object sender, EventArgs e)

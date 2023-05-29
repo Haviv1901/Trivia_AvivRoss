@@ -38,6 +38,29 @@ namespace Trivia_Frontend_AvivRoss
             _BackgroundMusic.Stop();
         }
 
+        public void LoadMusicButton(Form formToLoadOn)
+        {
+
+        }
+
+        private void public(object sender, EventArgs e)
+        {
+            if (_sound)
+            {
+                SetSound(false);
+                StopMusic();
+                (Button)sender.Text = "🔊";
+                BTNsound.BackColor = Color.Blue;
+            }
+            else
+            {
+                _mainMenuUtis.SetSound(true);
+                _mainMenuUtis.PlayMusic();
+                BTNsound.Text = "🔇";
+                BTNsound.BackColor = Color.Red;
+            }
+        }
+
         public void PlayButton()
         {
             if (_sound)
