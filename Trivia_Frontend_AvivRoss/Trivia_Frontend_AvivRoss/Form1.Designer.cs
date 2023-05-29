@@ -52,6 +52,7 @@
             TXTpassword.Name = "TXTpassword";
             TXTpassword.Size = new Size(254, 23);
             TXTpassword.TabIndex = 0;
+            TXTpassword.UseSystemPasswordChar = true;
             // 
             // BTNlogin
             // 
@@ -142,9 +143,8 @@
             MSGmessage.ForeColor = Color.Red;
             MSGmessage.Location = new Point(334, 256);
             MSGmessage.Name = "MSGmessage";
-            MSGmessage.Size = new Size(53, 15);
+            MSGmessage.Size = new Size(0, 15);
             MSGmessage.TabIndex = 9;
-            MSGmessage.Text = "message";
             // 
             // Form1
             // 

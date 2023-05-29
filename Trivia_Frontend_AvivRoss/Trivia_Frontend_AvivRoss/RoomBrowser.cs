@@ -72,9 +72,11 @@ namespace Trivia_Frontend_AvivRoss
         {
             _soundManager.PlayButton();
 
-            if (_triviaRequests.JoinRoom(int.Parse(((Button)sender).Name)))
+            int roomid = int.Parse(((Button)sender).Name);
+
+            if (_triviaRequests.JoinRoom(roomid))
             {
-                Room room = new Room(int.Parse(((Button)sender).Name), _soundManager, _mainMenu);
+                Room room = new Room(roomid, _soundManager, _mainMenu);
                 room.Show();
                 this.Hide();
             }
@@ -93,9 +95,10 @@ namespace Trivia_Frontend_AvivRoss
 
         private void BTNjoinButton_Click(object sender, EventArgs e)
         {
-            if (_triviaRequests.JoinRoom((int)NUMroomId.Value))
+            int roomid = int.Parse(((Button)sender).Name);
+            if (_triviaRequests.JoinRoom(roomid))
             {
-                Room room = new Room(int.Parse(((Button)sender).Name), _soundManager, _mainMenu);
+                Room room = new Room(roomid, _soundManager, _mainMenu);
                 room.Show();
                 this.Hide();
             }
