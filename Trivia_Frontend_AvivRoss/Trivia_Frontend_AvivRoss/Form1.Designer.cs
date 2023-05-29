@@ -28,8 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.FormClosed += Form1_FormClosed;
-
             components = new System.ComponentModel.Container();
             TXTpassword = new TextBox();
             BTNlogin = new Button();
@@ -40,6 +38,7 @@
             label3 = new Label();
             label4 = new Label();
             button1 = new Button();
+            checkBox1 = new CheckBox();
             contextMenuStrip1.SuspendLayout();
             SuspendLayout();
             // 
@@ -128,11 +127,23 @@
             button1.UseVisualStyleBackColor = false;
             button1.Click += button1_Click_1;
             // 
+            // checkBox1
+            // 
+            checkBox1.AutoSize = true;
+            checkBox1.Location = new Point(265, 225);
+            checkBox1.Name = "checkBox1";
+            checkBox1.Size = new Size(108, 19);
+            checkBox1.TabIndex = 8;
+            checkBox1.Text = "Show Password";
+            checkBox1.UseVisualStyleBackColor = true;
+            checkBox1.CheckedChanged += checkBox1_CheckedChanged;
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(760, 436);
+            Controls.Add(checkBox1);
             Controls.Add(button1);
             Controls.Add(label4);
             Controls.Add(label3);
@@ -140,8 +151,11 @@
             Controls.Add(TXTusername);
             Controls.Add(BTNlogin);
             Controls.Add(TXTpassword);
+            FormBorderStyle = FormBorderStyle.FixedSingle;
+            MaximizeBox = false;
             Name = "Form1";
             Text = "Form1";
+            FormClosed += Form1_FormClosed;
             contextMenuStrip1.ResumeLayout(false);
             ResumeLayout(false);
             PerformLayout();
@@ -158,5 +172,6 @@
         private Label label3;
         private Label label4;
         private Button button1;
+        private CheckBox checkBox1;
     }
 }

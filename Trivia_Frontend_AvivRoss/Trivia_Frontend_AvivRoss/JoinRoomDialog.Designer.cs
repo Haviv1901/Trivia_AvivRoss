@@ -28,6 +28,8 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.FormBorderStyle = FormBorderStyle.FixedSingle;
+            this.MaximizeBox = false;
             label1 = new Label();
             NUMroomId = new NumericUpDown();
             BTNok = new Button();

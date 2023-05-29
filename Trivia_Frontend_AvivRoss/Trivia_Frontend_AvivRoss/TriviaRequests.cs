@@ -41,6 +41,45 @@ namespace Trivia_Frontend_AvivRoss
             }
         }
 
+        public Dictionary<string, float> GetHighScore()
+        {
+            JObject send = new JObject();
+
+            _communicator.SendMessage(send, Constants.GetHighScoreCode);
+            Message recvMessage = _communicator.RecvMessage();
+
+            JObject json = JObject.Parse(recvMessage.data);
+
+            Dictionary<string, float> scores;
+
+            string jsonSTR = json.ToString();
+            scores = JsonConvert.DeserializeObject<Dictionary<string, float>>(jsonSTR);
+
+            return scores;
+        }
+
+        public List<string> GetPersonalStats()
+        {
+            JObject send = new JObject();
+            
+
+            _communicator.SendMessage(send, Constants.GetPersonalStatsCode);
+            Message recvMessage = _communicator.RecvMessage();
+
+            JObject json = JObject.Parse(recvMessage.data);
+
+            List<string> stats = new List<string>();
+
+            // list is: [0] Average Answer Time [1] Number of Correct Answers [2] Total Answers [3] Number of Games Played [4] Total Score
+            stats.Add(json["Average Answer Time"].ToString());
+            stats.Add(json["Correct Answers"].ToString());
+            stats.Add(json["Total Answers"].ToString());
+            stats.Add(json["Total Games"].ToString());
+            stats.Add(json["Total Score"].ToString());
+
+            return stats;
+        }
+
         public Dictionary<string, int> GetRooms()
         {
             JObject send = new JObject();

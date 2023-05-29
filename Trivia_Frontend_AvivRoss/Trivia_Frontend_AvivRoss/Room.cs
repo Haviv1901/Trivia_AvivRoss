@@ -29,6 +29,7 @@ namespace Trivia_Frontend_AvivRoss
 
 
             InitializeComponent();
+            _soundManager.LoadMusicButton(this);
             TXTroomId.Text += _roomId.ToString();
             RefreshPlayers();
 

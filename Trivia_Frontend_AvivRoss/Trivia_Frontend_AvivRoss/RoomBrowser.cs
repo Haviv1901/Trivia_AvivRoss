@@ -22,7 +22,9 @@ namespace Trivia_Frontend_AvivRoss
             _mainMenu = mainMenu;
             _triviaRequests = TriviaRequests.instance;
             _soundManager = soundManager;
+
             InitializeComponent();
+            _soundManager.LoadMusicButton(this);
             RefreshRooms();
         }
 

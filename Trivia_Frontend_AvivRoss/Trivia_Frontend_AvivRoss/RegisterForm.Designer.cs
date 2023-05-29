@@ -28,8 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.FormClosed += RegisterForm_FormClosed;
-
             INusername = new TextBox();
             INemail = new TextBox();
             INpass = new TextBox();
@@ -43,6 +41,7 @@
             BTNregister = new Button();
             BOXconfirm = new CheckBox();
             button1 = new Button();
+            CHKshowPass = new CheckBox();
             SuspendLayout();
             // 
             // INusername
@@ -65,6 +64,7 @@
             INpass.Name = "INpass";
             INpass.Size = new Size(273, 23);
             INpass.TabIndex = 2;
+            INpass.UseSystemPasswordChar = true;
             // 
             // label1
             // 
@@ -90,6 +90,7 @@
             INpass2.Name = "INpass2";
             INpass2.Size = new Size(273, 23);
             INpass2.TabIndex = 5;
+            INpass2.UseSystemPasswordChar = true;
             // 
             // label3
             // 
@@ -130,7 +131,7 @@
             // BTNregister
             // 
             BTNregister.BackColor = SystemColors.ActiveCaption;
-            BTNregister.Location = new Point(332, 329);
+            BTNregister.Location = new Point(332, 354);
             BTNregister.Name = "BTNregister";
             BTNregister.Size = new Size(75, 23);
             BTNregister.TabIndex = 10;
@@ -141,7 +142,7 @@
             // BOXconfirm
             // 
             BOXconfirm.AutoSize = true;
-            BOXconfirm.Location = new Point(248, 304);
+            BOXconfirm.Location = new Point(248, 329);
             BOXconfirm.Name = "BOXconfirm";
             BOXconfirm.Size = new Size(165, 19);
             BOXconfirm.TabIndex = 11;
@@ -160,11 +161,23 @@
             button1.UseVisualStyleBackColor = false;
             button1.Click += button1_Click;
             // 
+            // CHKshowPass
+            // 
+            CHKshowPass.AutoSize = true;
+            CHKshowPass.Location = new Point(248, 304);
+            CHKshowPass.Name = "CHKshowPass";
+            CHKshowPass.Size = new Size(108, 19);
+            CHKshowPass.TabIndex = 13;
+            CHKshowPass.Text = "Show password";
+            CHKshowPass.UseVisualStyleBackColor = true;
+            CHKshowPass.CheckedChanged += CHKshowPass_CheckedChanged;
+            // 
             // RegisterForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
+            Controls.Add(CHKshowPass);
             Controls.Add(button1);
             Controls.Add(BOXconfirm);
             Controls.Add(BTNregister);
@@ -178,8 +191,11 @@
             Controls.Add(INpass);
             Controls.Add(INemail);
             Controls.Add(INusername);
+            FormBorderStyle = FormBorderStyle.FixedSingle;
+            MaximizeBox = false;
             Name = "RegisterForm";
             Text = "RegisterForm";
+            FormClosed += RegisterForm_FormClosed;
             ResumeLayout(false);
             PerformLayout();
         }
@@ -199,5 +215,6 @@
         private Button BTNregister;
         private CheckBox BOXconfirm;
         private Button button1;
+        private CheckBox CHKshowPass;
     }
 }

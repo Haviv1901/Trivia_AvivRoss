@@ -45,7 +45,7 @@ namespace Trivia_Frontend_AvivRoss
                 MessageBox.Show("Username or password incorrect.");
             }
 
-            
+
         }
 
         private void textBox2_TextChanged(object sender, EventArgs e)
@@ -73,6 +73,11 @@ namespace Trivia_Frontend_AvivRoss
         private void Form1_FormClosed(object sender, FormClosedEventArgs e)
         {
             _requestHandler.Disconnect();
+        }
+
+        private void checkBox1_CheckedChanged(object sender, EventArgs e)
+        {
+            TXTpassword.UseSystemPasswordChar = !TXTpassword.UseSystemPasswordChar;
         }
     }
 }

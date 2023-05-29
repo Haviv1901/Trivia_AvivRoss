@@ -12,6 +12,9 @@ namespace Trivia_Frontend_AvivRoss
 {
     public class SoundManager
     {
+
+        public static SoundManager? instance = null;
+
         private SoundPlayer _Button;
         private SoundPlayer _BackgroundMusic;
         private bool _sound;
@@ -21,6 +24,11 @@ namespace Trivia_Frontend_AvivRoss
 
         public SoundManager()
         {
+            if (instance == null)
+                instance = this;
+            else
+                return;
+
             this._sound = true;
 
             _Button = new SoundPlayer(@"C:\Users\UserPC\Desktop\ekronot\Trivia\trivia_avivross\Trivia_Frontend_AvivRoss\Trivia_Frontend_AvivRoss\music\ButtonClick.wav");
@@ -40,24 +48,37 @@ namespace Trivia_Frontend_AvivRoss
 
         public void LoadMusicButton(Form formToLoadOn)
         {
+            // 
+            // BTNsound
+            // 
+            Button BTNsound = new Button();
+            BTNsound.BackColor = Color.IndianRed;
+            BTNsound.Location = new Point(0, 0);
+            BTNsound.Name = "BTNsound";
+            BTNsound.Size = new Size(28, 26);
+            BTNsound.TabIndex = 1;
+            BTNsound.Text = "🔇";
+            BTNsound.UseVisualStyleBackColor = false;
+            BTNsound.Click += BTNsound_Click;
+            formToLoadOn.Controls.Add(BTNsound);
 
         }
 
-        private void public(object sender, EventArgs e)
+        public static void BTNsound_Click(object sender, EventArgs e)
         {
-            if (_sound)
+            if (SoundManager.instance.GetSound())
             {
-                SetSound(false);
-                StopMusic();
-                (Button)sender.Text = "🔊";
-                BTNsound.BackColor = Color.Blue;
+                SoundManager.instance.SetSound(false);
+                SoundManager.instance.StopMusic();
+                ((Button)sender).Text = "🔊";
+                ((Button)sender).BackColor = Color.Blue;
             }
             else
             {
-                _mainMenuUtis.SetSound(true);
-                _mainMenuUtis.PlayMusic();
-                BTNsound.Text = "🔇";
-                BTNsound.BackColor = Color.Red;
+                SoundManager.instance.SetSound(true);
+                SoundManager.instance.PlayMusic();
+                ((Button)sender).Text = "🔇";
+                ((Button)sender).BackColor = Color.Red;
             }
         }
 

@@ -28,8 +28,10 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.FormBorderStyle = FormBorderStyle.FixedSingle;
+            this.MaximizeBox = false;
             label1 = new Label();
-            BTNsound = new Button();
+           // BTNsound = new Button();
             BTNjoinRoom = new Button();
             BTNcreateRoom = new Button();
             BTNstats = new Button();
@@ -47,17 +49,7 @@
             label1.Size = new Size(188, 89);
             label1.TabIndex = 0;
             label1.Text = "Trivia";
-            // 
-            // BTNsound
-            // 
-            BTNsound.BackColor = Color.IndianRed;
-            BTNsound.Location = new Point(0, 0);
-            BTNsound.Name = "BTNsound";
-            BTNsound.Size = new Size(28, 26);
-            BTNsound.TabIndex = 1;
-            BTNsound.Text = "🔇";
-            BTNsound.UseVisualStyleBackColor = false;
-            BTNsound.Click += BTNsound_Click;
+
             // 
             // BTNjoinRoom
             // 
@@ -122,7 +114,7 @@
             Controls.Add(BTNstats);
             Controls.Add(BTNcreateRoom);
             Controls.Add(BTNjoinRoom);
-            Controls.Add(BTNsound);
+            //Controls.Add(BTNsound);
             Controls.Add(label1);
             Name = "MainMenu";
             Text = "MainMenu";
@@ -135,7 +127,7 @@
         #endregion
 
         private Label label1;
-        private Button BTNsound;
+
         private Button BTNjoinRoom;
         private Button BTNcreateRoom;
         private Button BTNstats;

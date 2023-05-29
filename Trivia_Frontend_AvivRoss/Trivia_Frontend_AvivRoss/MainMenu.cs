@@ -20,7 +20,7 @@ namespace Trivia_Frontend_AvivRoss
             _loginForm = loginForm;
             _mainMenuUtis = mainMenuUtis;
             InitializeComponent();
-
+            _mainMenuUtis.GetSoundManager().LoadMusicButton(this);
             TXTwelcome.Text = "Welcome " + _mainMenuUtis.GetUsername() + "!";
 
         }

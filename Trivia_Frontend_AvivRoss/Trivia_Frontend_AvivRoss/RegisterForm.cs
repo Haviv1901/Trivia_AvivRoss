@@ -40,7 +40,7 @@ namespace Trivia_Frontend_AvivRoss
             {
                 Console.WriteLine("Sign In successfuly.");
                 MessageBox.Show("Sign In successfuly.");
-                
+
                 TriviaRequests.instance.SetStatus(Constants.MainMenu);
 
                 MainMenuUtis mainMenuUtis = new MainMenuUtis(username);
@@ -71,6 +71,12 @@ namespace Trivia_Frontend_AvivRoss
         private void RegisterForm_FormClosed(object sender, FormClosedEventArgs e)
         {
             TriviaRequests.instance.Disconnect();
+        }
+
+        private void CHKshowPass_CheckedChanged(object sender, EventArgs e)
+        {
+            INpass.UseSystemPasswordChar = !CHKshowPass.Checked;
+            INpass2.UseSystemPasswordChar = !CHKshowPass.Checked;
         }
     }
 }

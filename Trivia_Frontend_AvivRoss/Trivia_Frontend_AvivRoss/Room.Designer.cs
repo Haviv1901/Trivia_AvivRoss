@@ -28,6 +28,8 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.FormBorderStyle = FormBorderStyle.FixedSingle;
+            this.MaximizeBox = false;
             button1 = new Button();
             TXTroomId = new Label();
             BTNrefresh = new Button();
