@@ -53,6 +53,7 @@ namespace Trivia_Frontend_AvivRoss
 
         private void button2_Click(object sender, EventArgs e)
         {
+            SoundManager.instance.PlayButton();
             RefreshScoresAndStats();
         }
 

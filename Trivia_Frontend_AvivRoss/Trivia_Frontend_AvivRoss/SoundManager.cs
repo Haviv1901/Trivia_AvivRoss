@@ -39,10 +39,18 @@ namespace Trivia_Frontend_AvivRoss
 
         public void PlayMusic()
         {
+            if (_BackgroundMusic == null)
+            {
+                _BackgroundMusic = new SoundPlayer(@"C:\Users\UserPC\Desktop\ekronot\Trivia\trivia_avivross\Trivia_Frontend_AvivRoss\Trivia_Frontend_AvivRoss\music\MainMenuMusic.wav");
+            }
             _BackgroundMusic.PlayLooping();
         }
         public void StopMusic()
         {
+            if (_BackgroundMusic == null)
+            {
+                _BackgroundMusic = new SoundPlayer(@"C:\Users\UserPC\Desktop\ekronot\Trivia\trivia_avivross\Trivia_Frontend_AvivRoss\Trivia_Frontend_AvivRoss\music\MainMenuMusic.wav");
+            }
             _BackgroundMusic.Stop();
         }
 

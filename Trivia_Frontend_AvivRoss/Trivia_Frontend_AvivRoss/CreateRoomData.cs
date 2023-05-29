@@ -37,6 +37,7 @@ namespace Trivia_Frontend_AvivRoss
 
         private void BTNok_Click(object sender, EventArgs e)
         {
+            SoundManager.instance.PlayButton();
             roomName = TXTroomName.Text;
             maxPlayers = (int)NUMmaxPlayers.Value;
             answerTimeOut = (int)NUManswerTimeOut.Value;

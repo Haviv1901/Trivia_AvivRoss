@@ -505,7 +505,7 @@ int callbackStatistics(void* data, int argc, char** argv, char** azColName)
 	}
 	else
 	{
-		temp.playerScore = (float)(temp.numOfCorrectAnswers / temp.numOfTotalAnswers) * (float)100;
+		temp.playerScore = ((float)temp.numOfCorrectAnswers / temp.numOfTotalAnswers) * (float)100;
 	}
 
 	questionsList->push_back(temp);

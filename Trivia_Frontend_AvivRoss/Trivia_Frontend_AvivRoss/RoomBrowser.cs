@@ -89,13 +89,15 @@ namespace Trivia_Frontend_AvivRoss
 
         private void button2_Click_1(object sender, EventArgs e)
         {
+            SoundManager.instance.PlayButton();
             this.Close();
             _mainMenu.Show();
         }
 
         private void BTNjoinButton_Click(object sender, EventArgs e)
         {
-            int roomid = int.Parse(((Button)sender).Name);
+            SoundManager.instance.PlayButton();
+            int roomid = (int)NUMroomId.Value;
             if (_triviaRequests.JoinRoom(roomid))
             {
                 Room room = new Room(roomid, _soundManager, _mainMenu);

@@ -30,7 +30,7 @@ namespace Trivia_Frontend_AvivRoss
         // Join room button
         private void button1_Click(object sender, EventArgs e)
         {
-            _mainMenuUtis.PlayButton();
+            SoundManager.instance.PlayButton();
 
             RoomBrowser room = new RoomBrowser(_mainMenuUtis.GetSoundManager(), this);
             room.Show();
@@ -40,7 +40,7 @@ namespace Trivia_Frontend_AvivRoss
         // create room button
         private void button2_Click(object sender, EventArgs e)
         {
-            _mainMenuUtis.PlayButton();
+            SoundManager.instance.PlayButton();
             string roomName = "";
             int maxPlayers = 0;
             int answerTimeOut = 0;
@@ -76,8 +76,8 @@ namespace Trivia_Frontend_AvivRoss
         // music button
         private void button4_Click(object sender, EventArgs e)
         {
-            _mainMenuUtis.PlayButton();
-            _mainMenuUtis.StopMusic();
+            SoundManager.instance.PlayButton();
+            SoundManager.instance.StopMusic();
             TriviaRequests.instance.Logout();
             TriviaRequests.instance.SetStatus(Constants.LoginMenu);
             _loginForm.Show();
@@ -91,7 +91,7 @@ namespace Trivia_Frontend_AvivRoss
 
         private void button3_Click(object sender, EventArgs e)
         {
-            _mainMenuUtis.PlayButton();
+            SoundManager.instance.PlayButton();
             Statistics statistics = new Statistics(this, _mainMenuUtis.GetSoundManager(), _mainMenuUtis.GetUsername());
             statistics.Show();
             this.Hide();
