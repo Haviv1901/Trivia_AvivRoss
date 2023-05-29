@@ -104,7 +104,7 @@ RequestResult MenuRequestHandler::getRooms(RequestInfo req)
 	response.status = 1;
 
 	res.respones = JsonResponsePacketSerializer::serializeResponse(response);
-	res.newHandler = m_handlerFactory.createLoginRequestHandler(); // return user to login menu
+	res.newHandler = m_handlerFactory.createMenuRequestHandler(m_user); // return user to login menu
 	return res;
 }
 RequestResult MenuRequestHandler::getPlayersInRoom(RequestInfo req)

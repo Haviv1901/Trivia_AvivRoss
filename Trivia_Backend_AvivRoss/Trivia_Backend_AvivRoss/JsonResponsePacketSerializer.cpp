@@ -32,13 +32,18 @@ Buffer JsonResponsePacketSerializer::serializeResponse(LogoutResponse response)
 
 Buffer JsonResponsePacketSerializer::serializeResponse(GetRoomsResponse response)
 {
-	string strData = "{\"Rooms\":\"";
-	// list of rooms, like such : {Rooms: “room1, room2, ... roomN”}
+	string strData = "{";
+	// {roomN: ID, RoomN:Id, ... RoomN:ID}
 	for (int i = 0; i < response.rooms.size(); i++) 
 	{
-		strData += response.rooms[i].name + ",";
+		strData += "\"" + response.rooms[i].name + "\":";
+		strData += to_string(response.rooms[i].id) + ",";
 	}
-	strData += "\"}";
+	if (response.rooms.size() > 0)
+	{
+		strData.pop_back();
+	}
+	strData += "}";
 	Buffer data = Helper::stringToBuffer(strData);
 
 	return createResponse(GET_ROOMS_CODE, data);
@@ -74,15 +79,18 @@ Buffer JsonResponsePacketSerializer::serializeResponse(CreateRoomResponse respon
 
 Buffer JsonResponsePacketSerializer::serializeResponse(GetHighScoreResponse response)
 {
-	string strData = "{\"HighScores\": {";
-	int max = response.statistics.size() > 5 ? max = 5 : max = response.statistics.size();
-	for (int i = 0; i < max; i++)
+	string strData = "{";
+
+	for (int i = 0; i < response.statistics.size(); i++)
 	{
-		strData += response.statistics[i].username + ": ";
-		strData += to_string(response.statistics[i].playerScore) + ", ";
+		strData += "\"" + response.statistics[i].username + "\":";
+		strData += to_string(response.statistics[i].playerScore) + ",";
 	}
-	strData.pop_back();
-	strData.pop_back();
+	if (response.statistics.size() > 0)
+	{
+		strData.pop_back();
+	}
+
 	strData += "}";
 	Buffer data = Helper::stringToBuffer(strData);
 	return createResponse(GET_HIGH_SCORE_CODE, data);
@@ -100,8 +108,7 @@ Buffer JsonResponsePacketSerializer::serializeResponse(GetPersonalStatsResponse 
 	strData += "\"Total Games\":";
 	strData += std::to_string(response.statistics.numOfPlayerGames) + ",";
 	strData += "\"Total Score\":";
-	strData += std::to_string(response.statistics.playerScore) + ",";
-	strData += "\"}";
+	strData += std::to_string(response.statistics.playerScore) + "}";
 
 	Buffer data = Helper::stringToBuffer(strData);
 	return createResponse(GET_PERSONAL_STATS_CODE, data);
