@@ -116,7 +116,7 @@ RequestResult MenuRequestHandler::getPlayersInRoom(RequestInfo req)
 	response.players = m_roomManager.getRoom(request.roomId).getAllUsers();
 
 	res.respones = JsonResponsePacketSerializer::serializeResponse(response);
-	res.newHandler = m_handlerFactory.createMenuRequestHandler(m_user); 
+	res.newHandler = this; 
 	return res;
 }
 RequestResult MenuRequestHandler::getPersonalStats(RequestInfo req)
@@ -128,7 +128,7 @@ RequestResult MenuRequestHandler::getPersonalStats(RequestInfo req)
 	response.status = 1;
 
 	res.respones = JsonResponsePacketSerializer::serializeResponse(response);
-	res.newHandler = m_handlerFactory.createMenuRequestHandler(m_user);
+	res.newHandler = this;
 	return res;
 }
 RequestResult MenuRequestHandler::getHighScore(RequestInfo req)
@@ -139,7 +139,7 @@ RequestResult MenuRequestHandler::getHighScore(RequestInfo req)
 	response.statistics = m_handlerFactory.getStatisticsManager().getHighScore();
 
 	res.respones = JsonResponsePacketSerializer::serializeResponse(response);
-	res.newHandler = m_handlerFactory.createMenuRequestHandler(m_user);
+	res.newHandler = this;
 	return res;
 }
 RequestResult MenuRequestHandler::joinRoom(RequestInfo req)
@@ -152,7 +152,7 @@ RequestResult MenuRequestHandler::joinRoom(RequestInfo req)
 
 	response.status = 1;
 	res.respones = JsonResponsePacketSerializer::serializeResponse(response);
-	res.newHandler = m_handlerFactory.createMenuRequestHandler(m_user);
+	res.newHandler = this;
 	return res;
 }
 RequestResult MenuRequestHandler::createRoom(RequestInfo req)
@@ -165,7 +165,7 @@ RequestResult MenuRequestHandler::createRoom(RequestInfo req)
 
 	response.roomId = roomId;
 	res.respones = JsonResponsePacketSerializer::serializeResponse(response);
-	res.newHandler = m_handlerFactory.createMenuRequestHandler(m_user);
+	res.newHandler = this;
 	return res;
 }
 
@@ -181,6 +181,6 @@ RequestResult MenuRequestHandler::error(RequestInfo req, string errorMessage)
 	ErrorResponse errorRes;
 	errorRes.messagge = Helper::stringToBuffer(errorMessage);
 	res.respones = JsonResponsePacketSerializer::serializeResponse(errorRes);
-	res.newHandler = nullptr;
+	res.newHandler = this;
 	return res;
 }

@@ -114,6 +114,6 @@ RequestResult LoginRequestHandler::error(RequestInfo req, string errorMessage)
 	ErrorResponse errorRes;
 	errorRes.messagge = Helper::stringToBuffer(errorMessage);
 	res.respones = JsonResponsePacketSerializer::serializeResponse(errorRes);
-	res.newHandler = nullptr;
+	res.newHandler = this;
 	return res;
 }
