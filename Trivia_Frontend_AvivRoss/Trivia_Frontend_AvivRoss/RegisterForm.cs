@@ -39,7 +39,6 @@ namespace Trivia_Frontend_AvivRoss
             if (TriviaRequests.instance.Register(username, password, email))
             {
                 Console.WriteLine("Sign In successfuly.");
-                MessageBox.Show("Sign In successfuly.");
 
                 TriviaRequests.instance.SetStatus(Constants.MainMenu);
 
@@ -53,7 +52,7 @@ namespace Trivia_Frontend_AvivRoss
             else
             {
                 Console.WriteLine("Sign In failed.");
-                MessageBox.Show("failed to sign in. make sure u have a steady connection and email and password correct.");
+                TXTmsg.Text = "Sign In failed.";
             }
         }
 

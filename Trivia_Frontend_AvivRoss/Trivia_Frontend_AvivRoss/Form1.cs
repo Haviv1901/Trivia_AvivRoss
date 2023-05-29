@@ -15,10 +15,6 @@ namespace Trivia_Frontend_AvivRoss
         }
 
 
-        private void textBox1_TextChanged(object sender, EventArgs e)
-        {
-
-        }
 
         private void button1_Click(object sender, EventArgs e)
         {
@@ -26,6 +22,7 @@ namespace Trivia_Frontend_AvivRoss
             string username, password;
             username = TXTusername.Text;
             password = TXTpassword.Text;
+            MSGmessage.Text = "";
             if (_requestHandler.Login(username, password))
             {
                 Console.WriteLine("Login successful.");
@@ -42,24 +39,9 @@ namespace Trivia_Frontend_AvivRoss
             else
             {
                 Console.WriteLine("Login failed.");
-                MessageBox.Show("Username or password incorrect.");
+                MSGmessage.Text = "Username or password incorrect.";
             }
 
-
-        }
-
-        private void textBox2_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void label1_Click(object sender, EventArgs e)
-        {
 
         }
 

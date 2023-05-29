@@ -78,9 +78,11 @@
             // label2
             // 
             label2.AutoSize = true;
-            label2.Location = new Point(358, 43);
+            label2.Font = new Font("Segoe UI", 15F, FontStyle.Regular, GraphicsUnit.Point);
+            label2.ForeColor = SystemColors.ActiveCaption;
+            label2.Location = new Point(320, 48);
             label2.Name = "label2";
-            label2.Size = new Size(49, 15);
+            label2.Size = new Size(82, 28);
             label2.TabIndex = 4;
             label2.Text = "Register";
             // 
@@ -131,7 +133,7 @@
             // BTNregister
             // 
             BTNregister.BackColor = SystemColors.ActiveCaption;
-            BTNregister.Location = new Point(332, 354);
+            BTNregister.Location = new Point(320, 354);
             BTNregister.Name = "BTNregister";
             BTNregister.Size = new Size(75, 23);
             BTNregister.TabIndex = 10;

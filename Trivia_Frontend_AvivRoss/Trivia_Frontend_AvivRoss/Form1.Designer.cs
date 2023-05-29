@@ -39,6 +39,7 @@
             label4 = new Label();
             button1 = new Button();
             checkBox1 = new CheckBox();
+            MSGmessage = new Label();
             contextMenuStrip1.SuspendLayout();
             SuspendLayout();
             // 
@@ -51,7 +52,6 @@
             TXTpassword.Name = "TXTpassword";
             TXTpassword.Size = new Size(254, 23);
             TXTpassword.TabIndex = 0;
-            TXTpassword.TextChanged += textBox1_TextChanged;
             // 
             // BTNlogin
             // 
@@ -73,7 +73,6 @@
             TXTusername.Name = "TXTusername";
             TXTusername.Size = new Size(255, 23);
             TXTusername.TabIndex = 2;
-            TXTusername.TextChanged += textBox2_TextChanged;
             // 
             // contextMenuStrip1
             // 
@@ -96,7 +95,6 @@
             label1.TabIndex = 3;
             label1.Text = "Welcome to the trivia game!";
             label1.TextAlign = ContentAlignment.TopCenter;
-            label1.Click += label1_Click;
             // 
             // label3
             // 
@@ -138,11 +136,22 @@
             checkBox1.UseVisualStyleBackColor = true;
             checkBox1.CheckedChanged += checkBox1_CheckedChanged;
             // 
+            // MSGmessage
+            // 
+            MSGmessage.AutoSize = true;
+            MSGmessage.ForeColor = Color.Red;
+            MSGmessage.Location = new Point(334, 256);
+            MSGmessage.Name = "MSGmessage";
+            MSGmessage.Size = new Size(53, 15);
+            MSGmessage.TabIndex = 9;
+            MSGmessage.Text = "message";
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(760, 436);
+            Controls.Add(MSGmessage);
             Controls.Add(checkBox1);
             Controls.Add(button1);
             Controls.Add(label4);
@@ -173,5 +182,6 @@
         private Label label4;
         private Button button1;
         private CheckBox checkBox1;
+        private Label MSGmessage;
     }
 }
