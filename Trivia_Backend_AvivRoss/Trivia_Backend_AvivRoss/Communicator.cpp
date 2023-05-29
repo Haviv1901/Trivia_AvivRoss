@@ -19,7 +19,7 @@ std::mutex mtx;
 //void debugPrint(string msg);
 //void sendData(const SOCKET sc, const std::string message);
 
-
+// ctor
 Communicator::Communicator(RequestHandlerFactory& handlerFactory) : m_handlerFactory(handlerFactory)
 {
 	// create socket handle
@@ -28,6 +28,7 @@ Communicator::Communicator(RequestHandlerFactory& handlerFactory) : m_handlerFac
 		throw std::exception(__FUNCTION__ " - socket");
 }
 
+// dotr
 Communicator::~Communicator()
 {
 	// close socket handle
@@ -47,6 +48,9 @@ Communicator::~Communicator()
 
 }
 
+/**
+ * \brief server thread
+ */
 void Communicator::startHandleRequests()
 {
 	bindAndListen();
@@ -91,6 +95,10 @@ void Communicator::bindAndListen()
 	Helper::debugPrint("listening...");
 
 }
+
+/**
+ * \brief function recevies new client, add an handle to the sockets client to the clients list.
+ */
 void Communicator::handleNewClient()
 {
 	SOCKET client_socket = accept(m_serverSocket, NULL, NULL);
@@ -108,20 +116,23 @@ void Communicator::handleNewClient()
 
 }
 
-
+/**
+ * \brief client's function thread.
+ * \param client_socket 
+ */
 void Communicator::clientHandler(SOCKET client_socket)
 {
 
 	try
 	{
-		LoginRequestHandler temp = LoginRequestHandler(m_handlerFactory);
 		RequestInfo msg;
 		RequestResult res;
 		res.newHandler = m_handlerFactory.createLoginRequestHandler();
 		while (true)
 		{
 			int i = 0;
-			int code, length;
+			int code;
+			int length;
 
 			code = Helper::getMessageTypeCode(client_socket);
 			length = Helper::getLengthFromSocket(client_socket);
@@ -136,12 +147,14 @@ void Communicator::clientHandler(SOCKET client_socket)
 
 			res = res.newHandler->handleRequest(msg);
 			Helper::sendData(client_socket, res.respones);
+			
 
 		}
 	}
 	catch (const std::exception& e)
 	{
 		std::cout << "Exception was catch in function clientHandler. socket=" << client_socket << ", what=" << e.what() << std::endl;
+
 	}
 	closesocket(client_socket);
 }

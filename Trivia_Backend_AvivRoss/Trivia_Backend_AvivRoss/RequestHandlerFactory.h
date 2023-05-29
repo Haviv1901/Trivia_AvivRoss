@@ -2,8 +2,10 @@
 #include "LoginManager.h"
 #include "LoginRequestHandler.h"
 #include "MenuRequestHandler.h"
+#include "RoomManager.h"
 
 class LoginRequestHandler;
+class MenuRequestHandler;
 
 class RequestHandlerFactory
 {
@@ -11,11 +13,17 @@ public:
 
 	RequestHandlerFactory(IDatabase* database);
 	LoginRequestHandler* createLoginRequestHandler();
-	MenuRequestHandler* createMenuRequestHandler();
+	MenuRequestHandler* createMenuRequestHandler(LoggedUser user);
 	LoginManager& getLoginManager();
+
+	StatisticsManager& getStatisticsManager();
+	RoomManager& getRoomManager();
 
 private:
 	LoginManager m_loginManager;
 	IDatabase* m_database;
+
+	RoomManager m_roomManager;
+	StatisticsManager m_statisticsManager;
 };
 

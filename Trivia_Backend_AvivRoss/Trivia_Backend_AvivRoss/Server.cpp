@@ -14,13 +14,14 @@ Server::Server() : m_database(new SqliteDatabase()), m_handlerFactory(m_database
 
 Server::~Server()
 {
-	
+	delete m_database;
 }
 
 void Server::run()
 {
+
 	std::string str;
-	std::thread tr(&Communicator::startHandleRequests, this->m_communicator);
+	std::thread tr(&Communicator::startHandleRequests, this->m_communicator); // server thread
 	tr.detach();
 
 	

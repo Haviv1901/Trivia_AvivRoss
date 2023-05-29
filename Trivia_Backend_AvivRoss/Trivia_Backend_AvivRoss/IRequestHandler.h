@@ -37,6 +37,24 @@ struct RequestResult
 	IRequestHandler* newHandler;
 } typedef RequestResult;
 
+struct GetPlayersInRoomRequest
+{
+	unsigned int roomId;
+} typedef GetPlayersInRoomRequest;
+
+struct JoinRoomRequest
+{
+	unsigned int roomId;
+} typedef JoinRoomRequest;
+
+struct CreateRoomRequest
+{
+	string roomName;
+	unsigned int maxUsers;
+	unsigned int questionCount;
+	unsigned int answerTimeout;
+} typedef CreateRoomRequest;
+
 class IRequestHandler // virtual "" "" = 0;
 {
 public:

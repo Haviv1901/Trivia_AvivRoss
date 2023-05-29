@@ -76,6 +76,7 @@ Buffer Helper::stringToBuffer(string str)
 
 }
 
+
 string Helper::bufferToString(Buffer buffer)
 {
 	return string(buffer.begin(), buffer.end());
@@ -95,9 +96,7 @@ int Helper::getMessageTypeCode(const SOCKET sc)
 	{
 		return 0;
 	}
-	std::string msg = bufferToString(buff);
-
-	int res = std::atoi(msg.c_str());
+	int res = buff[0];
 	return  res;
 }
 
