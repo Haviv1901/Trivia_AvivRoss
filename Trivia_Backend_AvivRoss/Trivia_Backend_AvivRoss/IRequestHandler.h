@@ -55,6 +55,8 @@ struct CreateRoomRequest
 	unsigned int answerTimeout;
 } typedef CreateRoomRequest;
 
+
+
 class IRequestHandler // virtual "" "" = 0;
 {
 public:

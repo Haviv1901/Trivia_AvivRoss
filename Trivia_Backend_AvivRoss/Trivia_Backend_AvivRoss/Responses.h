@@ -62,3 +62,29 @@ struct CreateRoomResponse
 {
 	unsigned int roomId;
 } typedef CreateRoomResponse;
+
+
+struct CloseRoomResponse
+{
+	unsigned int status;
+} typedef CloseRoomResponse;
+
+
+struct StartGameResponse
+{
+	unsigned int status;
+} typedef StartGameResponse;
+
+struct GetRoomStateResponse
+{
+	unsigned int status;
+	bool hasGameBegun;
+	vector<string> players;
+	unsigned int questionCount;
+	unsigned int answerTimeout;
+} typedef GetRoomStateResponse;
+
+struct LeaveRoomResponse
+{
+	unsigned int status;
+} typedef LeaveRoomResponse;
