@@ -68,12 +68,12 @@ namespace Trivia_Frontend_AvivRoss
                 return;
             }
 
-            Room room = new Room(roomId, _mainMenuUtis.GetSoundManager(), this);
+            Room room = new Room(roomId, _mainMenuUtis.GetSoundManager(), this, true);
             room.Show();
             this.Hide();
         }
 
-        // music button
+        // logout button
         private void button4_Click(object sender, EventArgs e)
         {
             SoundManager.instance.PlayButton();
@@ -89,6 +89,7 @@ namespace Trivia_Frontend_AvivRoss
             _loginForm.Show();
         }
 
+        // stats button
         private void button3_Click(object sender, EventArgs e)
         {
             SoundManager.instance.PlayButton();

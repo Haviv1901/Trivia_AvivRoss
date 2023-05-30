@@ -41,6 +41,44 @@ namespace Trivia_Frontend_AvivRoss
             }
         }
 
+        public void CloseOrLeaveRoom()
+        {
+            JObject send = new JObject();
+
+            _communicator.SendMessage(send, Constants.CloseOrLeaveRoomCode);
+            Message recvMessage = _communicator.RecvMessage();
+
+            JObject json = JObject.Parse(recvMessage.data);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns> tuple in this order: vector of players, has game begun, question count and answer timeout.  </returns>
+        public Tuple<List<string>, bool, int, int> GetRoomState()
+        {
+            JObject send = new JObject();
+
+            _communicator.SendMessage(send, Constants.GetRoomStateCode);
+            Message recvMessage = _communicator.RecvMessage();
+
+            JObject json = JObject.Parse(recvMessage.data);
+
+            List<string> players = new List<string>();
+
+            players = json["Players"].ToString().Split(',').ToList();
+            //bool game = bool.Parse(json["hasGameBegun"].ToString());
+            //int questionCount = int.Parse(json["Question Count"].ToString());
+            //int answerTimeout = int.Parse(json["Answer Timeout"].ToString());
+
+            return new Tuple<List<string>, bool, int, int>(
+                    players,
+                    bool.Parse(json["hasGameBegun"].ToString()),
+                    int.Parse(json["Question Count"].ToString()),
+                    int.Parse(json["Answer Timeout"].ToString()));
+
+        }
+
         public Dictionary<string, float> GetHighScore()
         {
             JObject send = new JObject();

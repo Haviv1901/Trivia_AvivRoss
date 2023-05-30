@@ -19,7 +19,7 @@ public:
 	RequestResult startGame(RequestInfo);
 	RequestResult getRoomState(RequestInfo);
 
-	RequestResult MenuRequestHandler::error(RequestInfo req, string errorMessage);
+	RequestResult error(RequestInfo req, string errorMessage);
 
 private:
 	Room m_room;

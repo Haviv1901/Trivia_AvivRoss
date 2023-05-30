@@ -152,7 +152,7 @@ RequestResult MenuRequestHandler::joinRoom(RequestInfo req)
 
 	response.status = 1;
 	res.respones = JsonResponsePacketSerializer::serializeResponse(response);
-	res.newHandler = this;
+	res.newHandler = m_handlerFactory.createMemberRequestHandler(m_roomManager.getRoom(request.roomId), m_user);
 	return res;
 }
 RequestResult MenuRequestHandler::createRoom(RequestInfo req)
@@ -165,7 +165,7 @@ RequestResult MenuRequestHandler::createRoom(RequestInfo req)
 
 	response.roomId = roomId;
 	res.respones = JsonResponsePacketSerializer::serializeResponse(response);
-	res.newHandler = this;
+	res.newHandler = m_handlerFactory.createAdminRequestHandler(m_roomManager.getRoom(roomId), m_user);
 	return res;
 }
 

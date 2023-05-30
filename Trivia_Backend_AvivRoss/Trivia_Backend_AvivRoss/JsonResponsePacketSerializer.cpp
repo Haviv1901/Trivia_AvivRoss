@@ -124,7 +124,7 @@ Buffer JsonResponsePacketSerializer::serializeResponse(CloseRoomResponse respons
 	json res;
 	res["status"] = response.status;
 
-	return createResponse(CLOSE_ROOM_CODE, Helper::stringToBuffer(res.dump()));
+	return createResponse(CLOSE_OR_LEAVE_ROOM_CODE, Helper::stringToBuffer(res.dump()));
 }
 Buffer JsonResponsePacketSerializer::serializeResponse(StartGameResponse response)
 {
@@ -149,7 +149,7 @@ Buffer JsonResponsePacketSerializer::serializeResponse(LeaveRoomResponse respons
 	json res;
 	res["status"] = response.status;
 
-	return createResponse(LEAVE_ROOM_CODE, Helper::stringToBuffer(res.dump()));
+	return createResponse(CLOSE_OR_LEAVE_ROOM_CODE, Helper::stringToBuffer(res.dump()));
 }
 
 

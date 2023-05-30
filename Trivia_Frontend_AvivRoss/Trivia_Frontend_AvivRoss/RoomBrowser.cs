@@ -76,7 +76,7 @@ namespace Trivia_Frontend_AvivRoss
 
             if (_triviaRequests.JoinRoom(roomid))
             {
-                Room room = new Room(roomid, _soundManager, _mainMenu);
+                Room room = new Room(roomid, _soundManager, _mainMenu, false);
                 room.Show();
                 this.Hide();
             }
@@ -100,7 +100,7 @@ namespace Trivia_Frontend_AvivRoss
             int roomid = (int)NUMroomId.Value;
             if (_triviaRequests.JoinRoom(roomid))
             {
-                Room room = new Room(roomid, _soundManager, _mainMenu);
+                Room room = new Room(roomid, _soundManager, _mainMenu, false);
                 room.Show();
                 this.Hide();
             }

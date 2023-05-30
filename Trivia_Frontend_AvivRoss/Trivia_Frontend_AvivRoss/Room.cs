@@ -4,12 +4,15 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Security.Policy;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
 using NAudio.Wave;
 using NAudio.Wave.SampleProviders;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 
 namespace Trivia_Frontend_AvivRoss
@@ -17,12 +20,18 @@ namespace Trivia_Frontend_AvivRoss
     public partial class Room : Form
     {
         private int _roomId;
+        private bool _isCreator;
+
+        public delegate void AddButton();
+        public AddButton myDelegate;
 
         private SoundManager _soundManager;
         private MainMenu _mainMenu;
+        private Thread _thread;
 
-        public Room(int roomId, SoundManager soundManager, MainMenu main)
+        public Room(int roomId, SoundManager soundManager, MainMenu main, bool isCreator)
         {
+            _isCreator = isCreator;
             _roomId = roomId;
             _soundManager = soundManager;
             _mainMenu = main;
@@ -31,17 +40,18 @@ namespace Trivia_Frontend_AvivRoss
             InitializeComponent();
             _soundManager.LoadMusicButton(this);
             TXTroomId.Text += _roomId.ToString();
-            RefreshPlayers();
-
+            myDelegate = new AddButton(AddButtonMethod);
+            _thread = new Thread(new ThreadStart(RefreshPlayers));
+            _thread.Start();
+            
         }
+
+        
 
         private void button1_Click(object sender, EventArgs e)
         {
-            // close room or smth ?
-
-            // if the user exiting the room is the creator kick all ?
-
             SoundManager.instance.PlayButton();
+            TriviaRequests.instance.CloseOrLeaveRoom();
             this.Close();
         }
 
@@ -58,7 +68,48 @@ namespace Trivia_Frontend_AvivRoss
 
         private void RefreshPlayers()
         {
-            List<string> players = TriviaRequests.instance.GetPlayersInRoom(_roomId);
+            if (BTNrefresh.InvokeRequired)
+            {
+                try
+                {
+                    while (true)
+                    {
+                        this.BeginInvoke(myDelegate);
+                        Thread.Sleep(500);
+                    }
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e);
+                }
+            }
+            else
+            {
+                AddButtonMethod();
+            }
+
+        }
+
+        private void AddButtonMethod()
+        {
+            List<string> players = new List<string>();
+            try
+            {
+                players = TriviaRequests.instance.GetRoomState().Item1;
+            }
+            catch (Exception e) // if room closed, the json parse will fail.
+            {
+                try
+                {
+                    Invoke(() =>
+                    {
+                        MessageBox.Show("Room closed", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        this.Close();
+                    });
+                }
+                catch (Exception a) {}
+            }
+            
 
             int i = 20;
 
@@ -75,6 +126,8 @@ namespace Trivia_Frontend_AvivRoss
                 Controls.Add(TXTplayerN);
                 i += 20;
             }
+
+
 
         }
     }

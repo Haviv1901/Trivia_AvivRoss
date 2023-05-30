@@ -9,7 +9,7 @@ RoomMemberRequestHandler::RoomMemberRequestHandler(Room room, LoggedUser user, R
 
 bool RoomMemberRequestHandler::isRequestRelevant(RequestInfo req)
 {
-	if (req.id == LEAVE_ROOM_CODE || req.id == GET_ROOM_STATE_CODE)
+	if (req.id == CLOSE_OR_LEAVE_ROOM_CODE || req.id == GET_ROOM_STATE_CODE)
 	{
 		return true;
 	}
@@ -24,7 +24,7 @@ RequestResult RoomMemberRequestHandler::handleRequest(RequestInfo req)
 
 	switch (req.id)
 	{
-	case(LEAVE_ROOM_CODE):
+	case(CLOSE_OR_LEAVE_ROOM_CODE):
 		return leaveRoom(req);
 		break;
 	case(GET_ROOM_STATE_CODE):
@@ -73,7 +73,7 @@ RequestResult RoomMemberRequestHandler::getRoomState(RequestInfo)
  * \param errorMessage
  * \return
  */
-RequestResult MenuRequestHandler::error(RequestInfo req, string errorMessage)
+RequestResult RoomMemberRequestHandler::error(RequestInfo req, string errorMessage)
 {
 	RequestResult res;
 	ErrorResponse errorRes;

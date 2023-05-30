@@ -10,7 +10,7 @@ RoomAdminRequestHandler::RoomAdminRequestHandler(Room room, LoggedUser user, Roo
 
 bool RoomAdminRequestHandler::isRequestRelevant(RequestInfo req)
 {
-	if (req.id == CLOSE_ROOM_CODE || req.id == START_GAME_CODE || req.id == GET_ROOM_STATE_CODE)
+	if (req.id == CLOSE_OR_LEAVE_ROOM_CODE || req.id == START_GAME_CODE || req.id == GET_ROOM_STATE_CODE)
 	{
 		return true;
 	}
@@ -25,7 +25,7 @@ RequestResult RoomAdminRequestHandler::handleRequest(RequestInfo req)
 
 	switch (req.id)
 	{
-	case(CLOSE_ROOM_CODE):
+	case(CLOSE_OR_LEAVE_ROOM_CODE):
 		return closeRoom(req);
 		break;
 	case(START_GAME_CODE):
@@ -88,7 +88,7 @@ RequestResult RoomAdminRequestHandler::getRoomState(RequestInfo)
  * \param errorMessage
  * \return
  */
-RequestResult MenuRequestHandler::error(RequestInfo req, string errorMessage)
+RequestResult RoomAdminRequestHandler::error(RequestInfo req, string errorMessage)
 {
 	RequestResult res;
 	ErrorResponse errorRes;
