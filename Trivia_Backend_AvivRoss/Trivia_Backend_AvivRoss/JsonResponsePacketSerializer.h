@@ -30,5 +30,10 @@ public:
 	static Buffer serializeResponse(GetRoomStateResponse response);
 	static Buffer serializeResponse(LeaveRoomResponse response);
 
+	//v4
+	static Buffer serializeResponse(SubmitAnswerResponse response);
+	static Buffer serializeResponse(GetGameResultsResponse response);
+	static Buffer serializeResponse(GetQuestionResponse response);
+	static Buffer serializeResponse(LeaveGameResponse response);
 };
 

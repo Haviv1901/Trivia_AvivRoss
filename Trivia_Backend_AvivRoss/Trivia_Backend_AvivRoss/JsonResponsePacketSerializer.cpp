@@ -152,6 +152,50 @@ Buffer JsonResponsePacketSerializer::serializeResponse(LeaveRoomResponse respons
 	return createResponse(CLOSE_OR_LEAVE_ROOM_CODE, Helper::stringToBuffer(res.dump()));
 }
 
+//v4
+
+Buffer JsonResponsePacketSerializer::serializeResponse(SubmitAnswerResponse response)
+{
+	json res;
+	res["status"] = response.status;
+	res["correctAnswerId"] = response.correctAnswerId;
+
+	return createResponse(SUBMIT_ANSWER_CODE, Helper::stringToBuffer(res.dump()));
+}
+Buffer JsonResponsePacketSerializer::serializeResponse(GetGameResultsResponse response)
+{
+	json res;
+	res["status"] = response.status;
+	for (auto user : response.results)
+	{
+		json j;
+		j["correctAnswerCount"] = user.correctAnswerCount;
+		j["wrongAnswerCount"] = user.wrongAnswerCount;
+		j["averageAnswerTime"] = user.averageAnswerTime;
+		j["Score"] = user.score;
+		res[user.username] = j;
+	}
+
+	return createResponse(GET_GAME_RESULT_CODE, Helper::stringToBuffer(res.dump()));
+}
+Buffer JsonResponsePacketSerializer::serializeResponse(GetQuestionResponse response)
+{
+	json res;
+	res["status"] = response.status;
+	res["Question"] = response.question;
+	res["Right Question"] = response.rightAnswer;
+	res["Wrong Answers"] = response.wrongAnswers;
+
+	return createResponse(GET_QUESTION_CODE, Helper::stringToBuffer(res.dump()));
+}
+Buffer JsonResponsePacketSerializer::serializeResponse(LeaveGameResponse response)
+{
+	json res;
+	res["status"] = response.status;
+
+	return createResponse(LEAVE_GAME_CODE, Helper::stringToBuffer(res.dump()));
+}
+
 
 /**
  * \brief function will generate a response packet with the given code and data, adding headers to the data.
@@ -174,3 +218,5 @@ Buffer createResponse(unsigned char code, Buffer data)
 
 	return res;
 }
+
+

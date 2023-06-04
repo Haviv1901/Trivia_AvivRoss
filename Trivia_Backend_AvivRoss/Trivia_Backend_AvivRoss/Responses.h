@@ -88,3 +88,39 @@ struct LeaveRoomResponse
 {
 	unsigned int status;
 } typedef LeaveRoomResponse;
+
+struct LeaveGameResponse
+{
+	unsigned int status;
+} typedef LeaveGameResponse;
+
+struct GetQuestionResponse
+{
+	unsigned int status;
+	string question;
+	string rightAnswer;
+	vector<string> wrongAnswers;
+	//std::map<unsigned int, string> answers; // answer id (1-4), answer
+} typedef GetQuestionResponse;
+
+struct SubmitAnswerResponse
+{
+	unsigned int status;
+	unsigned int correctAnswerId;
+} typedef SubmitAnswerResponse;
+
+struct PlayerResults
+{
+	string username;
+	unsigned int correctAnswerCount;
+	unsigned int wrongAnswerCount;
+	unsigned int averageAnswerTime;
+	unsigned int score;
+} typedef PlayerResults;
+
+struct GetGameResultsResponse
+{
+	unsigned int status;
+	vector<PlayerResults> results;
+} typedef GetGameResultsResponse;
+
