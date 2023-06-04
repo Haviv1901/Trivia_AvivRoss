@@ -22,14 +22,21 @@ RequestResult RoomMemberRequestHandler::handleRequest(RequestInfo req)
 		return error(req, "Invalid Code.");
 	}
 
-	switch (req.id)
+	try
 	{
-	case(CLOSE_OR_LEAVE_ROOM_CODE):
-		return leaveRoom(req);
-		break;
-	case(GET_ROOM_STATE_CODE):
-		return getRoomState(req);
-		break;
+		switch (req.id)
+		{
+		case(CLOSE_OR_LEAVE_ROOM_CODE):
+			return leaveRoom(req);
+			break;
+		case(GET_ROOM_STATE_CODE):
+			return getRoomState(req);
+			break;
+		}
+	}
+	catch (...)
+	{
+		return error(req, "Room Closed");
 	}
 
 }
@@ -38,29 +45,40 @@ RequestResult RoomMemberRequestHandler::leaveRoom(RequestInfo)
 {
 	RequestResult res;
 	LeaveRoomResponse leaveRes;
-	
-	m_room.removeUser(m_user);
+
+
+	m_roomManager.getRoom(m_room.getData().id).removeUser(m_user);
 	leaveRes.status = 1;
 	res.newHandler = m_handlerFactory.createMenuRequestHandler(m_user);
 	res.respones = JsonResponsePacketSerializer::serializeResponse(leaveRes);
 
 	return res;
 }
-RequestResult RoomMemberRequestHandler::getRoomState(RequestInfo)
+RequestResult RoomMemberRequestHandler::getRoomState(RequestInfo req)
 {
 	RequestResult res;
 	GetRoomStateResponse getRoomRes;
 
-	RoomData roomData = m_room.getData();
+	try
+	{
+		m_room = m_roomManager.getRoom(m_room.getData().id);
 
-	getRoomRes.status = 1;
-	getRoomRes.players = m_room.getAllUsers();
-	getRoomRes.hasGameBegun = roomData.isActive;
-	getRoomRes.questionCount = roomData.numOfQuestionsInGame;
-	getRoomRes.answerTimeout = roomData.timePerQuestion;
+		RoomData roomData = m_room.getData();
 
-	res.newHandler = this;
-	res.respones = JsonResponsePacketSerializer::serializeResponse(getRoomRes);
+		getRoomRes.status = 1;
+		getRoomRes.players = m_room.getAllUsers();
+		getRoomRes.hasGameBegun = roomData.isActive;
+		getRoomRes.questionCount = roomData.numOfQuestionsInGame;
+		getRoomRes.answerTimeout = roomData.timePerQuestion;
+
+		res.newHandler = this;
+		res.respones = JsonResponsePacketSerializer::serializeResponse(getRoomRes);
+	}
+	catch (const std::exception&)
+	{
+		return error(req, "Room Closed", m_handlerFactory.createMenuRequestHandler(m_user));
+	}
+
 
 	return res;
 }
@@ -73,12 +91,19 @@ RequestResult RoomMemberRequestHandler::getRoomState(RequestInfo)
  * \param errorMessage
  * \return
  */
-RequestResult RoomMemberRequestHandler::error(RequestInfo req, string errorMessage)
+RequestResult RoomMemberRequestHandler::error(RequestInfo req, string errorMessage, IRequestHandler* newHandler)
 {
 	RequestResult res;
 	ErrorResponse errorRes;
 	errorRes.messagge = Helper::stringToBuffer(errorMessage);
 	res.respones = JsonResponsePacketSerializer::serializeResponse(errorRes);
-	res.newHandler = this;
+	if (newHandler == nullptr)
+	{
+		res.newHandler = this;
+	}
+	else
+	{
+		res.newHandler = newHandler;
+	}
 	return res;
 }

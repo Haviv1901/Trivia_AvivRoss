@@ -161,7 +161,7 @@ RequestResult MenuRequestHandler::createRoom(RequestInfo req)
 	CreateRoomRequest request = JsonRequestPacketDeserializer::deserializeCreateRoomRequest(req.buffer);
 	CreateRoomResponse response;
 	unsigned int roomId = ++m_idGenerator;
-	m_roomManager.createRoom(m_user, RoomData{ roomId , request.roomName, request.maxUsers, request.questionCount, request.answerTimeout, 1 });
+	m_roomManager.createRoom(m_user, RoomData{ roomId , request.roomName, request.maxUsers, request.questionCount, request.answerTimeout, 0 });
 
 	response.roomId = roomId;
 	res.respones = JsonResponsePacketSerializer::serializeResponse(response);

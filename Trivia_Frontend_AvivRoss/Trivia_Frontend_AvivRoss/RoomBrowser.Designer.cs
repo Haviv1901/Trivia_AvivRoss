@@ -52,7 +52,7 @@
             // NUMroomId
             // 
             NUMroomId.Anchor = AnchorStyles.Left | AnchorStyles.Right;
-            NUMroomId.Location = new Point(289, 69);
+            NUMroomId.Location = new Point(289, 68);
             NUMroomId.Name = "NUMroomId";
             NUMroomId.Size = new Size(142, 23);
             NUMroomId.TabIndex = 1;
@@ -89,7 +89,7 @@
             // BTNjoinButton
             // 
             BTNjoinButton.BackColor = Color.YellowGreen;
-            BTNjoinButton.Location = new Point(427, 69);
+            BTNjoinButton.Location = new Point(437, 68);
             BTNjoinButton.Name = "BTNjoinButton";
             BTNjoinButton.Size = new Size(37, 23);
             BTNjoinButton.TabIndex = 5;
@@ -99,8 +99,6 @@
             // 
             // RoomBrowser
             // 
-            this.FormBorderStyle = FormBorderStyle.FixedSingle;
-            this.MaximizeBox = false;
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
@@ -110,6 +108,8 @@
             Controls.Add(FLWroomsListScorll);
             Controls.Add(NUMroomId);
             Controls.Add(label1);
+            FormBorderStyle = FormBorderStyle.FixedSingle;
+            MaximizeBox = false;
             Name = "RoomBrowser";
             Text = "RoomBrowser";
             FormClosed += RoomBrowser_FormClosed;

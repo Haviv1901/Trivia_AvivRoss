@@ -46,30 +46,29 @@ namespace Trivia_Frontend_AvivRoss
             if (roomName == "")
             {
                 TXTmsg.Text = "Please enter a room name";
-                return;
             }
 
-            if (maxPlayers < 2)
+            else if (maxPlayers < 2)
             {
                 TXTmsg.Text = "Max Players must be at least 2";
-                return;
             }
 
-            if (answerTimeOut < 5)
+            else if (answerTimeOut < 5)
             {
                 TXTmsg.Text = "Answer Time Out must be at least 5";
-                return;
             }
 
-            if (questionCount < 3)
+            else if (questionCount < 3)
             {
                 TXTmsg.Text = "Question Count must be at least 3";
-                return;
+            }
+            else
+            {
+                // if passed all the tests.
+                this.DialogResult = DialogResult.OK;
+                this.Close();
             }
 
-            // if passed all the tests.
-            this.DialogResult = DialogResult.OK;
-            this.Close();
 
         }
     }

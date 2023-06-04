@@ -21,7 +21,7 @@ public:
 	RequestResult getRoomState(RequestInfo);
 
 	// not in uml
-	RequestResult error(RequestInfo req, string errorMessage);
+	RequestResult error(RequestInfo req, string errorMessage, IRequestHandler* newHandler = nullptr);
 
 
 private:

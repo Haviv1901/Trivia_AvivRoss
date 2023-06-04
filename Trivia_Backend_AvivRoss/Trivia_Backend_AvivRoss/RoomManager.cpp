@@ -30,7 +30,7 @@ void RoomManager::deleteRoom(int roomId)
 		m_rooms.erase(it);
 	}
 }
-unsigned int RoomManager::getRoomState(int roomId) const
+unsigned int RoomManager::getRoomState(int roomId)
 {
 	auto it = m_rooms.find(roomId);
 	return it->second.getData().id;

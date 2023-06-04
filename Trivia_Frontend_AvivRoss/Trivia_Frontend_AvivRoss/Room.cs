@@ -20,7 +20,7 @@ namespace Trivia_Frontend_AvivRoss
     public partial class Room : Form
     {
         private int _roomId;
-        private bool _isCreator;
+        private bool _refresh;
 
         public delegate void AddButton();
         public AddButton myDelegate;
@@ -29,24 +29,37 @@ namespace Trivia_Frontend_AvivRoss
         private MainMenu _mainMenu;
         private Thread _thread;
 
+        private Label TXTplayerN;
+
         public Room(int roomId, SoundManager soundManager, MainMenu main, bool isCreator)
         {
-            _isCreator = isCreator;
+            TXTplayerN = new Label();
+            TXTplayerN.AutoSize = true;
+            TXTplayerN.Font = new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point);
+            TXTplayerN.Location = new Point(29, 100);
+            TXTplayerN.Name = "TXTcreator";
+            TXTplayerN.Size = new Size(62, 19);
+            TXTplayerN.TabIndex = 1;
+            
             _roomId = roomId;
             _soundManager = soundManager;
             _mainMenu = main;
 
-
             InitializeComponent();
+            Controls.Add(TXTplayerN);
+            if (isCreator)
+            {
+                Controls.Add(button2);
+            }
+
             _soundManager.LoadMusicButton(this);
             TXTroomId.Text += _roomId.ToString();
             myDelegate = new AddButton(AddButtonMethod);
             _thread = new Thread(new ThreadStart(RefreshPlayers));
             _thread.Start();
-            
         }
 
-        
+
 
         private void button1_Click(object sender, EventArgs e)
         {
@@ -57,78 +70,94 @@ namespace Trivia_Frontend_AvivRoss
 
         private void Room_FormClose(object sender, EventArgs e)
         {
+            button1_Click(sender, e);
+            try
+            {
+                _thread.Interrupt();
+            }
+            catch (Exception exception)
+            {
+                Console.WriteLine(exception);
+            }
+
             _mainMenu.Show();
         }
 
         private void BTNrefresh_Click(object sender, EventArgs e)
         {
             _soundManager.PlayButton();
-            RefreshPlayers();
+            AddButtonMethod();
         }
 
         private void RefreshPlayers()
         {
-            if (BTNrefresh.InvokeRequired)
+            try
             {
-                try
+                while (true)
                 {
-                    while (true)
-                    {
-                        this.BeginInvoke(myDelegate);
-                        Thread.Sleep(500);
-                    }
-                }
-                catch (Exception e)
-                {
-                    Console.WriteLine(e);
+                    AddButtonMethod();
+                    Thread.Sleep(500);
                 }
             }
-            else
+            catch (Exception e)
             {
-                AddButtonMethod();
+                MessageBox.Show("Room closed", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                try
+                {
+                    Invoke(() =>
+                    {
+                        this.Close();
+                    });
+                }
+                catch (Exception exception)
+                {
+                    Console.WriteLine(exception);
+                }
+
+
             }
 
         }
 
         private void AddButtonMethod()
         {
-            List<string> players = new List<string>();
+            List<string> players;
+            Tuple<List<string>, bool, int, int> roomState;
             try
             {
-                players = TriviaRequests.instance.GetRoomState().Item1;
+                roomState = TriviaRequests.instance.GetRoomState();
             }
             catch (Exception e) // if room closed, the json parse will fail.
             {
-                try
-                {
-                    Invoke(() =>
-                    {
-                        MessageBox.Show("Room closed", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        this.Close();
-                    });
-                }
-                catch (Exception a) {}
+                throw new Exception("Room closed");
             }
-            
 
-            int i = 20;
-
+            players = roomState.Item1;
+            bool isStarted = roomState.Item2;
+            string playersString = "";
             foreach (string player in players)
             {
-                Label TXTplayerN = new Label();
-                TXTplayerN.AutoSize = true;
-                TXTplayerN.Font = new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point);
-                TXTplayerN.Location = new Point(29, 80 + i);
-                TXTplayerN.Name = "TXTcreator";
-                TXTplayerN.Size = new Size(62, 19);
-                TXTplayerN.TabIndex = 1;
-                TXTplayerN.Text = "- " + player;
-                Controls.Add(TXTplayerN);
-                i += 20;
+
+                playersString += "- " + player + "\n";
+
             }
 
+            Invoke(() =>
+            {
+                TXTplayerN.Text = playersString;
+            });
 
+            if (isStarted)
+            {
+                MessageBox.Show("Game started!", "Trivia", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
 
+        }
+
+        private void StartGame(object sender, EventArgs e)
+        {
+            SoundManager.instance.PlayButton();
+            TriviaRequests.instance.StartGame();
         }
     }
 }

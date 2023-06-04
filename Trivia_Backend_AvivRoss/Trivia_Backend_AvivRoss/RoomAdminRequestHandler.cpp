@@ -42,6 +42,8 @@ RequestResult RoomAdminRequestHandler::closeRoom(RequestInfo)
 	RequestResult res;
 	CloseRoomResponse closeRoomRes;
 
+	m_room = m_roomManager.getRoom(m_room.getData().id);
+
 	m_roomManager.deleteRoom(m_room.getData().id);
 	closeRoomRes.status = 1;
 	res.newHandler = m_handlerFactory.createMenuRequestHandler(m_user);
@@ -54,11 +56,9 @@ RequestResult RoomAdminRequestHandler::startGame(RequestInfo)
 	RequestResult res;
 	StartGameResponse startGameRes;
 
-	RoomData roomData = m_room.getData();
-	roomData.id = true;
-
+	m_roomManager.getRoom(m_room.getData().id).getData().isActive = 1;
 	startGameRes.status = 1;
-	res.newHandler = m_handlerFactory.createMenuRequestHandler(m_user);
+	res.newHandler = this;
 	res.respones = JsonResponsePacketSerializer::serializeResponse(startGameRes);
 
 	return res;
@@ -67,6 +67,8 @@ RequestResult RoomAdminRequestHandler::getRoomState(RequestInfo)
 {
 	RequestResult res;
 	GetRoomStateResponse getRoomRes;
+
+	m_room = m_roomManager.getRoom(m_room.getData().id);
 
 	RoomData roomData = m_room.getData();
 
