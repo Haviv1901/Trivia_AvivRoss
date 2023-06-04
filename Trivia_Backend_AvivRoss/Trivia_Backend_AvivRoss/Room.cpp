@@ -46,7 +46,7 @@ std::vector<string> Room::getAllUsers() const
 	return names;
 }
 
-RoomData Room::getData() const
+RoomData& Room::getData()
 {
 	return m_roomData;
 }

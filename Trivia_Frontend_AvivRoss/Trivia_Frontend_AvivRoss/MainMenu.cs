@@ -51,7 +51,6 @@ namespace Trivia_Frontend_AvivRoss
             var result = roomData.ShowDialog();
             if (result != DialogResult.OK)
             {
-                MessageBox.Show("Error creating room", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
 
@@ -64,16 +63,15 @@ namespace Trivia_Frontend_AvivRoss
 
             if (roomId == -1)
             {
-                MessageBox.Show("Error creating room", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
 
-            Room room = new Room(roomId, _mainMenuUtis.GetSoundManager(), this);
+            Room room = new Room(roomId, _mainMenuUtis.GetSoundManager(), this, true);
             room.Show();
             this.Hide();
         }
 
-        // music button
+        // logout button
         private void button4_Click(object sender, EventArgs e)
         {
             SoundManager.instance.PlayButton();
@@ -89,6 +87,7 @@ namespace Trivia_Frontend_AvivRoss
             _loginForm.Show();
         }
 
+        // stats button
         private void button3_Click(object sender, EventArgs e)
         {
             SoundManager.instance.PlayButton();

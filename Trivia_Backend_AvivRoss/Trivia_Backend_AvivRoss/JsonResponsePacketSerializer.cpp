@@ -1,5 +1,9 @@
 #include "JsonResponsePacketSerializer.h"
 #include "Helper.h"
+#include "nlohmann/json.hpp"
+
+using json = nlohmann::json;
+json parseToJson(Buffer buffer);
 
 using std::to_string;
 using std::string;
@@ -113,6 +117,41 @@ Buffer JsonResponsePacketSerializer::serializeResponse(GetPersonalStatsResponse 
 	Buffer data = Helper::stringToBuffer(strData);
 	return createResponse(GET_PERSONAL_STATS_CODE, data);
 }
+
+
+Buffer JsonResponsePacketSerializer::serializeResponse(CloseRoomResponse response)
+{
+	json res;
+	res["status"] = response.status;
+
+	return createResponse(CLOSE_OR_LEAVE_ROOM_CODE, Helper::stringToBuffer(res.dump()));
+}
+Buffer JsonResponsePacketSerializer::serializeResponse(StartGameResponse response)
+{
+	json res;
+	res["status"] = response.status;
+
+	return createResponse(START_GAME_CODE, Helper::stringToBuffer(res.dump()));
+}
+Buffer JsonResponsePacketSerializer::serializeResponse(GetRoomStateResponse response)
+{
+	json res;
+	res["status"] = response.status;
+	res["hasGameBegun"] = response.hasGameBegun;
+	res["Players"] = response.players;
+	res["Question Count"] = response.questionCount;
+	res["Answer Timeout"] = response.answerTimeout;
+
+	return createResponse(GET_ROOMS_CODE, Helper::stringToBuffer(res.dump()));
+}
+Buffer JsonResponsePacketSerializer::serializeResponse(LeaveRoomResponse response)
+{
+	json res;
+	res["status"] = response.status;
+
+	return createResponse(CLOSE_OR_LEAVE_ROOM_CODE, Helper::stringToBuffer(res.dump()));
+}
+
 
 /**
  * \brief function will generate a response packet with the given code and data, adding headers to the data.

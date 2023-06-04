@@ -25,7 +25,7 @@ public:
 	void addUser(LoggedUser user);
 	void removeUser(LoggedUser user);
 	std::vector<string> getAllUsers() const;
-	RoomData getData() const;
+	RoomData& getData();
 
 private:
 	//RoomData m_metadat; ????? what is that name

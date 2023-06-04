@@ -24,5 +24,11 @@ public:
 	static Buffer serializeResponse(GetHighScoreResponse response);
 	static Buffer serializeResponse(GetPersonalStatsResponse response);
 
+	//v3
+	static Buffer serializeResponse(CloseRoomResponse response);
+	static Buffer serializeResponse(StartGameResponse response);
+	static Buffer serializeResponse(GetRoomStateResponse response);
+	static Buffer serializeResponse(LeaveRoomResponse response);
+
 };
 

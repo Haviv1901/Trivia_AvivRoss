@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics.Eventing.Reader;
 using System.Linq;
 using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using static System.Formats.Asn1.AsnWriter;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
 
@@ -40,6 +42,52 @@ namespace Trivia_Frontend_AvivRoss
                 throw;
             }
         }
+
+        public void StartGame()
+        {
+            JObject send = new JObject();
+
+            _communicator.SendMessage(send, Constants.StartGameCode);
+            Message recvMessage = _communicator.RecvMessage();
+
+            JObject json = JObject.Parse(recvMessage.data);
+        }
+
+        public void CloseOrLeaveRoom()
+        {
+            JObject send = new JObject();
+
+            _communicator.SendMessage(send, Constants.CloseOrLeaveRoomCode);
+            Message recvMessage = _communicator.RecvMessage();
+
+            JObject json = JObject.Parse(recvMessage.data);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns> tuple in this order: vector of players, has game begun, question count and answer timeout.  </returns>
+        public Tuple<List<string>, bool, int, int> GetRoomState()
+        {
+            JObject send = new JObject();
+
+            _communicator.SendMessage(send, Constants.GetRoomStateCode);
+            Message recvMessage = _communicator.RecvMessage();
+
+            JObject json = JObject.Parse(recvMessage.data);
+
+
+            List<string> players = new List<string>();
+            string jsonStr = json["Players"].ToString().Replace("\n", "").Replace("\r", ""); // removing newlines
+            players = JsonConvert.DeserializeObject<List<string>>(jsonStr);
+            
+            return new Tuple<List<string>, bool, int, int>(
+                players,
+                bool.Parse(json["hasGameBegun"].ToString()),
+                int.Parse(json["Question Count"].ToString()),
+                int.Parse(json["Answer Timeout"].ToString()));
+        }
+
 
         public Dictionary<string, float> GetHighScore()
         {

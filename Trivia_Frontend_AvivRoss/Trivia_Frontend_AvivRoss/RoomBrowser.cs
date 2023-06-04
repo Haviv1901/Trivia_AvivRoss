@@ -17,6 +17,8 @@ namespace Trivia_Frontend_AvivRoss
         private TriviaRequests _triviaRequests;
         private MainMenu _mainMenu;
 
+        private Thread _thread;
+
         public RoomBrowser(SoundManager soundManager, MainMenu mainMenu)
         {
             _mainMenu = mainMenu;
@@ -25,7 +27,8 @@ namespace Trivia_Frontend_AvivRoss
 
             InitializeComponent();
             _soundManager.LoadMusicButton(this);
-            RefreshRooms();
+            _thread = new Thread(new ThreadStart(RefreshRoomsThread));
+            _thread.Start();
         }
 
         private void label1_Click(object sender, EventArgs e)
@@ -39,6 +42,20 @@ namespace Trivia_Frontend_AvivRoss
             RefreshRooms();
         }
 
+        private void RefreshRoomsThread()
+        {
+            try
+            {
+                while (true)
+                {
+                    RefreshRooms();
+                    Thread.Sleep(3000);
+                }
+            }
+            catch (Exception e)
+            {
+            }
+        }
         private void RefreshRooms()
         {
             Dictionary<string, int> rooms = _triviaRequests.GetRooms();
@@ -48,6 +65,12 @@ namespace Trivia_Frontend_AvivRoss
                 MessageBox.Show("Error getting rooms", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
+
+            Invoke(() =>
+            {
+                FLWroomsListScorll.Controls.Clear();
+            });
+            
 
             foreach (string key in rooms.Keys)
             {
@@ -64,7 +87,11 @@ namespace Trivia_Frontend_AvivRoss
                 roomLabel.FlatAppearance.BorderSize = 0;
                 roomLabel.Click += button2_Click;
 
-                FLWroomsListScorll.Controls.Add(roomLabel);
+                Invoke(() =>
+                {
+                    FLWroomsListScorll.Controls.Add(roomLabel);
+                });
+                
             }
         }
 
@@ -76,7 +103,7 @@ namespace Trivia_Frontend_AvivRoss
 
             if (_triviaRequests.JoinRoom(roomid))
             {
-                Room room = new Room(roomid, _soundManager, _mainMenu);
+                Room room = new Room(roomid, _soundManager, _mainMenu, false);
                 room.Show();
                 this.Hide();
             }
@@ -100,7 +127,7 @@ namespace Trivia_Frontend_AvivRoss
             int roomid = (int)NUMroomId.Value;
             if (_triviaRequests.JoinRoom(roomid))
             {
-                Room room = new Room(roomid, _soundManager, _mainMenu);
+                Room room = new Room(roomid, _soundManager, _mainMenu, false);
                 room.Show();
                 this.Hide();
             }

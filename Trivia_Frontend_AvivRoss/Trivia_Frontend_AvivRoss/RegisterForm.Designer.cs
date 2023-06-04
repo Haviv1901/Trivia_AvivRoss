@@ -72,7 +72,6 @@
             label1.Location = new Point(247, 107);
             label1.Name = "label1";
             label1.Size = new Size(60, 15);
-            label1.TabIndex = 3;
             label1.Text = "Username";
             // 
             // label2
@@ -83,7 +82,6 @@
             label2.Location = new Point(320, 48);
             label2.Name = "label2";
             label2.Size = new Size(82, 28);
-            label2.TabIndex = 4;
             label2.Text = "Register";
             // 
             // INpass2
@@ -91,7 +89,7 @@
             INpass2.Location = new Point(247, 275);
             INpass2.Name = "INpass2";
             INpass2.Size = new Size(273, 23);
-            INpass2.TabIndex = 5;
+            INpass2.TabIndex = 3;
             INpass2.UseSystemPasswordChar = true;
             // 
             // label3
@@ -100,7 +98,6 @@
             label3.Location = new Point(247, 160);
             label3.Name = "label3";
             label3.Size = new Size(36, 15);
-            label3.TabIndex = 6;
             label3.Text = "Email";
             // 
             // label4
@@ -109,7 +106,6 @@
             label4.Location = new Point(247, 215);
             label4.Name = "label4";
             label4.Size = new Size(57, 15);
-            label4.TabIndex = 7;
             label4.Text = "Password";
             // 
             // label5
@@ -118,7 +114,6 @@
             label5.Location = new Point(248, 259);
             label5.Name = "label5";
             label5.Size = new Size(104, 15);
-            label5.TabIndex = 8;
             label5.Text = "Confirm Password";
             // 
             // TXTmsg
@@ -128,7 +123,6 @@
             TXTmsg.Location = new Point(320, 372);
             TXTmsg.Name = "TXTmsg";
             TXTmsg.Size = new Size(0, 15);
-            TXTmsg.TabIndex = 9;
             // 
             // BTNregister
             // 
@@ -136,7 +130,7 @@
             BTNregister.Location = new Point(320, 354);
             BTNregister.Name = "BTNregister";
             BTNregister.Size = new Size(75, 23);
-            BTNregister.TabIndex = 10;
+            BTNregister.TabIndex = 5;
             BTNregister.Text = "Register";
             BTNregister.UseVisualStyleBackColor = false;
             BTNregister.Click += BTNregister_Click;
@@ -147,7 +141,7 @@
             BOXconfirm.Location = new Point(248, 329);
             BOXconfirm.Name = "BOXconfirm";
             BOXconfirm.Size = new Size(165, 19);
-            BOXconfirm.TabIndex = 11;
+            BOXconfirm.TabIndex = 4;
             BOXconfirm.Text = "Confirm me hacking ur pc";
             BOXconfirm.UseVisualStyleBackColor = true;
             BOXconfirm.CheckedChanged += BOXconfirm_CheckedChanged;

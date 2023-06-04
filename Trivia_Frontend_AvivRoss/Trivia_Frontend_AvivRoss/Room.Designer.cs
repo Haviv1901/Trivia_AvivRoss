@@ -28,11 +28,10 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.FormBorderStyle = FormBorderStyle.FixedSingle;
-            this.MaximizeBox = false;
             button1 = new Button();
             TXTroomId = new Label();
             BTNrefresh = new Button();
+            button2 = new Button();
             SuspendLayout();
             // 
             // button1
@@ -68,6 +67,17 @@
             BTNrefresh.UseVisualStyleBackColor = false;
             BTNrefresh.Click += BTNrefresh_Click;
             // 
+            // button2
+            // 
+            button2.BackColor = Color.LemonChiffon;
+            button2.Location = new Point(298, 207);
+            button2.Name = "button2";
+            button2.Size = new Size(118, 38);
+            button2.TabIndex = 12;
+            button2.Text = "Start Game";
+            button2.UseVisualStyleBackColor = false;
+            button2.Click += StartGame;
+            // 
             // Room
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -76,6 +86,8 @@
             Controls.Add(BTNrefresh);
             Controls.Add(TXTroomId);
             Controls.Add(button1);
+            FormBorderStyle = FormBorderStyle.FixedSingle;
+            MaximizeBox = false;
             Name = "Room";
             Text = "Room";
             FormClosed += Room_FormClose;
@@ -87,5 +99,6 @@
         private Button button1;
         private Label TXTroomId;
         private Button BTNrefresh;
+        private Button button2;
     }
 }

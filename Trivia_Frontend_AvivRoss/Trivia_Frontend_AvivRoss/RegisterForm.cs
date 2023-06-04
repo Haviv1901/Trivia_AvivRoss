@@ -77,5 +77,6 @@ namespace Trivia_Frontend_AvivRoss
             INpass.UseSystemPasswordChar = !CHKshowPass.Checked;
             INpass2.UseSystemPasswordChar = !CHKshowPass.Checked;
         }
+
     }
 }
