@@ -17,5 +17,9 @@ public:
 	static GetPlayersInRoomRequest deserializeGetPlayersRequest(Buffer buffer);
 	static JoinRoomRequest deserializeJoinRoomRequest(Buffer buffer);
 	static CreateRoomRequest deserializeCreateRoomRequest(Buffer buffer);
+
+	//v4
+	static SubmitAnswerRequest deserializeSubmitAnswerRequest(Buffer buffer);
+
 };
 

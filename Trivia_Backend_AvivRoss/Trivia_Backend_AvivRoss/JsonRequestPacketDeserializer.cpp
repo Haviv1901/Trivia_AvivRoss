@@ -63,6 +63,16 @@ CreateRoomRequest JsonRequestPacketDeserializer::deserializeCreateRoomRequest(Bu
 	return res;
 }
 
+SubmitAnswerRequest JsonRequestPacketDeserializer::deserializeSubmitAnswerRequest(Buffer buffer)
+{
+	SubmitAnswerRequest res;
+	json json = parseToJson(buffer);
+
+	res.answerId = json["Answer Id"];
+
+	return res;
+}
+
 
 
 json parseToJson(Buffer buffer)
