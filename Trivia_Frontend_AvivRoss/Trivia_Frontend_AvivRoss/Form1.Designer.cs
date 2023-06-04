@@ -51,8 +51,9 @@
             TXTpassword.Location = new Point(265, 196);
             TXTpassword.Name = "TXTpassword";
             TXTpassword.Size = new Size(254, 23);
-            TXTpassword.TabIndex = 0;
+            TXTpassword.TabIndex = 1;
             TXTpassword.UseSystemPasswordChar = true;
+            TXTpassword.TextChanged += TXTpassword_TextChanged;
             // 
             // BTNlogin
             // 
@@ -62,7 +63,7 @@
             BTNlogin.Location = new Point(320, 274);
             BTNlogin.Name = "BTNlogin";
             BTNlogin.Size = new Size(130, 32);
-            BTNlogin.TabIndex = 1;
+            BTNlogin.TabIndex = 2;
             BTNlogin.Text = "Login";
             BTNlogin.UseVisualStyleBackColor = false;
             BTNlogin.Click += button1_Click;
@@ -73,7 +74,8 @@
             TXTusername.Location = new Point(265, 141);
             TXTusername.Name = "TXTusername";
             TXTusername.Size = new Size(255, 23);
-            TXTusername.TabIndex = 2;
+            TXTusername.TabIndex = 0;
+            TXTusername.TextChanged += TXTusername_TextChanged;
             // 
             // contextMenuStrip1
             // 

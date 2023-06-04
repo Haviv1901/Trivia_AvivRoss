@@ -61,5 +61,23 @@ namespace Trivia_Frontend_AvivRoss
         {
             TXTpassword.UseSystemPasswordChar = !TXTpassword.UseSystemPasswordChar;
         }
+
+        private void TXTusername_TextChanged(object sender, EventArgs e)
+        {
+            this.TXTusername.KeyPress += new System.Windows.Forms.KeyPressEventHandler(CheckEnterKeyPress);
+        }
+
+        private void CheckEnterKeyPress(object sender, System.Windows.Forms.KeyPressEventArgs e)
+        {
+            if (e.KeyChar == (char)Keys.Return)
+            {
+                button1_Click(sender, e);
+            }
+        }
+
+        private void TXTpassword_TextChanged(object sender, EventArgs e)
+        {
+            this.TXTpassword.KeyPress += new System.Windows.Forms.KeyPressEventHandler(CheckEnterKeyPress);
+        }
     }
 }
