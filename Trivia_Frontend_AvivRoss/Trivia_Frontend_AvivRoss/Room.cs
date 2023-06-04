@@ -65,12 +65,11 @@ namespace Trivia_Frontend_AvivRoss
         {
             SoundManager.instance.PlayButton();
             TriviaRequests.instance.CloseOrLeaveRoom();
-            this.Close();
+            CloseRoomFoorm();
         }
 
-        private void Room_FormClose(object sender, EventArgs e)
+        private void CloseRoomFoorm()
         {
-            button1_Click(sender, e);
             try
             {
                 _thread.Interrupt();
@@ -81,6 +80,11 @@ namespace Trivia_Frontend_AvivRoss
             }
 
             _mainMenu.Show();
+        }
+
+        private void Room_FormClose(object sender, EventArgs e)
+        {
+            CloseRoomFoorm();
         }
 
         private void BTNrefresh_Click(object sender, EventArgs e)
@@ -113,10 +117,7 @@ namespace Trivia_Frontend_AvivRoss
                 {
                     Console.WriteLine(exception);
                 }
-
-
             }
-
         }
 
         private void AddButtonMethod()

@@ -51,7 +51,6 @@ namespace Trivia_Frontend_AvivRoss
             var result = roomData.ShowDialog();
             if (result != DialogResult.OK)
             {
-                MessageBox.Show("Error creating room", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
 
@@ -64,7 +63,6 @@ namespace Trivia_Frontend_AvivRoss
 
             if (roomId == -1)
             {
-                MessageBox.Show("Error creating room", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
 
