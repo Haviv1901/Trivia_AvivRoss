@@ -4,6 +4,7 @@
 #include "Consts.h"
 #include "helper.h"
 #include "Room.h"
+#include <map>
 
 using std::string;
 using std::vector;
@@ -98,14 +99,15 @@ struct GetQuestionResponse
 {
 	unsigned int status;
 	string question;
-	string rightAnswer;
-	vector<string> wrongAnswers;
-	//std::map<unsigned int, string> answers; // answer id (1-4), answer
+	//string rightAnswer;
+	//vector<string> wrongAnswers;
+	std::map<unsigned int, string> answers; // answer id (1-4), answer
 } typedef GetQuestionResponse;
 
 struct SubmitAnswerResponse
 {
 	unsigned int status;
+	unsigned int correctAnswerId;
 } typedef SubmitAnswerResponse;
 
 struct PlayerResults
@@ -114,7 +116,7 @@ struct PlayerResults
 	unsigned int correctAnswerCount;
 	unsigned int wrongAnswerCount;
 	unsigned int averageAnswerTime;
-	unsigned int score;
+	float score;
 } typedef PlayerResults;
 
 struct GetGameResultsResponse

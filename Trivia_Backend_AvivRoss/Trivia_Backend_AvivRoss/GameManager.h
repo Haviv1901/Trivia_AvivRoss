@@ -1,7 +1,7 @@
 #pragma once
 #include "Game.h"
 #include "Room.h"
-
+#include "IDatabase.h"
 
 
 class GameManager
@@ -17,7 +17,6 @@ private:
 
 	static unsigned int m_idGenerator;
 	std::vector<Game> m_games;
-	std::map<LoggedUser, GameData> usersInGames;
 	IDatabase* m_database;
 };
 

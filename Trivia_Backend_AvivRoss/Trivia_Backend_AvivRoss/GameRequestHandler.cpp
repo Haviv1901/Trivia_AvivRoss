@@ -73,11 +73,10 @@ RequestResult GameRequestHandler::getQuestion(RequestInfo req)
 
 	getQuestionRes.question = temp.getQuestion(); // insertr question
 
-	vector<string> answers = temp.getPossibleAnswers();
-	getQuestionRes.rightAnswer = answers[temp.getCorrectAnswerId()]; // insert right question
-	answers.erase(answers.begin() + temp.getCorrectAnswerId()); // remove the right question
-
-	getQuestionRes.wrongAnswers = answers; // insert the rest of the questions
+	getQuestionRes.answers.insert({ 0 , temp.getPossibleAnswers()[0] });
+	getQuestionRes.answers.insert({ 1 , temp.getPossibleAnswers()[1] });
+	getQuestionRes.answers.insert({ 2 , temp.getPossibleAnswers()[2] });
+	getQuestionRes.answers.insert({ 3 , temp.getPossibleAnswers()[3] });
 	
 
 	res.respones = JsonResponsePacketSerializer::serializeResponse(getQuestionRes);
@@ -85,7 +84,7 @@ RequestResult GameRequestHandler::getQuestion(RequestInfo req)
 	m_startTime = clock();
 	return res;
 }
-RequestResult GameRequestHandler::submitAnswer(RequestInfo req)
+RequestResult GameRequestHandler::submitAnswer(RequestInfo req) 
 {
 	RequestResult res;
 	double timeTookToAnswer = (clock() - m_startTime) / (double)CLOCKS_PER_SEC;
@@ -93,15 +92,11 @@ RequestResult GameRequestHandler::submitAnswer(RequestInfo req)
 	SubmitAnswerRequest submingAnswerReq = JsonRequestPacketDeserializer::deserializeSubmitAnswerRequest(req.buffer);
 	SubmitAnswerResponse submitAnswerRes;
 	
-	m_game.submitAnswer(m_user.getUsername(), submingAnswerReq.answerId);
-	// do i check if answer was currect or do I recv it from the client? ?? ?? ? ? ?  TODO: check this
+	m_game.submitAnswer(m_user.getUsername(), submingAnswerReq.answerId); // add here function recv also the time it took to answer
 
-	// take time since the question was sent
-	// check if the answer is correct
-	// insert to db accordingly
 
 	submitAnswerRes.status = 1;
-	submitAnswerRes.correctAnswerId = 5;
+	submitAnswerRes.correctAnswerId = m_game.getQuestionForUser(m_user.getUsername()).getCorrectAnswerId();
 	res.respones = JsonResponsePacketSerializer::serializeResponse(submitAnswerRes);
 	res.newHandler = this;
 	return res;
@@ -111,17 +106,49 @@ RequestResult GameRequestHandler::getGameResult(RequestInfo req)
 {
 	RequestResult res;
 
+
 	GetGameResultsResponse getGameResultsRes;
 
-	getGameResultsRes.
+	for (auto iter : m_game.getPlayers())
+	{
+		PlayerResults res;
+		res.username = iter.first;
+		res.correctAnswerCount = iter.second.numOfCorrectAnswers;
+		res.wrongAnswerCount = iter.second.numOfWrongAnswers;
+		res.averageAnswerTime = iter.second.averageAnswerTime;
 
-	res.respones = JsonResponsePacketSerializer::serializeResponse(submitAnswerRes);
+		if (iter.second.numOfCorrectAnswers + iter.second.numOfWrongAnswers == 0)
+		{
+			res.score = 0;
+		}
+		else
+		{
+			res.score = ((float)iter.second.numOfCorrectAnswers / iter.second.numOfCorrectAnswers + iter.second.numOfWrongAnswers) * (float)100;
+		}
+
+		getGameResultsRes.results.push_back(res);
+	}
+
+	res.respones = JsonResponsePacketSerializer::serializeResponse(getGameResultsRes);
 	res.newHandler = this;
 	return res;
 }
+
+
 RequestResult GameRequestHandler::leaveGame(RequestInfo req)
 {
-	
+	RequestResult res;
+
+	LeaveGameResponse leaveGameRes;
+
+	leaveGameRes.status = 1;
+
+	m_game.removePlayer(m_user.getUsername());
+
+
+	res.respones = JsonResponsePacketSerializer::serializeResponse(leaveGameRes);
+	res.newHandler = m_handlerFactory.createMenuRequestHandler(m_user);
+	return res;
 }
 
 

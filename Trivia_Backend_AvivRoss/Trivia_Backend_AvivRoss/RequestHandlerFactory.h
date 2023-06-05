@@ -6,6 +6,7 @@
 #include "RoomManager.h"
 #include "RoomMemberRequestHandler.h"
 #include "RoomAdminRequestHandler.h"
+#include "GameRequestHandler.h"
 
 class LoginRequestHandler;
 class MenuRequestHandler;

@@ -182,8 +182,12 @@ Buffer JsonResponsePacketSerializer::serializeResponse(GetQuestionResponse respo
 	json res;
 	res["status"] = response.status;
 	res["Question"] = response.question;
-	res["Right Question"] = response.rightAnswer;
-	res["Wrong Answers"] = response.wrongAnswers;
+
+	res["0"] = response.answers[0];
+	res["1"] = response.answers[1];
+	res["2"] = response.answers[2];
+	res["3"] = response.answers[3];
+
 
 	return createResponse(GET_QUESTION_CODE, Helper::stringToBuffer(res.dump()));
 }

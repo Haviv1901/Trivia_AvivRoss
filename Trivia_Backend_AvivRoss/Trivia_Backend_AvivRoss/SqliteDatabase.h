@@ -4,6 +4,7 @@
 #include "IDatabase.h"
 #include "sqlite3.h"
 
+using std::string;
 
 struct user
 {

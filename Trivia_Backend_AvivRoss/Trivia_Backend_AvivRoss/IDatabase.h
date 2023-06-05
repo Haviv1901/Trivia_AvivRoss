@@ -7,13 +7,6 @@
 
 using std::string;
 
-//struct Question
-//{
-//	string question;
-//	std::vector<string> answers; // first answer is the correct one
-//};
-
-
 
 class IDatabase
 {
