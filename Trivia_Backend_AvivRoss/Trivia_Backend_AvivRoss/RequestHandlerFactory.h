@@ -27,7 +27,7 @@ public:
 	StatisticsManager& getStatisticsManager();
 	RoomManager& getRoomManager();
 
-	GameRequestHandler* createGameRequestHandler(Game game, LoggedUser user);
+	GameRequestHandler* createGameRequestHandler(Room room, LoggedUser user);
 	GameManager& getGameManager();
 
 private:

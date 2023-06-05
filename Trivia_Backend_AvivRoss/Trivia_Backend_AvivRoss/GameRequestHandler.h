@@ -20,7 +20,10 @@ public:
 	RequestResult getGameResult(RequestInfo req);
 	RequestResult leaveGame(RequestInfo req);
 
+	RequestResult error(RequestInfo req, string errorMessage);
+
 private:
+	clock_t m_startTime;
     Game& m_game;
     LoggedUser m_user;
 	GameManager& m_gameManager;
