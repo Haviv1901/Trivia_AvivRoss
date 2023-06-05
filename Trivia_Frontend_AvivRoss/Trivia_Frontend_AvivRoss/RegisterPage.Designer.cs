@@ -1,6 +1,6 @@
 ﻿namespace Trivia_Frontend_AvivRoss
 {
-    partial class RegisterForm
+    partial class RegisterPage
     {
         /// <summary>
         /// Required designer variable.
@@ -168,7 +168,7 @@
             CHKshowPass.UseVisualStyleBackColor = true;
             CHKshowPass.CheckedChanged += CHKshowPass_CheckedChanged;
             // 
-            // RegisterForm
+            // RegisterPage
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
@@ -187,11 +187,8 @@
             Controls.Add(INpass);
             Controls.Add(INemail);
             Controls.Add(INusername);
-            FormBorderStyle = FormBorderStyle.FixedSingle;
-            MaximizeBox = false;
-            Name = "RegisterForm";
-            Text = "RegisterForm";
-            FormClosed += RegisterForm_FormClosed;
+            Name = "RegisterPage";
+            Text = "RegisterPage";
             ResumeLayout(false);
             PerformLayout();
         }

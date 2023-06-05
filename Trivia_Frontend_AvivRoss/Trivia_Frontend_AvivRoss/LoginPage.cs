@@ -2,15 +2,11 @@ using System.Diagnostics;
 
 namespace Trivia_Frontend_AvivRoss
 {
-    public partial class Form1 : Form
+    public partial class LoginPage : MainUserControl
     {
-        private TriviaRequests _requestHandler;
-        public Form1()
-        {
-            _requestHandler = new TriviaRequests();
-            if (!_requestHandler.IsConnected())
-                MessageBox.Show("failed to connec to server.");
 
+        public LoginPage(SoundManager soundManager) : base(soundManager)
+        {
             InitializeComponent();
         }
 
@@ -47,9 +43,9 @@ namespace Trivia_Frontend_AvivRoss
 
         private void button1_Click_1(object sender, EventArgs e)
         {
-            RegisterForm register = new RegisterForm(this);
-            this.Hide();
-            register.Show();
+            RegisterPage register = new RegisterPage(soundManager, this);
+            Controls.Clear();
+            Controls.Add(register);
         }
 
         private void Form1_FormClosed(object sender, FormClosedEventArgs e)
@@ -78,6 +74,11 @@ namespace Trivia_Frontend_AvivRoss
         private void TXTpassword_TextChanged(object sender, EventArgs e)
         {
             this.TXTpassword.KeyPress += new System.Windows.Forms.KeyPressEventHandler(CheckEnterKeyPress);
+        }
+
+        private void LoginPage_Load(object sender, EventArgs e)
+        {
+
         }
     }
 }

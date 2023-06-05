@@ -56,38 +56,13 @@ namespace Trivia_Frontend_AvivRoss
 
         public void LoadMusicButton(Form formToLoadOn)
         {
-            // 
-            // BTNsound
-            // 
-            Button BTNsound = new Button();
-            BTNsound.BackColor = Color.IndianRed;
-            BTNsound.Location = new Point(0, 0);
-            BTNsound.Name = "BTNsound";
-            BTNsound.Size = new Size(28, 26);
-            BTNsound.TabIndex = 1;
-            BTNsound.Text = "🔇";
-            BTNsound.UseVisualStyleBackColor = false;
-            BTNsound.Click += BTNsound_Click;
-            formToLoadOn.Controls.Add(BTNsound);
+
 
         }
 
         public static void BTNsound_Click(object sender, EventArgs e)
         {
-            if (SoundManager.instance.GetSound())
-            {
-                SoundManager.instance.SetSound(false);
-                SoundManager.instance.StopMusic();
-                ((Button)sender).Text = "🔊";
-                ((Button)sender).BackColor = Color.Blue;
-            }
-            else
-            {
-                SoundManager.instance.SetSound(true);
-                SoundManager.instance.PlayMusic();
-                ((Button)sender).Text = "🔇";
-                ((Button)sender).BackColor = Color.Red;
-            }
+
         }
 
         public void PlayButton()

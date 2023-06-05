@@ -10,12 +10,10 @@ using System.Windows.Forms;
 
 namespace Trivia_Frontend_AvivRoss
 {
-    public partial class RegisterForm : Form
+    public partial class RegisterPage : MainUserControl
     {
-        private Form1 _loginForm;
-        public RegisterForm(Form1 loginForm)
+        public RegisterPage(SoundManager soundManager, MainUserControl lastControl) : base(soundManager, lastControl)
         {
-            _loginForm = loginForm;
             InitializeComponent();
         }
 
@@ -43,11 +41,11 @@ namespace Trivia_Frontend_AvivRoss
                 TriviaRequests.instance.SetStatus(Constants.MainMenu);
 
                 MainMenuUtis mainMenuUtis = new MainMenuUtis(username);
-                MainMenu mainMenu = new MainMenu(mainMenuUtis, _loginForm);
+                //MainMenu mainMenu = new MainMenu(mainMenuUtis, _loginForm);
 
 
-                mainMenu.Show();
-                this.Close();
+                Controls.Remove(this);
+                Controls.Add(LastControl);
             }
             else
             {
@@ -63,8 +61,8 @@ namespace Trivia_Frontend_AvivRoss
 
         private void button1_Click(object sender, EventArgs e)
         {
-            _loginForm.Show();
-            this.Close();
+            Controls.Remove(this);
+            Controls.Add(LastControl);
         }
 
         private void RegisterForm_FormClosed(object sender, FormClosedEventArgs e)

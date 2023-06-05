@@ -36,7 +36,7 @@ RequestResult RoomMemberRequestHandler::handleRequest(RequestInfo req)
 	}
 	catch (...)
 	{
-		return error(req, "Room Closed");
+		return error(req, "Room Closed", m_handlerFactory.createMenuRequestHandler(m_user));
 	}
 
 }
@@ -71,7 +71,15 @@ RequestResult RoomMemberRequestHandler::getRoomState(RequestInfo req)
 		getRoomRes.questionCount = roomData.numOfQuestionsInGame;
 		getRoomRes.answerTimeout = roomData.timePerQuestion;
 
-		res.newHandler = this;
+		if (roomData.isActive) // if game started, set handler to game handler
+		{
+			res.newHandler = m_handlerFactory.createGameRequestHandler(m_room, m_user);
+		}
+		else
+		{
+			res.newHandler = this;
+		}
+
 		res.respones = JsonResponsePacketSerializer::serializeResponse(getRoomRes);
 	}
 	catch (const std::exception&)

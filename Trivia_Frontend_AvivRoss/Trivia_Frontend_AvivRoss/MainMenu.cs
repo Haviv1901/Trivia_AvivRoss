@@ -13,9 +13,9 @@ namespace Trivia_Frontend_AvivRoss
     public partial class MainMenu : Form
     {
 
-        private Form1 _loginForm;
+        private LoginPage _loginForm;
         private MainMenuUtis _mainMenuUtis;
-        public MainMenu(MainMenuUtis mainMenuUtis, Form1 loginForm)
+        public MainMenu(MainMenuUtis mainMenuUtis, LoginPage loginForm)
         {
             _loginForm = loginForm;
             _mainMenuUtis = mainMenuUtis;

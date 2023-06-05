@@ -1,6 +1,6 @@
 ﻿namespace Trivia_Frontend_AvivRoss
 {
-    partial class Form1
+    partial class LoginPage
     {
         /// <summary>
         ///  Required designer variable.
@@ -30,7 +30,6 @@
         {
             components = new System.ComponentModel.Container();
             TXTpassword = new TextBox();
-            BTNlogin = new Button();
             TXTusername = new TextBox();
             contextMenuStrip1 = new ContextMenuStrip(components);
             sdsdToolStripMenuItem = new ToolStripMenuItem();
@@ -40,6 +39,7 @@
             button1 = new Button();
             checkBox1 = new CheckBox();
             MSGmessage = new Label();
+            BTNlogin = new Button();
             contextMenuStrip1.SuspendLayout();
             SuspendLayout();
             // 
@@ -50,30 +50,17 @@
             TXTpassword.ForeColor = SystemColors.ActiveCaptionText;
             TXTpassword.Location = new Point(265, 196);
             TXTpassword.Name = "TXTpassword";
-            TXTpassword.Size = new Size(254, 23);
+            TXTpassword.Size = new Size(299, 23);
             TXTpassword.TabIndex = 1;
             TXTpassword.UseSystemPasswordChar = true;
             TXTpassword.TextChanged += TXTpassword_TextChanged;
-            // 
-            // BTNlogin
-            // 
-            BTNlogin.AccessibleName = "BTNloginPage";
-            BTNlogin.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            BTNlogin.BackColor = SystemColors.ActiveCaption;
-            BTNlogin.Location = new Point(320, 274);
-            BTNlogin.Name = "BTNlogin";
-            BTNlogin.Size = new Size(130, 32);
-            BTNlogin.TabIndex = 2;
-            BTNlogin.Text = "Login";
-            BTNlogin.UseVisualStyleBackColor = false;
-            BTNlogin.Click += button1_Click;
             // 
             // TXTusername
             // 
             TXTusername.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             TXTusername.Location = new Point(265, 141);
             TXTusername.Name = "TXTusername";
-            TXTusername.Size = new Size(255, 23);
+            TXTusername.Size = new Size(299, 23);
             TXTusername.TabIndex = 0;
             TXTusername.TextChanged += TXTusername_TextChanged;
             // 
@@ -148,11 +135,23 @@
             MSGmessage.Size = new Size(0, 15);
             MSGmessage.TabIndex = 9;
             // 
-            // Form1
+            // BTNlogin
+            // 
+            BTNlogin.AccessibleName = "BTNloginPage";
+            BTNlogin.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            BTNlogin.BackColor = SystemColors.ActiveCaption;
+            BTNlogin.Location = new Point(319, 256);
+            BTNlogin.Name = "BTNlogin";
+            BTNlogin.Size = new Size(163, 50);
+            BTNlogin.TabIndex = 2;
+            BTNlogin.Text = "Login";
+            BTNlogin.UseVisualStyleBackColor = false;
+            BTNlogin.Click += button1_Click;
+            // 
+            // LoginPage
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(760, 436);
             Controls.Add(MSGmessage);
             Controls.Add(checkBox1);
             Controls.Add(button1);
@@ -162,11 +161,16 @@
             Controls.Add(TXTusername);
             Controls.Add(BTNlogin);
             Controls.Add(TXTpassword);
-            FormBorderStyle = FormBorderStyle.FixedSingle;
-            MaximizeBox = false;
-            Name = "Form1";
-            Text = "Form1";
-            FormClosed += Form1_FormClosed;
+            Name = "LoginPage";
+            Controls.SetChildIndex(TXTpassword, 0);
+            Controls.SetChildIndex(BTNlogin, 0);
+            Controls.SetChildIndex(TXTusername, 0);
+            Controls.SetChildIndex(label1, 0);
+            Controls.SetChildIndex(label3, 0);
+            Controls.SetChildIndex(label4, 0);
+            Controls.SetChildIndex(button1, 0);
+            Controls.SetChildIndex(checkBox1, 0);
+            Controls.SetChildIndex(MSGmessage, 0);
             contextMenuStrip1.ResumeLayout(false);
             ResumeLayout(false);
             PerformLayout();
@@ -175,7 +179,6 @@
         #endregion
 
         private TextBox TXTpassword;
-        private Button BTNlogin;
         private TextBox TXTusername;
         private ContextMenuStrip contextMenuStrip1;
         private ToolStripMenuItem sdsdToolStripMenuItem;
@@ -185,5 +188,6 @@
         private Button button1;
         private CheckBox checkBox1;
         private Label MSGmessage;
+        private Button BTNlogin;
     }
 }
