@@ -9,6 +9,8 @@
 #include "Helper.h"
 #include "nlohmann/json.hpp"
 #include <urlmon.h>
+#include <algorithm>
+#include <random>
 #include <sstream>
 
 
@@ -556,13 +558,20 @@ int callbackQuestions(void* data, int argc, char** argv, char** azColName)
 		}
 
 	}
-	Question temp;
-	temp.question = question;
-	temp.answers.push_back(currAnswer);
-	temp.answers.push_back(wrongAnswer1);
-	temp.answers.push_back(wrongAnswer2);
-	temp.answers.push_back(wrongAnswer3);
-	questionsList->push_back(temp);
+	vector<string> answers;
+	answers.push_back(currAnswer);
+	answers.push_back(wrongAnswer1);
+	answers.push_back(wrongAnswer2);
+	answers.push_back(wrongAnswer3);
+
+	auto rng = std::default_random_engine{}; // shuffle the answers
+	std::shuffle(std::begin(answers), std::end(answers), rng);
+
+
+	std::vector<string>::iterator itr = std::find(answers.begin(), answers.end(), currAnswer); // find the correct answer index
+	int correctAnswerIndex = std::distance(answers.begin(), itr);
+
+	questionsList->push_back(Question(question, answers, correctAnswerIndex));
 	return 0;
 }
 

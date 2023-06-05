@@ -3,14 +3,15 @@
 #include <list>
 
 #include "Helper.h"
+#include "Question.h"
 
 using std::string;
 
-struct Question
-{
-	string question;
-	std::vector<string> answers; // first answer is the correct one
-};
+//struct Question
+//{
+//	string question;
+//	std::vector<string> answers; // first answer is the correct one
+//};
 
 
 

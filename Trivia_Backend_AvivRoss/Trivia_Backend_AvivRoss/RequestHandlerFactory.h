@@ -1,4 +1,5 @@
 #pragma once
+#include "GameManager.h"
 #include "LoginManager.h"
 #include "LoginRequestHandler.h"
 #include "MenuRequestHandler.h"
@@ -10,6 +11,7 @@ class LoginRequestHandler;
 class MenuRequestHandler;
 class RoomMemberRequestHandler;
 class RoomAdminRequestHandler;
+class GameRequestHandler;
 
 class RequestHandlerFactory
 {
@@ -25,11 +27,14 @@ public:
 	StatisticsManager& getStatisticsManager();
 	RoomManager& getRoomManager();
 
+	GameRequestHandler* createGameRequestHandler(Game game, LoggedUser user);
+	GameManager& getGameManager();
+
 private:
 	LoginManager m_loginManager;
 	IDatabase* m_database;
-
 	RoomManager m_roomManager;
 	StatisticsManager m_statisticsManager;
+	GameManager m_gameManager;
 };
 
