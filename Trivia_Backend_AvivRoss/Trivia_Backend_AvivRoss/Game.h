@@ -7,8 +7,8 @@
 struct GameData
 {
 	Question currentQuestion;
-	unsigned int correctQuestion;
-	unsigned int wrongQuestion;
+	unsigned int numOfCorrectAnswers;
+	unsigned int numOfTotalAnswers;
 	float averageAnswerTime;
 };
 
@@ -22,6 +22,8 @@ public:
 	void submitAnswer(LoggedUser user, unsigned int answerId);
 	void removePlayer(LoggedUser user);
 
+	unsigned int getGameId();
+
 private:
 
 	std::vector<Question> m_questions;
@@ -29,4 +31,3 @@ private:
 	unsigned int m_gameId;
 
 };
-

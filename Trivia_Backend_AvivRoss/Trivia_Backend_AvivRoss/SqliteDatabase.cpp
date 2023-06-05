@@ -302,16 +302,16 @@ void SqliteDatabase::getUsers(std::vector<user>* usersList, string prefix)
 	}
 }
 
-void SqliteDatabase::getQuestions(std::list<Question>* questionsList, string prefix)
+void SqliteDatabase::getQuestionsFromDB(std::list<Question>* questionsList, string prefix)
 {
 	sqlRunQuery("SELECT * FROM QUESTIONS", callbackQuestions, (void*)questionsList);
 }
 
 
-std::list<Question> SqliteDatabase::getQuestion(int num)
+std::list<Question> SqliteDatabase::getQuestions(int num)
 {
 	std::list<Question> res;
-	getQuestions(&res);
+	getQuestionsFromDB(&res);
 
 	auto end = std::next(res.begin(), num);
 

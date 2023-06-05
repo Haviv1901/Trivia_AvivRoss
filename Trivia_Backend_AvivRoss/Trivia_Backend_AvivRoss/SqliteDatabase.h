@@ -27,7 +27,7 @@ public:
 	int doesPasswordMatch(string pass, string username) override;
 	int addNewUser(string username, string pass, string email) override;
 
-	std::list<Question> getQuestion(int num) override;
+	std::list<Question> getQuestions(int num) override;
 	float getPlayerAverageAnswerTime(string username) override;
 	int getNumOfCorrectAnswers(string username) override;
 	int getNumOfTotalAnswers(string username) override;
@@ -45,7 +45,7 @@ private:
 	void sqlRunQuery(string sqlStatement) const;
 	void getStatistics(std::vector<Statistics>* usersList, string username = "");
 	void getUsers(std::vector<user>* usersList, string prefix = "");
-	void getQuestions(std::list<Question>* questionsList, string prefix = "");
+	void getQuestionsFromDB(std::list<Question>* questionsList, string prefix = "");
 	void createTables() const;
 
 	sqlite3* _db;
