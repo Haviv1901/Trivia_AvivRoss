@@ -11,56 +11,30 @@ using System.Windows.Forms;
 
 namespace Trivia_Frontend_AvivRoss
 {
-    public partial class Statistics : Form
+    public partial class Statistics : MainUserControl
     {
-        private MainMenu _mainMenu;
-        private SoundManager _soundManager;
         private string _username;
-        private TriviaRequests _trivia;
 
-        public Statistics(MainMenu mainMenu, SoundManager soundManager, string username)
+        public Statistics(MainUserControl lastControl, string username) : base(lastControl)
         {
-            _trivia = TriviaRequests.instance;
             _username = username;
-            _soundManager = soundManager;
-            _mainMenu = mainMenu;
+
             InitializeComponent();
-            _soundManager.LoadMusicButton(this);
             RefreshScoresAndStats();
-        }
-
-        private void GetStatistics()
-        {
-            // get satats and show them on the form
-        }
-
-        private void button1_Click(object sender, EventArgs e)
-        {
-            _soundManager.PlayButton();
-            _mainMenu.Show();
-            this.Close();
-        }
-
-        private void Statistics_FormClosed(object sender, FormClosedEventArgs e)
-        {
-            _mainMenu.Show();
-        }
-
-        private void tableLayoutPanel1_Paint(object sender, PaintEventArgs e)
-        {
 
         }
+
 
         private void button2_Click(object sender, EventArgs e)
         {
-            SoundManager.instance.PlayButton();
+            _soundManager.PlayButton();
             RefreshScoresAndStats();
         }
 
         private void RefreshScoresAndStats()
         {
-            List<string> stats = _trivia.GetPersonalStats();
-            Dictionary<string, float> highScores = _trivia.GetHighScore();
+            List<string> stats = _requestHandler.GetPersonalStats();
+            Dictionary<string, float> highScores = _requestHandler.GetHighScore();
 
             TBLpersStats.Controls.Clear();
             TBLhighScores.Controls.Clear();

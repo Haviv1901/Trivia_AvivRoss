@@ -4,14 +4,18 @@ namespace Trivia_Frontend_AvivRoss
 {
     public partial class LoginPage : MainUserControl
     {
+        public LoginPage(SoundManager soundManager, Panel panel) : base(soundManager, panel)
+        {
+            InitializeComponent();
+        }
 
-        public LoginPage(SoundManager soundManager) : base(soundManager)
+        public LoginPage(MainUserControl lastControl) : base(lastControl)
         {
             InitializeComponent();
         }
 
 
-
+        // login button
         private void button1_Click(object sender, EventArgs e)
         {
             Console.WriteLine("Button pressed.");
@@ -25,11 +29,11 @@ namespace Trivia_Frontend_AvivRoss
 
                 _requestHandler.SetStatus(Constants.MainMenu);
 
-                MainMenuUtis mainMenuUtis = new MainMenuUtis(username);
-                MainMenu mainMenu = new MainMenu(mainMenuUtis, this);
+                MainMenu mainMenu = new MainMenu(username, this);
 
-                mainMenu.Show();
-                this.Hide();
+
+                _mainPanel.Controls.Remove(this);
+                _mainPanel.Controls.Add(mainMenu);
 
             }
             else
@@ -41,28 +45,33 @@ namespace Trivia_Frontend_AvivRoss
 
         }
 
+        // register button
         private void button1_Click_1(object sender, EventArgs e)
         {
-            RegisterPage register = new RegisterPage(soundManager, this);
-            Controls.Clear();
-            Controls.Add(register);
+            RegisterPage register = new RegisterPage(this);
+
+
+            _mainPanel.Controls.Remove(this);
+            _mainPanel.Controls.Add(register);
+
+            //Controls.Clear();
+            //Controls.Add(register);
         }
 
-        private void Form1_FormClosed(object sender, FormClosedEventArgs e)
-        {
-            _requestHandler.Disconnect();
-        }
 
+        // show password
         private void checkBox1_CheckedChanged(object sender, EventArgs e)
         {
             TXTpassword.UseSystemPasswordChar = !TXTpassword.UseSystemPasswordChar;
         }
 
+        // check when key pressed
         private void TXTusername_TextChanged(object sender, EventArgs e)
         {
             this.TXTusername.KeyPress += new System.Windows.Forms.KeyPressEventHandler(CheckEnterKeyPress);
         }
 
+        // check for enter
         private void CheckEnterKeyPress(object sender, System.Windows.Forms.KeyPressEventArgs e)
         {
             if (e.KeyChar == (char)Keys.Return)
@@ -70,15 +79,11 @@ namespace Trivia_Frontend_AvivRoss
                 button1_Click(sender, e);
             }
         }
-
+        // check when key pressed
         private void TXTpassword_TextChanged(object sender, EventArgs e)
         {
             this.TXTpassword.KeyPress += new System.Windows.Forms.KeyPressEventHandler(CheckEnterKeyPress);
         }
 
-        private void LoginPage_Load(object sender, EventArgs e)
-        {
-
-        }
     }
 }

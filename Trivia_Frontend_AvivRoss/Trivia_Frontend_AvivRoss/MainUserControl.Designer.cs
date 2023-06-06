@@ -29,7 +29,8 @@
         private void InitializeComponent()
         {
             BTNsound = new Button();
-            Back = new Button();
+            BTNexit = new Button();
+            BTNback = new Button();
             SuspendLayout();
             // 
             // BTNsound
@@ -44,23 +45,36 @@
             BTNsound.UseVisualStyleBackColor = false;
             BTNsound.Click += BTNsound_Click;
             // 
-            // Back
+            // BTNexit
             // 
-            Back.BackColor = Color.Red;
-            Back.FlatStyle = FlatStyle.Popup;
-            Back.Location = new Point(744, 2);
-            Back.Name = "Back";
-            Back.Size = new Size(69, 24);
-            Back.TabIndex = 2;
-            Back.Text = "button1";
-            Back.UseVisualStyleBackColor = false;
-            Back.Click += Back_Click;
+            BTNexit.BackColor = Color.Red;
+            BTNexit.FlatStyle = FlatStyle.Popup;
+            BTNexit.Location = new Point(747, 29);
+            BTNexit.Name = "BTNexit";
+            BTNexit.Size = new Size(53, 24);
+            BTNexit.TabIndex = 7;
+            BTNexit.Text = "Exit";
+            BTNexit.UseVisualStyleBackColor = false;
+            BTNexit.Click += BTNexit_Click;
+            // 
+            // BTNback
+            // 
+            BTNback.BackColor = Color.Red;
+            BTNback.FlatStyle = FlatStyle.Popup;
+            BTNback.Location = new Point(741, 3);
+            BTNback.Name = "BTNback";
+            BTNback.Size = new Size(59, 23);
+            BTNback.TabIndex = 8;
+            BTNback.Text = "Back";
+            BTNback.UseVisualStyleBackColor = false;
+            BTNback.Click += button2_Click_1;
             // 
             // MainUserControl
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            Controls.Add(Back);
+            Controls.Add(BTNback);
+            Controls.Add(BTNexit);
             Controls.Add(BTNsound);
             Name = "MainUserControl";
             Size = new Size(816, 489);
@@ -69,7 +83,8 @@
 
         #endregion
 
-        private Button BTNsound;
-        private Button Back;
+        protected Button BTNsound;
+        protected Button BTNback;
+        protected Button BTNexit;
     }
 }

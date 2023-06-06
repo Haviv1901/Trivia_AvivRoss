@@ -31,7 +31,6 @@ namespace Trivia_Frontend_AvivRoss
         private void InitializeComponent()
         {
             TXTstats = new Label();
-            button1 = new Button();
             TBLpersStats = new TableLayoutPanel();
             label3 = new Label();
             label1 = new Label();
@@ -56,17 +55,6 @@ namespace Trivia_Frontend_AvivRoss
             TXTstats.Size = new Size(119, 37);
             TXTstats.TabIndex = 0;
             TXTstats.Text = "Statistics";
-            // 
-            // button1
-            // 
-            button1.BackColor = Color.Red;
-            button1.Location = new Point(725, -2);
-            button1.Name = "button1";
-            button1.Size = new Size(75, 23);
-            button1.TabIndex = 1;
-            button1.Text = "Back";
-            button1.UseVisualStyleBackColor = false;
-            button1.Click += button1_Click;
             // 
             // TBLpersStats
             // 
@@ -204,11 +192,9 @@ namespace Trivia_Frontend_AvivRoss
             Controls.Add(TBLhighScores);
             Controls.Add(label6);
             Controls.Add(TBLpersStats);
-            Controls.Add(button1);
             Controls.Add(TXTstats);
             Name = "Statistics";
             Text = "Statistics";
-            FormClosed += Statistics_FormClosed;
             TBLpersStats.ResumeLayout(false);
             TBLpersStats.PerformLayout();
             ResumeLayout(false);
@@ -218,7 +204,6 @@ namespace Trivia_Frontend_AvivRoss
         #endregion
 
         private Label TXTstats;
-        private Button button1;
         private TableLayoutPanel TBLpersStats;
         private Label label1;
         private Label label2;

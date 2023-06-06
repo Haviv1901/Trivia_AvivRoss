@@ -12,13 +12,18 @@ namespace Trivia_Frontend_AvivRoss
 {
     public partial class UserControl1 : MainUserControl
     {
-        public UserControl1(SoundManager soundManager) : base(soundManager)
+        public UserControl1(SoundManager soundManager)
         {
             InitializeComponent();
 
         }
 
         private void button2_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void UserControl1_Load(object sender, EventArgs e)
         {
 
         }

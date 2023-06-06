@@ -12,7 +12,7 @@ namespace Trivia_Frontend_AvivRoss
 {
     public partial class RegisterPage : MainUserControl
     {
-        public RegisterPage(SoundManager soundManager, MainUserControl lastControl) : base(soundManager, lastControl)
+        public RegisterPage(MainUserControl lastControl) : base(lastControl)
         {
             InitializeComponent();
         }
@@ -38,14 +38,13 @@ namespace Trivia_Frontend_AvivRoss
             {
                 Console.WriteLine("Sign In successfuly.");
 
-                TriviaRequests.instance.SetStatus(Constants.MainMenu);
+                _requestHandler.SetStatus(Constants.MainMenu);
 
-                MainMenuUtis mainMenuUtis = new MainMenuUtis(username);
-                //MainMenu mainMenu = new MainMenu(mainMenuUtis, _loginForm);
+                MainMenu mainMenu = new MainMenu(username, this);
 
 
-                Controls.Remove(this);
-                Controls.Add(LastControl);
+               this.Hide();
+                Controls.Add(_lastControl);
             }
             else
             {
@@ -59,10 +58,11 @@ namespace Trivia_Frontend_AvivRoss
 
         }
 
+        // back button
         private void button1_Click(object sender, EventArgs e)
         {
-            Controls.Remove(this);
-            Controls.Add(LastControl);
+            _mainPanel.Controls.Remove(this);
+            _mainPanel.Controls.Add(_lastControl);
         }
 
         private void RegisterForm_FormClosed(object sender, FormClosedEventArgs e)

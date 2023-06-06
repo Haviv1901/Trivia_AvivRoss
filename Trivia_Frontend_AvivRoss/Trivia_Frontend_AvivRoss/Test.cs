@@ -16,8 +16,17 @@ namespace Trivia_Frontend_AvivRoss
         {
             InitializeComponent();
             SoundManager sd = new SoundManager();
-            LoginPage main = new LoginPage(sd);
-            this.Controls.Add(main);
+            Panel panel = new Panel();
+
+            LoginPage main = new LoginPage(sd, panel);
+
+            panel.AutoSize = false;
+            panel.Size = new Size(816, 489); 
+
+            panel.Controls.Add(main);
+            Controls.Add(panel);
+            panel.Visible = true;
         }
     }
+
 }

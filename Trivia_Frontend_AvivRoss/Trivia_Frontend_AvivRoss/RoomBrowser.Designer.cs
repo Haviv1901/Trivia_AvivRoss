@@ -32,7 +32,6 @@
             NUMroomId = new NumericUpDown();
             FLWroomsListScorll = new FlowLayoutPanel();
             button1 = new Button();
-            button2 = new Button();
             BTNjoinButton = new Button();
             ((System.ComponentModel.ISupportInitialize)NUMroomId).BeginInit();
             SuspendLayout();
@@ -75,17 +74,6 @@
             button1.UseVisualStyleBackColor = false;
             button1.Click += button1_Click;
             // 
-            // button2
-            // 
-            button2.BackColor = Color.Red;
-            button2.Location = new Point(723, 1);
-            button2.Name = "button2";
-            button2.Size = new Size(75, 23);
-            button2.TabIndex = 4;
-            button2.Text = "Back";
-            button2.UseVisualStyleBackColor = false;
-            button2.Click += button2_Click_1;
-            // 
             // BTNjoinButton
             // 
             BTNjoinButton.BackColor = Color.YellowGreen;
@@ -101,18 +89,18 @@
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(800, 450);
             Controls.Add(BTNjoinButton);
-            Controls.Add(button2);
             Controls.Add(button1);
             Controls.Add(FLWroomsListScorll);
             Controls.Add(NUMroomId);
             Controls.Add(label1);
-            FormBorderStyle = FormBorderStyle.FixedSingle;
-            MaximizeBox = false;
             Name = "RoomBrowser";
-            Text = "RoomBrowser";
-            FormClosed += RoomBrowser_FormClosed;
+            Size = new Size(800, 450);
+            Controls.SetChildIndex(label1, 0);
+            Controls.SetChildIndex(NUMroomId, 0);
+            Controls.SetChildIndex(FLWroomsListScorll, 0);
+            Controls.SetChildIndex(button1, 0);
+            Controls.SetChildIndex(BTNjoinButton, 0);
             ((System.ComponentModel.ISupportInitialize)NUMroomId).EndInit();
             ResumeLayout(false);
             PerformLayout();
@@ -124,7 +112,6 @@
         private NumericUpDown NUMroomId;
         private FlowLayoutPanel FLWroomsListScorll;
         private Button button1;
-        private Button button2;
         private Button BTNjoinButton;
     }
 }

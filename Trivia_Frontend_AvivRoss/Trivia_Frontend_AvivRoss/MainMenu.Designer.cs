@@ -28,15 +28,12 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.FormBorderStyle = FormBorderStyle.FixedSingle;
-            this.MaximizeBox = false;
             label1 = new Label();
-           // BTNsound = new Button();
             BTNjoinRoom = new Button();
             BTNcreateRoom = new Button();
             BTNstats = new Button();
-            button4 = new Button();
             TXTwelcome = new Label();
+
             SuspendLayout();
             // 
             // label1
@@ -49,7 +46,6 @@
             label1.Size = new Size(188, 89);
             label1.TabIndex = 0;
             label1.Text = "Trivia";
-
             // 
             // BTNjoinRoom
             // 
@@ -84,17 +80,6 @@
             BTNstats.UseVisualStyleBackColor = false;
             BTNstats.Click += button3_Click;
             // 
-            // button4
-            // 
-            button4.BackColor = Color.Red;
-            button4.Location = new Point(722, 0);
-            button4.Name = "button4";
-            button4.Size = new Size(75, 23);
-            button4.TabIndex = 5;
-            button4.Text = "LogOut";
-            button4.UseVisualStyleBackColor = false;
-            button4.Click += button4_Click;
-            // 
             // TXTwelcome
             // 
             TXTwelcome.AutoSize = true;
@@ -108,18 +93,20 @@
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(800, 450);
+
             Controls.Add(TXTwelcome);
-            Controls.Add(button4);
             Controls.Add(BTNstats);
             Controls.Add(BTNcreateRoom);
             Controls.Add(BTNjoinRoom);
-            //Controls.Add(BTNsound);
             Controls.Add(label1);
             Name = "MainMenu";
-            Text = "MainMenu";
-            FormClosed += MainMenu_FormClosed;
-            Load += MainMenu_Load;
+            Size = new Size(800, 450);
+            Controls.SetChildIndex(label1, 0);
+            Controls.SetChildIndex(BTNjoinRoom, 0);
+            Controls.SetChildIndex(BTNcreateRoom, 0);
+            Controls.SetChildIndex(BTNstats, 0);
+            Controls.SetChildIndex(TXTwelcome, 0);
+
             ResumeLayout(false);
             PerformLayout();
         }
@@ -131,7 +118,6 @@
         private Button BTNjoinRoom;
         private Button BTNcreateRoom;
         private Button BTNstats;
-        private Button button4;
         private Label TXTwelcome;
     }
 }

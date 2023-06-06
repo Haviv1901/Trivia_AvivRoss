@@ -10,19 +10,16 @@ using System.Windows.Forms;
 
 namespace Trivia_Frontend_AvivRoss
 {
-    public partial class MainMenu : Form
+    public partial class MainMenu : MainUserControl
     {
 
-        private LoginPage _loginForm;
-        private MainMenuUtis _mainMenuUtis;
-        public MainMenu(MainMenuUtis mainMenuUtis, LoginPage loginForm)
+        private string _username;
+        public MainMenu(string username, MainUserControl lastControl) : base(lastControl)
         {
-            _loginForm = loginForm;
-            _mainMenuUtis = mainMenuUtis;
+            _username = username;
             InitializeComponent();
-            _mainMenuUtis.GetSoundManager().LoadMusicButton(this);
-            TXTwelcome.Text = "Welcome " + _mainMenuUtis.GetUsername() + "!";
-
+            TXTwelcome.Text = "Welcome " + username + "!";
+            _soundManager.PlayMusic();
         }
 
 
@@ -30,17 +27,17 @@ namespace Trivia_Frontend_AvivRoss
         // Join room button
         private void button1_Click(object sender, EventArgs e)
         {
-            SoundManager.instance.PlayButton();
+            _soundManager.PlayButton();
 
-            RoomBrowser room = new RoomBrowser(_mainMenuUtis.GetSoundManager(), this);
-            room.Show();
-            this.Hide();
+            RoomBrowser room = new RoomBrowser(this);
+            _mainPanel.Controls.Remove(this);
+            _mainPanel.Controls.Add(room);
         }
 
         // create room button
         private void button2_Click(object sender, EventArgs e)
         {
-            SoundManager.instance.PlayButton();
+            _soundManager.PlayButton();
             string roomName = "";
             int maxPlayers = 0;
             int answerTimeOut = 0;
@@ -59,46 +56,28 @@ namespace Trivia_Frontend_AvivRoss
             answerTimeOut = roomData.answerTimeOut;
             questionCount = roomData.questionCount;
 
-            roomId = _mainMenuUtis.GetTriviaRequests().CreateRoom(roomName, maxPlayers, answerTimeOut, questionCount);
+            roomId = _requestHandler.CreateRoom(roomName, maxPlayers, answerTimeOut, questionCount);
 
             if (roomId == -1)
             {
                 return;
             }
 
-            Room room = new Room(roomId, _mainMenuUtis.GetSoundManager(), this, true);
-            room.Show();
-            this.Hide();
+            Room room = new Room(this, roomId, true);
+            _mainPanel.Controls.Remove(this);
+            _mainPanel.Controls.Add(room);
         }
 
-        // logout button
-        private void button4_Click(object sender, EventArgs e)
-        {
-            SoundManager.instance.PlayButton();
-            SoundManager.instance.StopMusic();
-            TriviaRequests.instance.Logout();
-            TriviaRequests.instance.SetStatus(Constants.LoginMenu);
-            _loginForm.Show();
-            this.Close();
-        }
-
-        private void MainMenu_FormClosed(object sender, FormClosedEventArgs e)
-        {
-            _loginForm.Show();
-        }
 
         // stats button
         private void button3_Click(object sender, EventArgs e)
         {
-            SoundManager.instance.PlayButton();
-            Statistics statistics = new Statistics(this, _mainMenuUtis.GetSoundManager(), _mainMenuUtis.GetUsername());
-            statistics.Show();
-            this.Hide();
+            _soundManager.PlayButton();
+            Statistics statistics = new Statistics(this, _username);
+            _mainPanel.Controls.Remove(this);
+            _mainPanel.Controls.Add(statistics);
         }
 
-        private void MainMenu_Load(object sender, EventArgs e)
-        {
 
-        }
     }
 }

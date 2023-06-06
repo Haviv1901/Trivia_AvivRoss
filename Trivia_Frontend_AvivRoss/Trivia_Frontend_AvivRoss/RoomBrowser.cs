@@ -11,22 +11,14 @@ using System.Windows.Forms;
 
 namespace Trivia_Frontend_AvivRoss
 {
-    public partial class RoomBrowser : Form
+    public partial class RoomBrowser : MainUserControl
     {
-        private SoundManager _soundManager;
-        private TriviaRequests _triviaRequests;
-        private MainMenu _mainMenu;
 
         private Thread _thread;
 
-        public RoomBrowser(SoundManager soundManager, MainMenu mainMenu)
+        public RoomBrowser(MainUserControl lastControl) : base(lastControl)
         {
-            _mainMenu = mainMenu;
-            _triviaRequests = TriviaRequests.instance;
-            _soundManager = soundManager;
-
             InitializeComponent();
-            _soundManager.LoadMusicButton(this);
             _thread = new Thread(new ThreadStart(RefreshRoomsThread));
             _thread.Start();
         }
@@ -58,19 +50,14 @@ namespace Trivia_Frontend_AvivRoss
         }
         private void RefreshRooms()
         {
-            Dictionary<string, int> rooms = _triviaRequests.GetRooms();
+            Dictionary<string, int> rooms = _requestHandler.GetRooms();
 
-            if (rooms == null)
-            {
-                MessageBox.Show("Error getting rooms", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
-            }
 
             Invoke(() =>
             {
                 FLWroomsListScorll.Controls.Clear();
             });
-            
+
 
             foreach (string key in rooms.Keys)
             {
@@ -91,7 +78,7 @@ namespace Trivia_Frontend_AvivRoss
                 {
                     FLWroomsListScorll.Controls.Add(roomLabel);
                 });
-                
+
             }
         }
 
@@ -101,35 +88,25 @@ namespace Trivia_Frontend_AvivRoss
 
             int roomid = int.Parse(((Button)sender).Name);
 
-            if (_triviaRequests.JoinRoom(roomid))
+            if (_requestHandler.JoinRoom(roomid))
             {
-                Room room = new Room(roomid, _soundManager, _mainMenu, false);
-                room.Show();
-                this.Hide();
+                Room room = new Room(this, roomid, false);
+
+                _mainPanel.Controls.Remove(this);
+                _mainPanel.Controls.Add(room);
             }
-        }
-
-        private void RoomBrowser_FormClosed(object sender, FormClosedEventArgs e)
-        {
-            _mainMenu.Show();
-        }
-
-        private void button2_Click_1(object sender, EventArgs e)
-        {
-            SoundManager.instance.PlayButton();
-            this.Close();
-            _mainMenu.Show();
         }
 
         private void BTNjoinButton_Click(object sender, EventArgs e)
         {
             SoundManager.instance.PlayButton();
             int roomid = (int)NUMroomId.Value;
-            if (_triviaRequests.JoinRoom(roomid))
+            if (_requestHandler.JoinRoom(roomid))
             {
-                Room room = new Room(roomid, _soundManager, _mainMenu, false);
-                room.Show();
-                this.Hide();
+                Room room = new Room(this, roomid, false);
+
+                _mainPanel.Controls.Remove(this);
+                _mainPanel.Controls.Add(room);
             }
         }
 

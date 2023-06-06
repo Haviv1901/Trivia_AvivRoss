@@ -17,7 +17,7 @@ using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace Trivia_Frontend_AvivRoss
 {
-    public partial class Room : Form
+    public partial class Room : MainUserControl
     {
         private int _roomId;
         private bool _refresh;
@@ -25,13 +25,11 @@ namespace Trivia_Frontend_AvivRoss
         public delegate void AddButton();
         public AddButton myDelegate;
 
-        private SoundManager _soundManager;
-        private MainMenu _mainMenu;
         private Thread _thread;
 
         private Label TXTplayerN;
 
-        public Room(int roomId, SoundManager soundManager, MainMenu main, bool isCreator)
+        public Room(MainUserControl lastControl, int roomId, bool isCreator) : base(lastControl)
         {
             TXTplayerN = new Label();
             TXTplayerN.AutoSize = true;
@@ -40,10 +38,8 @@ namespace Trivia_Frontend_AvivRoss
             TXTplayerN.Name = "TXTcreator";
             TXTplayerN.Size = new Size(62, 19);
             TXTplayerN.TabIndex = 1;
-            
+
             _roomId = roomId;
-            _soundManager = soundManager;
-            _mainMenu = main;
 
             InitializeComponent();
             Controls.Add(TXTplayerN);
@@ -52,7 +48,9 @@ namespace Trivia_Frontend_AvivRoss
                 Controls.Add(button2);
             }
 
-            _soundManager.LoadMusicButton(this);
+            BTNback.Click -= button2_Click_1;
+            BTNback.Click += CloseThread;
+
             TXTroomId.Text += _roomId.ToString();
             myDelegate = new AddButton(AddButtonMethod);
             _thread = new Thread(new ThreadStart(RefreshPlayers));
@@ -61,14 +59,7 @@ namespace Trivia_Frontend_AvivRoss
 
 
 
-        private void button1_Click(object sender, EventArgs e)
-        {
-            SoundManager.instance.PlayButton();
-            TriviaRequests.instance.CloseOrLeaveRoom();
-            CloseRoomFoorm();
-        }
-
-        private void CloseRoomFoorm()
+        private void CloseThread(object sender, EventArgs e)
         {
             try
             {
@@ -79,12 +70,7 @@ namespace Trivia_Frontend_AvivRoss
                 Console.WriteLine(exception);
             }
 
-            _mainMenu.Show();
-        }
-
-        private void Room_FormClose(object sender, EventArgs e)
-        {
-            CloseRoomFoorm();
+            button2_Click_1(sender, e);
         }
 
         private void BTNrefresh_Click(object sender, EventArgs e)
@@ -110,7 +96,8 @@ namespace Trivia_Frontend_AvivRoss
                 {
                     Invoke(() =>
                     {
-                        this.Close();
+                        _mainPanel.Controls.Remove(this);
+                        _mainPanel.Controls.Add(_lastControl);
                     });
                 }
                 catch (Exception exception)
@@ -157,8 +144,8 @@ namespace Trivia_Frontend_AvivRoss
 
         private void StartGame(object sender, EventArgs e)
         {
-            SoundManager.instance.PlayButton();
-            TriviaRequests.instance.StartGame();
+            _soundManager.PlayButton();
+            _requestHandler.StartGame();
         }
     }
 }
