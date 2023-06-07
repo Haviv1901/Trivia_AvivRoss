@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Media;
 using System.Text;
@@ -54,18 +55,25 @@ namespace Trivia_Frontend_AvivRoss
             _BackgroundMusic.Stop();
         }
 
-        public void LoadMusicButton(Form formToLoadOn)
+        public void PlayWrongAnswer()
         {
-
-
+            PlaySound(
+                @"C:\Users\UserPC\Desktop\ekronot\Trivia\trivia_avivross\Trivia_Frontend_AvivRoss\Trivia_Frontend_AvivRoss\music\wrong answer.wav");
         }
 
-        public static void BTNsound_Click(object sender, EventArgs e)
+        public void StartQuizSound()
         {
-
+            PlaySound(
+                @"C:\Users\UserPC\Desktop\ekronot\Trivia\trivia_avivross\Trivia_Frontend_AvivRoss\Trivia_Frontend_AvivRoss\music\game start sound.wav");
         }
 
-        public void PlayButton()
+        public void PlayCorrectAnswer()
+        {
+            PlaySound(
+                @"C:\Users\UserPC\Desktop\ekronot\Trivia\trivia_avivross\Trivia_Frontend_AvivRoss\Trivia_Frontend_AvivRoss\music\correct answer.wav");
+        }
+
+        public void PlaySound(string path)
         {
             if (_sound)
             {
@@ -76,11 +84,17 @@ namespace Trivia_Frontend_AvivRoss
                 }
                 if (audioFile == null)
                 {
-                    audioFile = new AudioFileReader(@"C:\Users\UserPC\Desktop\ekronot\Trivia\trivia_avivross\Trivia_Frontend_AvivRoss\Trivia_Frontend_AvivRoss\music\ButtonClick.wav");
+                    audioFile = new AudioFileReader(path);
                     outputDevice.Init(audioFile);
                 }
                 outputDevice.Play();
             }
+        }
+
+        public void PlayButton()
+        {
+            PlaySound(
+                @"C:\Users\UserPC\Desktop\ekronot\Trivia\trivia_avivross\Trivia_Frontend_AvivRoss\Trivia_Frontend_AvivRoss\music\ButtonClick.wav");
         }
 
         private void OnPlaybackStopped(object sender, StoppedEventArgs args)

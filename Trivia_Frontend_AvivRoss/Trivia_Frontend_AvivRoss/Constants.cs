@@ -31,6 +31,12 @@ namespace Trivia_Frontend_AvivRoss
         public const int GetRoomStateCode = 32;
         public const int LastRoomCode = 33;
 
+        public const int GameCodes = 40;
+        public const int LeaveGameCode = 41;
+        public const int GetQuestionCode = 42;
+        public const int SubmitAnswerCode = 43;
+        public const int GetGameResultCode = 44;
+        public const int LastGameCodes = 45;
 
         public const int LoginMenu = 100;
         public const int MainMenu = 200;

@@ -15,10 +15,15 @@ namespace Trivia_Frontend_AvivRoss
     public partial class InGame : MainUserControl
     {
         private int _counter;
-        public InGame(MainUserControl lastLControl) : base(lastLControl)
+
+        private int _questionTimeOut;
+        private int _questionCount;
+        public InGame(MainUserControl lastLControl, int _questionCount, int _questionTimeOut) : base(lastLControl)
         {
             _counter = 3;
             InitializeComponent();
+            this._questionCount = _questionCount;
+            this._questionTimeOut = _questionTimeOut;
         }
 
         private void BTNbackAfterGame_Click(object sender, EventArgs e)
@@ -40,7 +45,7 @@ namespace Trivia_Frontend_AvivRoss
             {
                 label1.Text = "Starting game...";
                 TMRname.Stop();
-                Game gameWindow = new Game();
+                Game gameWindow = new Game(_questionTimeOut, _questionCount);
                 var result = gameWindow.ShowDialog();
                 if (result == DialogResult.OK)
                 {

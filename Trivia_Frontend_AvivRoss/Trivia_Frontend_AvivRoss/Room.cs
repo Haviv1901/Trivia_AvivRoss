@@ -30,6 +30,9 @@ namespace Trivia_Frontend_AvivRoss
 
         private Label TXTplayerN;
 
+        private int _questionTimeOut;
+        private int _questionCount;
+
         public Room(MainUserControl lastControl, int roomId, bool isCreator) : base(lastControl)
         {
             TXTplayerN = new Label();
@@ -62,7 +65,7 @@ namespace Trivia_Frontend_AvivRoss
         private void StartGame()
         {
             
-            InGame gameUserControl = new InGame(_lastControl); // on game end return to the main menu.
+            InGame gameUserControl = new InGame(_lastControl, _questionCount, _questionTimeOut); // on game end return to the main menu.
 
             _mainPanel.Controls.Remove(this);
             _mainPanel.Controls.Add(gameUserControl);
@@ -130,7 +133,7 @@ namespace Trivia_Frontend_AvivRoss
             Tuple<List<string>, bool, int, int> roomState = null;
             try
             {
-                roomState = _requestHandler.GetRoomState(); // TODO: frontend must להבדיל from room closed to game started situiations
+                roomState = _requestHandler.GetRoomState(); 
             }
             catch (GameStarted e) // game has allready started and the user is in Game handler.
             {
@@ -177,4 +180,6 @@ namespace Trivia_Frontend_AvivRoss
             StartGame();
         }
     }
+
+
 }

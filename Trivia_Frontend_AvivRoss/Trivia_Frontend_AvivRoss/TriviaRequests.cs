@@ -44,6 +44,26 @@ namespace Trivia_Frontend_AvivRoss
             }
         }
 
+        // strings are as follows : Question , then 4 answers
+        public List<string> GetQuestion()
+        {
+            JObject send = new JObject();
+
+            _communicator.SendMessage(send, Constants.GetQuestionCode);
+            Message recvMessage = _communicator.RecvMessage();
+
+            JObject json = JObject.Parse(recvMessage.data);
+
+            return new List<string>()
+            {
+                json["Question"].ToString(),
+                json["0"].ToString(),
+                json["1"].ToString(),
+                json["2"].ToString(),
+                json["3"].ToString()
+            };
+        }
+
         public void StartGame()
         {
             JObject send = new JObject();
