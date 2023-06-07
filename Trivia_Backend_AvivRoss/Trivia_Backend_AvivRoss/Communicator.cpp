@@ -145,7 +145,6 @@ void Communicator::clientHandler(SOCKET client_socket)
 
 			Helper::debugPrint("recieved msg. code: " + std::to_string(code) + " length: " + std::to_string(length) + " data: " + Helper::bufferToString(msg.buffer));
 
-
 			res = res.newHandler->handleRequest(msg);
 			Helper::sendData(client_socket, res.respones);
 			

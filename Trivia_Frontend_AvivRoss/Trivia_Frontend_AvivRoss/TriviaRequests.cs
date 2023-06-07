@@ -79,7 +79,7 @@ namespace Trivia_Frontend_AvivRoss
 
             if (isError(json) == "Invalid Code")
             {
-                throw new GameStarted(true);
+                throw new GameStarted();
             }
 
             List<string> players = new List<string>();

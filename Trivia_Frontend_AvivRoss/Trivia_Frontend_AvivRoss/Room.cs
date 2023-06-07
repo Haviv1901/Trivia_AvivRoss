@@ -61,8 +61,11 @@ namespace Trivia_Frontend_AvivRoss
         // NOTE: MUST CALL CloseThread function before calling this function.
         private void StartGame()
         {
-            _mainPanel.Controls.Remove(this);
+            
             InGame gameUserControl = new InGame(_lastControl); // on game end return to the main menu.
+
+            _mainPanel.Controls.Remove(this);
+            _mainPanel.Controls.Add(gameUserControl);
         }
 
         private void CloseThread()
@@ -171,7 +174,6 @@ namespace Trivia_Frontend_AvivRoss
             _soundManager.PlayButton();
             CloseThread();
             _requestHandler.StartGame();
-            
             StartGame();
         }
     }

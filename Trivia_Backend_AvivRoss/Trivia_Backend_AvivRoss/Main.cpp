@@ -25,9 +25,5 @@ int main()
 		std::cout << "Unknown exception in main !" << std::endl;
 		Helper::debugPrint("Last error was " + std::to_string(GETSOCKETERRNO()));
 	}
-
-	
-
-
-
+	return 0;
 }

@@ -8,11 +8,9 @@ namespace Trivia_Frontend_AvivRoss
 {
     public class GameStarted : Exception
     {
-        public bool gameStarted;
 
-        public GameStarted(bool gameStarted)
+        public GameStarted()
         {
-            this.gameStarted = gameStarted;
         }
 
         public GameStarted(string message)
