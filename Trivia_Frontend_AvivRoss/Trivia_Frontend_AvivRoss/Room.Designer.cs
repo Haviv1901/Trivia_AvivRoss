@@ -64,7 +64,7 @@
             button2.TabIndex = 12;
             button2.Text = "Start Game";
             button2.UseVisualStyleBackColor = false;
-            button2.Click += StartGame;
+            button2.Click += StartGame_buttonClick;
             // 
             // Room
             // 

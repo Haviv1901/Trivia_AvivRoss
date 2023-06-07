@@ -90,7 +90,7 @@ namespace Trivia_Frontend_AvivRoss
 
             if (_requestHandler.JoinRoom(roomid))
             {
-                Room room = new Room(this, roomid, false);
+                Room room = new Room(_lastControl, roomid, false); // when exiting a room return to main menu
 
                 _mainPanel.Controls.Remove(this);
                 _mainPanel.Controls.Add(room);
@@ -103,7 +103,7 @@ namespace Trivia_Frontend_AvivRoss
             int roomid = (int)NUMroomId.Value;
             if (_requestHandler.JoinRoom(roomid))
             {
-                Room room = new Room(this, roomid, false);
+                Room room = new Room(_lastControl, roomid, false); // when exiting a room return to main menu
 
                 _mainPanel.Controls.Remove(this);
                 _mainPanel.Controls.Add(room);

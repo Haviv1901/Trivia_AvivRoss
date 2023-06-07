@@ -10,18 +10,19 @@ using System.Windows.Forms;
 
 namespace Trivia_Frontend_AvivRoss
 {
-    public partial class Test : Form
+    public partial class Trivia_Game : Form
     {
-        public Test()
+        public Trivia_Game()
         {
             InitializeComponent();
             SoundManager sd = new SoundManager();
             Panel panel = new Panel();
 
+            
             LoginPage main = new LoginPage(sd, panel);
 
             panel.AutoSize = false;
-            panel.Size = new Size(816, 489); 
+            panel.Size = new Size(816, 489);
 
             panel.Controls.Add(main);
             Controls.Add(panel);

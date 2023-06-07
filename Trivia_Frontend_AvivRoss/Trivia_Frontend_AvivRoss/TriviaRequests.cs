@@ -6,6 +6,7 @@ using System.Linq;
 using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using static System.Formats.Asn1.AsnWriter;
@@ -76,6 +77,10 @@ namespace Trivia_Frontend_AvivRoss
 
             JObject json = JObject.Parse(recvMessage.data);
 
+            if (isError(json) == "Invalid Code")
+            {
+                throw new GameStarted(true);
+            }
 
             List<string> players = new List<string>();
             string jsonStr = json["Players"].ToString().Replace("\n", "").Replace("\r", ""); // removing newlines
@@ -274,6 +279,16 @@ namespace Trivia_Frontend_AvivRoss
             {
                 return false;
             }
+        }
+
+        private string isError(JObject json)
+        {
+            if (json.ContainsKey("message"))
+            {
+                return json["message"].ToString();
+            }
+
+            return "";
         }
 
         public void SetStatus(int status)

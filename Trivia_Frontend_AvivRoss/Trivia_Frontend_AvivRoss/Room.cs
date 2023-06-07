@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Security;
 using System.Security.Policy;
 using System.Text;
 using System.Threading;
@@ -49,17 +50,22 @@ namespace Trivia_Frontend_AvivRoss
             }
 
             BTNback.Click -= button2_Click_1;
-            BTNback.Click += CloseThread;
+            BTNback.Click += BackButton;
 
             TXTroomId.Text += _roomId.ToString();
-            myDelegate = new AddButton(AddButtonMethod);
-            _thread = new Thread(new ThreadStart(RefreshPlayers));
+            myDelegate = new AddButton(RefreshPlayersLabel);
+            _thread = new Thread(new ThreadStart(RefreshPlayersThread));
             _thread.Start();
         }
 
+        // NOTE: MUST CALL CloseThread function before calling this function.
+        private void StartGame()
+        {
+            _mainPanel.Controls.Remove(this);
+            InGame gameUserControl = new InGame(_lastControl); // on game end return to the main menu.
+        }
 
-
-        private void CloseThread(object sender, EventArgs e)
+        private void CloseThread()
         {
             try
             {
@@ -69,27 +75,31 @@ namespace Trivia_Frontend_AvivRoss
             {
                 Console.WriteLine(exception);
             }
+        }
 
+        private void BackButton(object sender, EventArgs e)
+        {
+            CloseThread();
             button2_Click_1(sender, e);
         }
 
         private void BTNrefresh_Click(object sender, EventArgs e)
         {
             _soundManager.PlayButton();
-            AddButtonMethod();
+            RefreshPlayersLabel();
         }
 
-        private void RefreshPlayers()
+        private void RefreshPlayersThread()
         {
             try
             {
                 while (true)
                 {
-                    AddButtonMethod();
+                    RefreshPlayersLabel();
                     Thread.Sleep(500);
                 }
             }
-            catch (Exception e)
+            catch (RoomClosedException e)
             {
                 MessageBox.Show("Room closed", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 try
@@ -105,19 +115,27 @@ namespace Trivia_Frontend_AvivRoss
                     Console.WriteLine(exception);
                 }
             }
+            catch (Exception e)
+            {
+                return;
+            }
         }
 
-        private void AddButtonMethod()
+        private void RefreshPlayersLabel()
         {
             List<string> players;
-            Tuple<List<string>, bool, int, int> roomState;
+            Tuple<List<string>, bool, int, int> roomState = null;
             try
             {
-                roomState = TriviaRequests.instance.GetRoomState();
+                roomState = _requestHandler.GetRoomState(); // TODO: frontend must להבדיל from room closed to game started situiations
+            }
+            catch (GameStarted e) // game has allready started and the user is in Game handler.
+            {
+                CloseThread();
             }
             catch (Exception e) // if room closed, the json parse will fail.
             {
-                throw new Exception("Room closed");
+                throw new RoomClosedException("Room closed");
             }
 
             players = roomState.Item1;
@@ -137,15 +155,24 @@ namespace Trivia_Frontend_AvivRoss
 
             if (isStarted)
             {
-                MessageBox.Show("Game started!", "Trivia", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                
+                Invoke(() =>
+                {
+                    StartGame();
+                });
+                CloseThread();
             }
 
         }
 
-        private void StartGame(object sender, EventArgs e)
+        // start game button click
+        private void StartGame_buttonClick(object sender, EventArgs e)
         {
             _soundManager.PlayButton();
+            CloseThread();
             _requestHandler.StartGame();
+            
+            StartGame();
         }
     }
 }
