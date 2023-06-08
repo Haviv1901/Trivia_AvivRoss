@@ -46,6 +46,30 @@ namespace Trivia_Frontend_AvivRoss
 
 
         /// <summary>
+        /// 
+        /// </summary>
+        /// <returns> dictionary with username / score </returns>
+        public Dictionary<string, string> GetGameResult()
+        {
+            JObject send = new JObject();
+
+            _communicator.SendMessage(send, Constants.GetGameResultCode);
+            Message recvMessage = _communicator.RecvMessage();
+
+            JObject json = JObject.Parse(recvMessage.data);
+
+            Dictionary<string, string> result = new Dictionary<string, string>();
+
+            foreach (var item in json)
+            {
+                result.Add(item.Key, item.Value.ToString());
+            }
+
+            return result;
+        }
+
+
+        /// <summary>
         /// function will return the correct answer id, return -1 if failed
         /// </summary>
         /// <param name="answerId"></param>
@@ -68,7 +92,10 @@ namespace Trivia_Frontend_AvivRoss
             return json["correctAnswerId"].ToObject<int>();
         }
 
-        // strings are as follows : Question , then 4 answers
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns>strings are as follows : Question , then 4 answers, IDs: 0-1-2-3-</returns>
         public List<string> GetQuestion()
         {
             JObject send = new JObject();

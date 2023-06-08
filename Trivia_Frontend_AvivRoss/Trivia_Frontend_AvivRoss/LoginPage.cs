@@ -54,8 +54,6 @@ namespace Trivia_Frontend_AvivRoss
             _mainPanel.Controls.Remove(this);
             _mainPanel.Controls.Add(register);
 
-            //Controls.Clear();
-            //Controls.Add(register);
         }
 
 

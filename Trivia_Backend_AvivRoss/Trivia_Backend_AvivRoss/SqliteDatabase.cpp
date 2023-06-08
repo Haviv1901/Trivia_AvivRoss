@@ -540,7 +540,7 @@ int callbackQuestions(void* data, int argc, char** argv, char** azColName)
 		{
 			question = argv[i];
 		}
-		if (string(azColName[i]) == "CURR_ANSWER")
+		if (string(azColName[i]) == "CORR_ANSWER")
 		{
 			currAnswer = argv[i];
 		}
@@ -564,9 +564,7 @@ int callbackQuestions(void* data, int argc, char** argv, char** azColName)
 	answers.push_back(wrongAnswer2);
 	answers.push_back(wrongAnswer3);
 
-	auto rng = std::default_random_engine{}; // shuffle the answers
-	std::shuffle(std::begin(answers), std::end(answers), rng);
-
+	std::shuffle(answers.begin(), answers.end(), std::random_device()); // suffle the vector
 
 	std::vector<string>::iterator itr = std::find(answers.begin(), answers.end(), currAnswer); // find the correct answer index
 	int correctAnswerIndex = std::distance(answers.begin(), itr);

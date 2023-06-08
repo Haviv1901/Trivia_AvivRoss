@@ -17,10 +17,12 @@ namespace Trivia_Frontend_AvivRoss
         private TriviaRequests _requestHandler;
 
         private int _questionTimeOut;
+        private int _questionCountIter;
         private int _questionCount;
         private int _questionTimeLeftCount;
 
-        private bool _didUserAnswer = false;
+        private bool _didUserAnswer = true;
+        private int _currQuestionNum = 0;
 
         public Game(int questionTimeOut, int questionCount)
         {
@@ -28,10 +30,11 @@ namespace Trivia_Frontend_AvivRoss
             _soundManager = SoundManager.instance;
             _requestHandler = TriviaRequests.instance;
             this._questionCount = questionCount;
+            this._questionCountIter = questionCount;
             _questionTimeOut = questionTimeOut;
             _questionTimeLeftCount = questionTimeOut;
             TMRtimeBetweenEachQuestion.Interval = questionTimeOut * 1000;
-
+            TXTquestionLeft.Text = _currQuestionNum + "/" + _questionCount;
         }
 
         private void Game_Load(object sender, EventArgs e)
@@ -62,12 +65,13 @@ namespace Trivia_Frontend_AvivRoss
 
             TMRquestionTimer.Stop();
             _questionTimeLeftCount = _questionTimeOut;
+            
             TMRquestionTimer.Start();
         }
 
         private void QuestionTimeOut()
         {
-            if (_questionCount == 0)
+            if (_questionCountIter == 0)
             {
                 TMRtimeBetweenEachQuestion.Stop();
                 end();
@@ -77,8 +81,11 @@ namespace Trivia_Frontend_AvivRoss
             {
                 RevealAnswer((Object)BTNanswer1); // press the first button
             }
-
-            _questionCount--;
+            _didUserAnswer = false;
+            _questionCountIter--;
+            TXTtimeLeft.ForeColor = Color.Black;
+            TXTtimeLeft.Text = _questionTimeOut.ToString();
+            TXTquestionLeft.Text = ++_currQuestionNum + "/" + _questionCount;
             LoadNextQuestion();
         }
 
@@ -108,8 +115,8 @@ namespace Trivia_Frontend_AvivRoss
         {
             _didUserAnswer = true;
             int correctAnswer = 0;
-            int answerIndex = int.Parse(((Button)sender).Tag.ToString()) + 1;
-            correctAnswer = _requestHandler.SendAnswer(answerIndex); // button's tag is the answer index
+            int answerIndex = int.Parse(((Button)sender).Tag.ToString());// + 1;
+            correctAnswer = _requestHandler.SendAnswer(answerIndex-1) + 1; // button's tag is the answer index
 
             BTNanswer1.Enabled = false;
             BTNanswer2.Enabled = false;
@@ -166,6 +173,11 @@ namespace Trivia_Frontend_AvivRoss
                     BTNanswer4.BackColor = Color.Green;
                     break;
             }
+        }
+
+        private void TXTquestion_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("The answer is 3. ;) ");
         }
     }
 }

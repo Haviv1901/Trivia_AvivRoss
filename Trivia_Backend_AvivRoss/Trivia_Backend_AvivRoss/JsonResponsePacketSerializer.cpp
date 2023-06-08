@@ -168,12 +168,7 @@ Buffer JsonResponsePacketSerializer::serializeResponse(GetGameResultsResponse re
 	res["status"] = response.status;
 	for (auto user : response.results)
 	{
-		json j;
-		j["correctAnswerCount"] = user.correctAnswerCount;
-		j["wrongAnswerCount"] = user.wrongAnswerCount;
-		j["averageAnswerTime"] = user.averageAnswerTime;
-		j["Score"] = user.score;
-		res[user.username] = j;
+		res[user.username] = user.score;
 	}
 
 	return createResponse(GET_GAME_RESULT_CODE, Helper::stringToBuffer(res.dump()));

@@ -37,13 +37,14 @@
             TMRtimeBetweenEachQuestion = new System.Windows.Forms.Timer(components);
             TMRquestionTimer = new System.Windows.Forms.Timer(components);
             TXTtimeLeft = new Label();
+            TXTquestionLeft = new Label();
             SuspendLayout();
             // 
             // BTNanswer4
             // 
             BTNanswer4.BackColor = Color.SkyBlue;
             BTNanswer4.FlatStyle = FlatStyle.Popup;
-            BTNanswer4.Location = new Point(389, 234);
+            BTNanswer4.Location = new Point(515, 251);
             BTNanswer4.Name = "BTNanswer4";
             BTNanswer4.Size = new Size(187, 48);
             BTNanswer4.TabIndex = 0;
@@ -56,11 +57,11 @@
             // 
             BTNanswer3.BackColor = Color.SkyBlue;
             BTNanswer3.FlatStyle = FlatStyle.Popup;
-            BTNanswer3.Location = new Point(389, 159);
+            BTNanswer3.Location = new Point(515, 142);
             BTNanswer3.Name = "BTNanswer3";
             BTNanswer3.Size = new Size(187, 48);
             BTNanswer3.TabIndex = 1;
-            BTNanswer3.Tag = "2";
+            BTNanswer3.Tag = "3";
             BTNanswer3.Text = "button2";
             BTNanswer3.UseVisualStyleBackColor = false;
             BTNanswer3.Click += BTNanswer3_Click;
@@ -69,11 +70,11 @@
             // 
             BTNanswer2.BackColor = Color.SkyBlue;
             BTNanswer2.FlatStyle = FlatStyle.Popup;
-            BTNanswer2.Location = new Point(115, 234);
+            BTNanswer2.Location = new Point(119, 251);
             BTNanswer2.Name = "BTNanswer2";
             BTNanswer2.Size = new Size(187, 48);
             BTNanswer2.TabIndex = 2;
-            BTNanswer2.Tag = "3";
+            BTNanswer2.Tag = "2";
             BTNanswer2.Text = "button3";
             BTNanswer2.UseVisualStyleBackColor = false;
             BTNanswer2.Click += BTNanswer2_Click;
@@ -82,7 +83,7 @@
             // 
             BTNanswer1.BackColor = Color.SkyBlue;
             BTNanswer1.FlatStyle = FlatStyle.Popup;
-            BTNanswer1.Location = new Point(115, 159);
+            BTNanswer1.Location = new Point(119, 142);
             BTNanswer1.Name = "BTNanswer1";
             BTNanswer1.Size = new Size(187, 48);
             BTNanswer1.TabIndex = 3;
@@ -95,12 +96,13 @@
             // 
             TXTquestion.BackColor = Color.Transparent;
             TXTquestion.Font = new Font("Segoe UI", 15F, FontStyle.Regular, GraphicsUnit.Point);
-            TXTquestion.Location = new Point(314, 33);
+            TXTquestion.Location = new Point(1, 9);
             TXTquestion.Name = "TXTquestion";
-            TXTquestion.Size = new Size(100, 23);
+            TXTquestion.Size = new Size(799, 78);
             TXTquestion.TabIndex = 4;
             TXTquestion.Text = "Question";
             TXTquestion.TextAlign = ContentAlignment.TopCenter;
+            TXTquestion.Click += TXTquestion_Click;
             // 
             // TMRtimeBetweenEachQuestion
             // 
@@ -114,18 +116,28 @@
             // TXTtimeLeft
             // 
             TXTtimeLeft.AutoSize = true;
-            TXTtimeLeft.Font = new Font("Vladimir Script", 15F, FontStyle.Regular, GraphicsUnit.Point);
-            TXTtimeLeft.Location = new Point(30, 41);
+            TXTtimeLeft.Font = new Font("Vladimir Script", 25F, FontStyle.Regular, GraphicsUnit.Point);
+            TXTtimeLeft.Location = new Point(394, 204);
             TXTtimeLeft.Name = "TXTtimeLeft";
-            TXTtimeLeft.Size = new Size(58, 24);
+            TXTtimeLeft.Size = new Size(34, 42);
             TXTtimeLeft.TabIndex = 5;
-            TXTtimeLeft.Text = "NUM";
+            TXTtimeLeft.Text = "9";
+            // 
+            // TXTquestionLeft
+            // 
+            TXTquestionLeft.AutoSize = true;
+            TXTquestionLeft.Location = new Point(758, 87);
+            TXTquestionLeft.Name = "TXTquestionLeft";
+            TXTquestionLeft.Size = new Size(30, 15);
+            TXTquestionLeft.TabIndex = 6;
+            TXTquestionLeft.Text = "5/10";
             // 
             // Game
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
+            Controls.Add(TXTquestionLeft);
             Controls.Add(TXTtimeLeft);
             Controls.Add(TXTquestion);
             Controls.Add(BTNanswer1);
@@ -149,5 +161,6 @@
         private System.Windows.Forms.Timer TMRtimeBetweenEachQuestion;
         private System.Windows.Forms.Timer TMRquestionTimer;
         private Label TXTtimeLeft;
+        private Label TXTquestionLeft;
     }
 }

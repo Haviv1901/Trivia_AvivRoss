@@ -135,7 +135,7 @@ RequestResult GameRequestHandler::getGameResult(RequestInfo req)
 	}
 
 	res.respones = JsonResponsePacketSerializer::serializeResponse(getGameResultsRes);
-	res.newHandler = this;
+	res.newHandler = leaveGame(req).newHandler;
 	return res;
 }
 

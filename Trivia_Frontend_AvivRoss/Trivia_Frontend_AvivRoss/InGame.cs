@@ -26,10 +26,14 @@ namespace Trivia_Frontend_AvivRoss
             this._questionTimeOut = _questionTimeOut;
         }
 
+
+        // show result button
         private void BTNbackAfterGame_Click(object sender, EventArgs e)
         {
+            GameResultScreen gameResultScreen = new GameResultScreen(_lastControl);
+
             _mainPanel.Controls.Remove(this);
-            _mainPanel.Controls.Add(_lastControl); // last control here is the main menu.
+            _mainPanel.Controls.Add(gameResultScreen); // last control here is the main menu.
         }
 
 
@@ -58,6 +62,7 @@ namespace Trivia_Frontend_AvivRoss
 
                 Controls.Add(BTNbackAfterGame);
                 Controls.SetChildIndex(BTNbackAfterGame, 0);
+                BTNbackAfterGame.Text = "Click me to show game results and go back to main menu.";
             }
             else
             {

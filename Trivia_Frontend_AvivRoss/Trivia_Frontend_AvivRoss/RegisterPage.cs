@@ -42,9 +42,8 @@ namespace Trivia_Frontend_AvivRoss
 
                 MainMenu mainMenu = new MainMenu(username, this);
 
-
-               this.Hide();
-                Controls.Add(_lastControl);
+                _mainPanel.Controls.Remove(this);
+                _mainPanel.Controls.Add(mainMenu);
             }
             else
             {
