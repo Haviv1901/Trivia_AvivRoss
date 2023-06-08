@@ -2,7 +2,7 @@
 
 
 Game::Game(std::vector<Question> questions, unsigned int gameId, std::map<string, GameData> players)
-	: m_questions(questions), m_gameId(gameId), m_players(players)
+	: m_questions(questions), m_players(players), m_gameId(gameId)
 {
 	
 }
@@ -11,6 +11,8 @@ Question Game::getQuestionForUser(LoggedUser user)
 {
 	return m_players[user.getUsername()].currentQuestion;
 }
+
+
 void Game::submitAnswer(LoggedUser user, unsigned int answerId, double timeTookToAnswer)
 {
 	if (m_players[user.getUsername()].currentQuestion.getCorrectAnswerId() == answerId)
@@ -21,7 +23,7 @@ void Game::submitAnswer(LoggedUser user, unsigned int answerId, double timeTookT
 	{
 		m_players[user.getUsername()].numOfWrongAnswers++;
 	}
-	m_players[user.getUsername()].averageAnswerTime = (m_players[user.getUsername()].averageAnswerTime + timeTookToAnswer) / 2;
+	m_players[user.getUsername()].averageAnswerTime = ((float)m_players[user.getUsername()].averageAnswerTime + timeTookToAnswer) / (float)2;
 	int questionNum = m_players[user.getUsername()].numOfWrongAnswers + m_players[user.getUsername()].numOfCorrectAnswers;
 	try
 	{

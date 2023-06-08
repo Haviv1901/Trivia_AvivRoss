@@ -165,10 +165,32 @@ Buffer JsonResponsePacketSerializer::serializeResponse(SubmitAnswerResponse resp
 Buffer JsonResponsePacketSerializer::serializeResponse(GetGameResultsResponse response)
 {
 	json res;
-	res["status"] = response.status;
+	int maxScore = 0;
+	string winnerName;
+
+	for (auto user : response.results) // find the winner
+	{
+		if(user.score > maxScore)
+		{
+			maxScore = user.score;
+			winnerName = user.username;
+		}
+	}
+
 	for (auto user : response.results)
 	{
-		res[user.username] = user.score;
+		json temp;
+		temp["averageAnswerTime"] = user.averageAnswerTime;
+		temp["correctAnswerCount"] = user.correctAnswerCount;
+		if (user.username == winnerName)
+		{
+			temp["isWinner"] = true;
+		}
+		else
+		{
+			temp["isWinner"] = false;
+		}
+		res[user.username] = temp;
 	}
 
 	return createResponse(GET_GAME_RESULT_CODE, Helper::stringToBuffer(res.dump()));

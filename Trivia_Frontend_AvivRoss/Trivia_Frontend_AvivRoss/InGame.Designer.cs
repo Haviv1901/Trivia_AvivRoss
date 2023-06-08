@@ -29,18 +29,24 @@
         private void InitializeComponent()
         {
             components = new System.ComponentModel.Container();
+            TMRname = new System.Windows.Forms.Timer(components);
             BTNbackAfterGame = new Button();
             label1 = new Label();
-            TMRname = new System.Windows.Forms.Timer(components);
             SuspendLayout();
+            // 
+            // TMRname
+            // 
+            TMRname.Interval = 1000;
+            TMRname.Tick += TMRname_Tick;
             // 
             // BTNbackAfterGame
             // 
             BTNbackAfterGame.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             BTNbackAfterGame.BackColor = Color.Red;
-            BTNbackAfterGame.Location = new Point(341, 364);
+            BTNbackAfterGame.FlatStyle = FlatStyle.Popup;
+            BTNbackAfterGame.Location = new Point(306, 388);
             BTNbackAfterGame.Name = "BTNbackAfterGame";
-            BTNbackAfterGame.Size = new Size(113, 23);
+            BTNbackAfterGame.Size = new Size(157, 23);
             BTNbackAfterGame.TabIndex = 10;
             BTNbackAfterGame.Text = "Back to main menu";
             BTNbackAfterGame.UseVisualStyleBackColor = false;
@@ -58,11 +64,6 @@
             label1.Text = "Loading Game...";
             label1.TextAlign = ContentAlignment.MiddleCenter;
             // 
-            // TMRname
-            // 
-            TMRname.Interval = 1000;
-            TMRname.Tick += TMRname_Tick;
-            // 
             // InGame
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -78,8 +79,8 @@
         }
 
         #endregion
+        private System.Windows.Forms.Timer TMRname;
         private Button BTNbackAfterGame;
         private Label label1;
-        private System.Windows.Forms.Timer TMRname;
     }
 }

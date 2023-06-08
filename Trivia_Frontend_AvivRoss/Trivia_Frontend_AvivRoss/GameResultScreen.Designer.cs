@@ -47,9 +47,9 @@
             // TXTscores
             // 
             TXTscores.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            TXTscores.Location = new Point(268, 110);
+            TXTscores.Location = new Point(-9, 110);
             TXTscores.Name = "TXTscores";
-            TXTscores.Size = new Size(236, 311);
+            TXTscores.Size = new Size(822, 311);
             TXTscores.TabIndex = 10;
             TXTscores.Text = "users - score";
             TXTscores.TextAlign = ContentAlignment.TopCenter;

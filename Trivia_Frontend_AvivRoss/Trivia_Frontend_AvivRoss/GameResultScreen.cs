@@ -20,17 +20,17 @@ namespace Trivia_Frontend_AvivRoss
 
         private void GameResultScreen_Load(object sender, EventArgs e)
         {
-            Dictionary<string, string> results = _requestHandler.GetGameResult();
+            List<Tuple<string, float, int, bool>> results = _requestHandler.GetGameResult();
             string scores = "";
-            int i = 1;
-            foreach (var username in results.Keys)
+
+            foreach (var user in results)
             {
-                if (username == "status")
-                {
-                    continue;
-                }
-                scores += i + ". " + username + " - " + results[username] + "\n";
-                i++;
+                scores += "- " + user.Item1 + " - Average answer Time: " + user.Item2 + " Correct Answers: " +
+                          user.Item3;
+                if (user.Item4)
+                    scores += " - Winner!";
+                scores += "\n";
+
             }
             TXTscores.Text = scores;
         }

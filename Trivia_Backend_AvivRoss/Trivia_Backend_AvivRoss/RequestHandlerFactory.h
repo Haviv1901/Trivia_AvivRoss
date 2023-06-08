@@ -31,6 +31,8 @@ public:
 	GameRequestHandler* createGameRequestHandler(Room room, LoggedUser user);
 	GameManager& getGameManager();
 
+	
+
 private:
 	LoginManager m_loginManager;
 	IDatabase* m_database;

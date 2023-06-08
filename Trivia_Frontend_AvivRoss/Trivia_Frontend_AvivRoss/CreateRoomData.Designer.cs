@@ -50,33 +50,39 @@
             TXTroomName.Name = "TXTroomName";
             TXTroomName.Size = new Size(120, 23);
             TXTroomName.TabIndex = 0;
+            TXTroomName.Text = "Default room name lol";
             TXTroomName.TextChanged += TXTroomName_TextChanged;
             // 
             // NUMmaxPlayers
             // 
             NUMmaxPlayers.Location = new Point(138, 42);
             NUMmaxPlayers.Maximum = new decimal(new int[] { 10, 0, 0, 0 });
+            NUMmaxPlayers.Minimum = new decimal(new int[] { 2, 0, 0, 0 });
             NUMmaxPlayers.Name = "NUMmaxPlayers";
             NUMmaxPlayers.Size = new Size(120, 23);
             NUMmaxPlayers.TabIndex = 1;
+            NUMmaxPlayers.Value = new decimal(new int[] { 2, 0, 0, 0 });
             // 
             // NUManswerTimeOut
             // 
             NUManswerTimeOut.ForeColor = SystemColors.WindowFrame;
             NUManswerTimeOut.Location = new Point(138, 103);
-            NUManswerTimeOut.Maximum = new decimal(new int[] { 10, 0, 0, 0 });
+            NUManswerTimeOut.Maximum = new decimal(new int[] { 20, 0, 0, 0 });
+            NUManswerTimeOut.Minimum = new decimal(new int[] { 5, 0, 0, 0 });
             NUManswerTimeOut.Name = "NUManswerTimeOut";
             NUManswerTimeOut.Size = new Size(120, 23);
             NUManswerTimeOut.TabIndex = 2;
-            NUManswerTimeOut.Value = new decimal(new int[] { 3, 0, 0, 0 });
+            NUManswerTimeOut.Value = new decimal(new int[] { 5, 0, 0, 0 });
             // 
             // NUMquestuinCount
             // 
             NUMquestuinCount.Location = new Point(12, 103);
             NUMquestuinCount.Maximum = new decimal(new int[] { 10, 0, 0, 0 });
+            NUMquestuinCount.Minimum = new decimal(new int[] { 3, 0, 0, 0 });
             NUMquestuinCount.Name = "NUMquestuinCount";
             NUMquestuinCount.Size = new Size(120, 23);
             NUMquestuinCount.TabIndex = 3;
+            NUMquestuinCount.Value = new decimal(new int[] { 3, 0, 0, 0 });
             // 
             // label1
             // 
@@ -163,10 +169,10 @@
             Controls.Add(NUManswerTimeOut);
             Controls.Add(NUMmaxPlayers);
             Controls.Add(TXTroomName);
+            FormBorderStyle = FormBorderStyle.FixedSingle;
+            MaximizeBox = false;
             Name = "CreateRoomData";
             Text = "CreateRoomData";
-            this.FormBorderStyle = FormBorderStyle.FixedSingle;
-            this.MaximizeBox = false;
             FormClosed += CreateRoom_FormClosed;
             ((System.ComponentModel.ISupportInitialize)NUMmaxPlayers).EndInit();
             ((System.ComponentModel.ISupportInitialize)NUManswerTimeOut).EndInit();

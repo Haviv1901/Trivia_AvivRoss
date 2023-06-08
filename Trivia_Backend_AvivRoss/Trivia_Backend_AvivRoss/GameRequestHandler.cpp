@@ -115,8 +115,22 @@ RequestResult GameRequestHandler::submitAnswer(RequestInfo req)
 }
 RequestResult GameRequestHandler::getGameResult(RequestInfo req)
 {
-	RequestResult res;
 
+	bool flag = true;
+	while (flag) // wait for all players to finish the quiz before sending the results.
+	{
+		flag = false;
+		for (auto user : m_game.getPlayers())
+		{
+			if (user.second.numOfCorrectAnswers + user.second.numOfWrongAnswers != m_game.getPlayers()[m_user.getUsername()].numOfCorrectAnswers + m_game.getPlayers()[m_user.getUsername()].numOfWrongAnswers)
+			{
+				flag = true;
+				// go through all users, if one of them hasnt finished the quiz, keep waiting.
+			}
+		}
+	}
+
+	RequestResult res;
 
 	GetGameResultsResponse getGameResultsRes;
 
@@ -139,6 +153,7 @@ RequestResult GameRequestHandler::getGameResult(RequestInfo req)
 
 		getGameResultsRes.results.push_back(res);
 	}
+
 
 
 

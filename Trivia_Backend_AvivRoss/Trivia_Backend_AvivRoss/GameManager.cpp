@@ -41,3 +41,18 @@ void GameManager::deleteGame(int gameId)
 
 }
 
+Game& GameManager::getGameByUser(string user, Room room)
+{
+	for (auto element : m_games)
+	{
+		if (element.getPlayers().find(user) != element.getPlayers().end())
+		{
+			return element;
+		}
+	} // if the user is in some game retuirn that game, if not create new game with the room
+
+	return createGame(room);
+}
+
+
+

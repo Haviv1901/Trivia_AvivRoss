@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Diagnostics.Eventing.Reader;
 using System.Linq;
 using System.Numerics;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -48,8 +49,8 @@ namespace Trivia_Frontend_AvivRoss
         /// <summary>
         /// 
         /// </summary>
-        /// <returns> dictionary with username / score </returns>
-        public Dictionary<string, string> GetGameResult()
+        /// <returns> username - avgAnswerTime - correctAnswerCount - isWinner </returns>
+        public List<Tuple<string, float, int, bool>> GetGameResult()
         {
             JObject send = new JObject();
 
@@ -58,11 +59,16 @@ namespace Trivia_Frontend_AvivRoss
 
             JObject json = JObject.Parse(recvMessage.data);
 
-            Dictionary<string, string> result = new Dictionary<string, string>();
+            List<Tuple<string, float, int, bool>> result = new List<Tuple<string, float, int, bool>>();
 
-            foreach (var item in json)
+            foreach (var username in json)
             {
-                result.Add(item.Key, item.Value.ToString());
+                string name = username.Key;
+                float avgAnswerTime = username.Value["averageAnswerTime"].ToObject<float>();
+                int correctAnswerCount = username.Value["correctAnswerCount"].ToObject<int>();
+                bool isWinner = username.Value["isWinner"].ToObject<bool>();
+
+                result.Add(new Tuple<string, float, int, bool>(name, avgAnswerTime, correctAnswerCount, isWinner));
             }
 
             return result;
