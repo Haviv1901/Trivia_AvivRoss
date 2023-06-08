@@ -122,11 +122,12 @@ void Communicator::handleNewClient()
  */
 void Communicator::clientHandler(SOCKET client_socket)
 {
-
+	RequestResult res;
+	RequestInfo msg;
 	try
 	{
-		RequestInfo msg;
-		RequestResult res;
+		
+		
 		res.newHandler = m_clients[client_socket];
 		while (true)
 		{
@@ -153,8 +154,22 @@ void Communicator::clientHandler(SOCKET client_socket)
 	}
 	catch (const std::exception& e)
 	{
+		if (typeid(*res.newHandler) == typeid(RoomAdminRequestHandler*) || typeid(*res.newHandler) == typeid(RoomMemberRequestHandler*))
+		{
+			msg.id = CLOSE_OR_LEAVE_ROOM_CODE;
+			res = res.newHandler->handleRequest(msg); // close or leave room
+		}
+		if (typeid(*res.newHandler) == typeid(MenuRequestHandler*))
+		{
+			msg.id = SIGNOUT_CODE;
+			res = res.newHandler->handleRequest(msg); // log out
+		}
+		if(typeid(*res.newHandler) == typeid(GameRequestHandler*))
+		{
+			msg.id = LEAVE_GAME_CODE;
+			res = res.newHandler->handleRequest(msg); // leave game
+		}
 		std::cout << "Exception was catch in function clientHandler. socket=" << client_socket << ", what=" << e.what() << std::endl;
-
 	}
 	closesocket(client_socket);
 }
