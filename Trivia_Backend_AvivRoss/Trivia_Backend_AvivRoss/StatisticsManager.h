@@ -12,6 +12,8 @@ public:
 	std::vector<Statistics> getHighScore();
 	Statistics getUserStatistics(string username);
 
+	void addGameResult(string username, int correctAnswers, int totalAnswers, float averageAnswerTime);
+
 private:
 	IDatabase* m_database;
 };

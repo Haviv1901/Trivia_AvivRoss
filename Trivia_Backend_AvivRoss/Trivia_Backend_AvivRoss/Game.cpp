@@ -11,7 +11,7 @@ Question Game::getQuestionForUser(LoggedUser user)
 {
 	return m_players[user.getUsername()].currentQuestion;
 }
-void Game::submitAnswer(LoggedUser user, unsigned int answerId) // TODO: add sql here that updates the user score
+void Game::submitAnswer(LoggedUser user, unsigned int answerId, double timeTookToAnswer)
 {
 	if (m_players[user.getUsername()].currentQuestion.getCorrectAnswerId() == answerId)
 	{
@@ -21,6 +21,7 @@ void Game::submitAnswer(LoggedUser user, unsigned int answerId) // TODO: add sql
 	{
 		m_players[user.getUsername()].numOfWrongAnswers++;
 	}
+	m_players[user.getUsername()].averageAnswerTime = (m_players[user.getUsername()].averageAnswerTime + timeTookToAnswer) / 2;
 	int questionNum = m_players[user.getUsername()].numOfWrongAnswers + m_players[user.getUsername()].numOfCorrectAnswers;
 	m_players[user.getUsername()].currentQuestion = m_questions[questionNum];
 }

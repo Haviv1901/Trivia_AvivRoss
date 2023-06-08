@@ -30,7 +30,7 @@ public:
 	Game(std::vector<Question> questions, unsigned int gameId, std::map<string, GameData> players);
 
 	Question getQuestionForUser(LoggedUser user);
-	void submitAnswer(LoggedUser user, unsigned int answerId);
+	void submitAnswer(LoggedUser user, unsigned int answerId, double timeTookToAnswer);
 	void removePlayer(LoggedUser user);
 
 	unsigned int getGameId();

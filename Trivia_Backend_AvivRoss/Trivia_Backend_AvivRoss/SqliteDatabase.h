@@ -38,6 +38,7 @@ public:
 
 	// not in uml
 	Statistics getStats(string username) override;
+	void addGameResult(string username, float avgAnswerTime, int totalAnswers, int totalCorrectAnswers) override;
 
 private:
 

@@ -414,6 +414,30 @@ std::vector<Statistics> SqliteDatabase::getHighScores()
 	return res;
 }
 
+/**
+ * \brief function will update the statistics table with the new game results
+ * \param username 
+ * \param avgAnswerTime 
+ * \param totalAnswers 
+ * \param totalCorrectAnswers 
+ */
+void SqliteDatabase::addGameResult(string username, float avgAnswerTime, int totalAnswers, int totalCorrectAnswers)
+{
+	string sqlQuary = "UPDATE STATISTICS SET AVG_ANSWER_TIME = (AVG_ANSWER_TIME + " + to_string(avgAnswerTime) + ")/2 WHERE USERNAME = \"" + username + "\"";
+	// UPDATE STATISTICS SET AVG_ANSWER_TIME = (AVG_ANSWER_TIME + 5)/2 WHERE USERNAME = "test" - for example
+	sqlRunQuery(sqlQuary);
+
+	sqlQuary = "UPDATE STATISTICS SET TOTAL_CORRECT_ANSWERS = TOTAL_CORRECT_ANSWERS + " + to_string(totalCorrectAnswers) + " WHERE USERNAME = \"" + username + "\"";
+	// UPDATE STATISTICS SET TOTAL_CORRECT_ANSWERS = TOTAL_CORRECT_ANSWERS + 5 WHERE USERNAME = "test" - for example
+	sqlRunQuery(sqlQuary);
+
+	sqlQuary = "UPDATE STATISTICS SET TOTAL_ANSWERS = TOTAL_ANSWERS + " + to_string(totalAnswers) + " WHERE USERNAME = \"" + username + "\"";
+	// UPDATE STATISTICS SET TOTAL_ANSWERS = TOTAL_ANSWERS + 5 WHERE USERNAME = "test" - for example
+	sqlRunQuery(sqlQuary);
+
+
+}
+
 Statistics SqliteDatabase::getStats(string username)
 {
 	vector<Statistics> stats;

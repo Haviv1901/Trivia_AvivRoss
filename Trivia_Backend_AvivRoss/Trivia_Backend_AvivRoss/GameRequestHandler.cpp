@@ -97,8 +97,13 @@ RequestResult GameRequestHandler::submitAnswer(RequestInfo req)
 	SubmitAnswerRequest submingAnswerReq = JsonRequestPacketDeserializer::deserializeSubmitAnswerRequest(req.buffer);
 	SubmitAnswerResponse submitAnswerRes;
 	
-	m_game.submitAnswer(m_user.getUsername(), submingAnswerReq.answerId); // add here function recv also the time it took to answer
+	m_game.submitAnswer(m_user.getUsername(), submingAnswerReq.answerId, timeTookToAnswer); // add here function recv also the time it took to answer
 
+	std::map<string, GameData> tempPlayers = m_game.getPlayers(); // putting it all in variables so its human readable. (kinda)
+	string playerName = m_user.getUsername();
+	int totalAswers = tempPlayers[playerName].numOfCorrectAnswers + tempPlayers[playerName].numOfWrongAnswers;
+	m_handlerFactory.getStatisticsManager().addGameResult(playerName, tempPlayers[playerName].numOfCorrectAnswers, totalAswers, tempPlayers[playerName].averageAnswerTime);
+	// updating db with the game results.
 
 	submitAnswerRes.status = 1;
 	submitAnswerRes.correctAnswerId = m_game.getQuestionForUser(m_user.getUsername()).getCorrectAnswerId();
@@ -133,6 +138,8 @@ RequestResult GameRequestHandler::getGameResult(RequestInfo req)
 
 		getGameResultsRes.results.push_back(res);
 	}
+
+
 
 	res.respones = JsonResponsePacketSerializer::serializeResponse(getGameResultsRes);
 	res.newHandler = leaveGame(req).newHandler;

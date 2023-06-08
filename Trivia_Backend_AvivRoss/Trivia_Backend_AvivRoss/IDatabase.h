@@ -30,5 +30,6 @@ public:
 
 	// not in uml
 	virtual Statistics getStats(string username) = 0;
+	virtual void addGameResult(string username, float avgAnswerTime, int totalAnswers, int totalCorrectAnswers) = 0;
 
 };
