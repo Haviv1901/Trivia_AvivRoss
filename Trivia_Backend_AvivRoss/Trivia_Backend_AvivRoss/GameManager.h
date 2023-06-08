@@ -10,8 +10,9 @@ public:
 
 	GameManager(IDatabase* database);
 
-	Game createGame(Room);
+	Game& createGame(Room);
 	void deleteGame(int gameId);
+	//Game getGameByUser(string user);
 
 private:
 

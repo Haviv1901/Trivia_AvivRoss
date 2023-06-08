@@ -144,6 +144,8 @@ namespace Trivia_Frontend_AvivRoss
                 throw new RoomClosedException("Room closed");
             }
 
+            _questionCount = roomState.Item3;
+            _questionTimeOut = roomState.Item4;
             players = roomState.Item1;
             bool isStarted = roomState.Item2;
             string playersString = "";

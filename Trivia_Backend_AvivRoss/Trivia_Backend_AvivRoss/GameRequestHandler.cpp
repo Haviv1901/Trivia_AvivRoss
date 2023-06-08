@@ -5,10 +5,13 @@
 #include "Responses.h"
 
 
-GameRequestHandler::GameRequestHandler(Game game, LoggedUser user, GameManager& gameManager, RequestHandlerFactory& handlerFactory)
+GameRequestHandler::GameRequestHandler(Game& game, LoggedUser& user, GameManager& gameManager, RequestHandlerFactory& handlerFactory)
 	: m_game(game), m_user(user), m_gameManager(gameManager), m_handlerFactory(handlerFactory)
 {
-	
+	//m_game = game;
+	//m_user = user;
+	//m_gameManager = gameManager;
+	//m_handlerFactory = handlerFactory;
 }
 
 bool GameRequestHandler::isRequestRelevant(RequestInfo req)
@@ -68,6 +71,8 @@ RequestResult GameRequestHandler::getQuestion(RequestInfo req)
 	GetQuestionResponse getQuestionRes;
 	
 	getQuestionRes.status = 1;
+
+	//m_game = m_gameManager.getGameByUser(m_user.getUsername());
 
 	Question temp = m_game.getQuestionForUser(m_user.getUsername());
 

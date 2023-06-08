@@ -19,7 +19,7 @@ namespace Trivia_Frontend_AvivRoss
     {
         public static TriviaRequests? instance = null;
         
-        private int status;
+        private int status; // meaningless - TODO: remove this
         
         private Communicator _communicator;
         private bool _connected;
@@ -42,6 +42,30 @@ namespace Trivia_Frontend_AvivRoss
                 Console.WriteLine(e);
                 throw;
             }
+        }
+
+
+        /// <summary>
+        /// function will return the correct answer id, return -1 if failed
+        /// </summary>
+        /// <param name="answerId"></param>
+        /// <returns></returns>
+        public int SendAnswer(int answerId)
+        {
+            JObject send = new JObject();
+            send["Answer Id"] = answerId;
+
+            _communicator.SendMessage(send, Constants.SubmitAnswerCode);
+            Message recvMessage = _communicator.RecvMessage();
+
+            JObject json = JObject.Parse(recvMessage.data);
+
+            if (isError(json) != "")
+            {
+                return -1;
+            }
+
+            return json["correctAnswerId"].ToObject<int>();
         }
 
         // strings are as follows : Question , then 4 answers

@@ -9,22 +9,28 @@ GameManager::GameManager(IDatabase* database)
 	
 }
 
-Game GameManager::createGame(Room room)
+
+
+Game& GameManager::createGame(Room room)
 {
 	std::list<Question> questionsList = m_database->getQuestions(10);
 	std::vector<Question> questions = std::vector<Question>(questionsList.begin(), questionsList.end());
 
-	std::map<string, GameData> players;
+	std::map<string, GameData> players; // username -> GameData
 
 	for (auto player : room.getAllUsers())
 	{
 		GameData data;
 		data.currentQuestion = questions[0];
+		data.averageAnswerTime = 0;
+		data.numOfCorrectAnswers = 0;
+		data.numOfWrongAnswers = 0;
+		players.insert({ player, data });
 	}
 
-	Game temp(questions, m_idGenerator++, players);
-	m_games.push_back(temp);
-	return temp;
+	
+	m_games.push_back(Game(questions, ++m_idGenerator, players));
+	return m_games.back();
 }
 
 void GameManager::deleteGame(int gameId)
@@ -34,3 +40,4 @@ void GameManager::deleteGame(int gameId)
 	m_games.erase(iter);
 
 }
+

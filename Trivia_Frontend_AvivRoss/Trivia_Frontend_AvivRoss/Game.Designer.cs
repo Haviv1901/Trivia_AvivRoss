@@ -47,7 +47,7 @@
             BTNanswer4.Name = "BTNanswer4";
             BTNanswer4.Size = new Size(187, 48);
             BTNanswer4.TabIndex = 0;
-            BTNanswer4.Tag = "3";
+            BTNanswer4.Tag = "4";
             BTNanswer4.Text = "button1";
             BTNanswer4.UseVisualStyleBackColor = false;
             BTNanswer4.Click += BTNanswer4_Click;
@@ -73,7 +73,7 @@
             BTNanswer2.Name = "BTNanswer2";
             BTNanswer2.Size = new Size(187, 48);
             BTNanswer2.TabIndex = 2;
-            BTNanswer2.Tag = "1";
+            BTNanswer2.Tag = "3";
             BTNanswer2.Text = "button3";
             BTNanswer2.UseVisualStyleBackColor = false;
             BTNanswer2.Click += BTNanswer2_Click;
@@ -86,7 +86,7 @@
             BTNanswer1.Name = "BTNanswer1";
             BTNanswer1.Size = new Size(187, 48);
             BTNanswer1.TabIndex = 3;
-            BTNanswer1.Tag = "0";
+            BTNanswer1.Tag = "1";
             BTNanswer1.Text = "button4";
             BTNanswer1.UseVisualStyleBackColor = false;
             BTNanswer1.Click += BTNanswer1_Click;

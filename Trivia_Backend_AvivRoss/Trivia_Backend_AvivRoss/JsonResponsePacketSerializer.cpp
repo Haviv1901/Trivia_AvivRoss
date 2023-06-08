@@ -158,6 +158,7 @@ Buffer JsonResponsePacketSerializer::serializeResponse(SubmitAnswerResponse resp
 {
 	json res;
 	res["status"] = response.status;
+	res["correctAnswerId"] = response.correctAnswerId;
 
 	return createResponse(SUBMIT_ANSWER_CODE, Helper::stringToBuffer(res.dump()));
 }

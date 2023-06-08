@@ -20,12 +20,15 @@ namespace Trivia_Frontend_AvivRoss
         private int _questionCount;
         private int _questionTimeLeftCount;
 
+        private bool _didUserAnswer = false;
+
         public Game(int questionTimeOut, int questionCount)
         {
             InitializeComponent();
             _soundManager = SoundManager.instance;
             _requestHandler = TriviaRequests.instance;
             this._questionCount = questionCount;
+            _questionTimeOut = questionTimeOut;
             _questionTimeLeftCount = questionTimeOut;
             TMRtimeBetweenEachQuestion.Interval = questionTimeOut * 1000;
 
@@ -41,6 +44,16 @@ namespace Trivia_Frontend_AvivRoss
         {
             List<string> question = _requestHandler.GetQuestion();
 
+            BTNanswer1.Enabled = true;
+            BTNanswer2.Enabled = true;
+            BTNanswer3.Enabled = true;
+            BTNanswer4.Enabled = true;
+
+            BTNanswer1.BackColor = Color.SkyBlue;
+            BTNanswer2.BackColor = Color.SkyBlue;
+            BTNanswer3.BackColor = Color.SkyBlue;
+            BTNanswer4.BackColor = Color.SkyBlue;
+
             TXTquestion.Text = question[0];
             BTNanswer1.Text = question[1];
             BTNanswer2.Text = question[2];
@@ -48,6 +61,7 @@ namespace Trivia_Frontend_AvivRoss
             BTNanswer4.Text = question[4];
 
             TMRquestionTimer.Stop();
+            _questionTimeLeftCount = _questionTimeOut;
             TMRquestionTimer.Start();
         }
 
@@ -58,7 +72,12 @@ namespace Trivia_Frontend_AvivRoss
                 TMRtimeBetweenEachQuestion.Stop();
                 end();
             }
-            
+
+            if (!_didUserAnswer)
+            {
+                RevealAnswer((Object)BTNanswer1); // press the first button
+            }
+
             _questionCount--;
             LoadNextQuestion();
         }
@@ -66,12 +85,12 @@ namespace Trivia_Frontend_AvivRoss
         private void TMRtimeBetweenEachQuestion_Tick(object sender, EventArgs e)
         {
             QuestionTimeOut();
-            
         }
 
         private void end()
         {
-            // get result, print on screen and have everyone leave the game.
+            this.DialogResult = DialogResult.OK;
+            this.Close();
         }
 
         private void TMRquestionTimer_Tick_1(object sender, EventArgs e)
@@ -87,9 +106,10 @@ namespace Trivia_Frontend_AvivRoss
 
         private void RevealAnswer(object sender)
         {
+            _didUserAnswer = true;
             int correctAnswer = 0;
-            int answerIndex = int.Parse(((Button)sender).Tag.ToString());
-            // correctAnswer = _requestHandler.SendAnswer(int.Parse(((Button)sender).Tag.ToString())); // button's tag is the answer index
+            int answerIndex = int.Parse(((Button)sender).Tag.ToString()) + 1;
+            correctAnswer = _requestHandler.SendAnswer(answerIndex); // button's tag is the answer index
 
             BTNanswer1.Enabled = false;
             BTNanswer2.Enabled = false;
@@ -105,7 +125,7 @@ namespace Trivia_Frontend_AvivRoss
             {
                 _soundManager.PlayWrongAnswer();
                 ((Button)sender).BackColor = Color.Red;
-                TurnGreenTheCorrectButton(answerIndex);
+                TurnGreenTheCorrectButton(correctAnswer);
             }
         }
 
@@ -133,16 +153,16 @@ namespace Trivia_Frontend_AvivRoss
         {
             switch (tag)
             {
-                case 0:
+                case 1:
                     BTNanswer1.BackColor = Color.Green;
                     break;
-                case 1:
+                case 2:
                     BTNanswer2.BackColor = Color.Green;
                     break;
-                case 2:
+                case 3:
                     BTNanswer3.BackColor = Color.Green;
                     break;
-                case 3:
+                case 4:
                     BTNanswer4.BackColor = Color.Green;
                     break;
             }

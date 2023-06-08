@@ -10,7 +10,7 @@ class GameRequestHandler :
 {
 public:
 
-	GameRequestHandler(Game game, LoggedUser user, GameManager& gameManager, RequestHandlerFactory& handlerFactory);
+	GameRequestHandler(Game& game, LoggedUser& user, GameManager& gameManager, RequestHandlerFactory& handlerFactory);
 
 	bool isRequestRelevant(RequestInfo req) override;
 	RequestResult handleRequest(RequestInfo req) override;
