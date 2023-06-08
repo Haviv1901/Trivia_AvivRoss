@@ -23,7 +23,15 @@ void Game::submitAnswer(LoggedUser user, unsigned int answerId, double timeTookT
 	}
 	m_players[user.getUsername()].averageAnswerTime = (m_players[user.getUsername()].averageAnswerTime + timeTookToAnswer) / 2;
 	int questionNum = m_players[user.getUsername()].numOfWrongAnswers + m_players[user.getUsername()].numOfCorrectAnswers;
-	m_players[user.getUsername()].currentQuestion = m_questions[questionNum];
+	try
+	{
+		m_players[user.getUsername()].currentQuestion = m_questions[questionNum];
+	}
+	catch (...)
+	{
+		m_players[user.getUsername()].currentQuestion = m_questions[questionNum-1];
+	}
+	
 }
 void Game::removePlayer(LoggedUser user)
 {

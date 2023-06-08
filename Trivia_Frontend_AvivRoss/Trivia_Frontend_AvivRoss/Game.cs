@@ -118,7 +118,7 @@ namespace Trivia_Frontend_AvivRoss
             int answerIndex = int.Parse(((Button)sender).Tag.ToString());// + 1;
             correctAnswer = _requestHandler.SendAnswer(answerIndex-1) + 1; // button's tag is the answer index
 
-            MessageBox.Show("The correct answer is: " + correctAnswer);
+            //MessageBox.Show("The correct answer is: " + correctAnswer);
 
             BTNanswer1.Enabled = false;
             BTNanswer2.Enabled = false;

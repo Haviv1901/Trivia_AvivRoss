@@ -549,7 +549,7 @@ int callbackStatistics(void* data, int argc, char** argv, char** azColName)
 int callbackQuestions(void* data, int argc, char** argv, char** azColName)
 {
 	// id name
-	string question, currAnswer, wrongAnswer1, wrongAnswer2, wrongAnswer3;
+	string question, corrAnswer, wrongAnswer1, wrongAnswer2, wrongAnswer3;
 
 	if (data == nullptr)
 	{
@@ -566,7 +566,7 @@ int callbackQuestions(void* data, int argc, char** argv, char** azColName)
 		}
 		if (string(azColName[i]) == "CORR_ANSWER")
 		{
-			currAnswer = argv[i];
+			corrAnswer = argv[i];
 		}
 		if (string(azColName[i]) == "WRONG_ANSWER1")
 		{
@@ -583,15 +583,25 @@ int callbackQuestions(void* data, int argc, char** argv, char** azColName)
 
 	}
 	vector<string> answers;
-	answers.push_back(currAnswer);
+	answers.push_back(corrAnswer);
 	answers.push_back(wrongAnswer1);
 	answers.push_back(wrongAnswer2);
 	answers.push_back(wrongAnswer3);
 
 	std::shuffle(answers.begin(), answers.end(), std::random_device()); // suffle the vector
 
-	std::vector<string>::iterator itr = std::find(answers.begin(), answers.end(), currAnswer); // find the correct answer index
-	int correctAnswerIndex = std::distance(answers.begin(), itr);
+	int correctAnswerIndex = 0;
+	for (auto answer : answers)
+	{
+		if(answer == corrAnswer)
+		{
+			break;
+		}
+		correctAnswerIndex++;
+	}
+
+	//std::vector<string>::iterator itr = std::find(answers.begin(), answers.end(), currAnswer); // find the correct answer index
+	//int correctAnswerIndex = std::distance(answers.begin(), itr); NOT WORKING FOR SOME REASON ????
 
 	questionsList->push_back(Question(question, answers, correctAnswerIndex));
 	return 0;

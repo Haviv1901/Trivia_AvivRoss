@@ -96,7 +96,8 @@ RequestResult GameRequestHandler::submitAnswer(RequestInfo req)
 
 	SubmitAnswerRequest submingAnswerReq = JsonRequestPacketDeserializer::deserializeSubmitAnswerRequest(req.buffer);
 	SubmitAnswerResponse submitAnswerRes;
-	
+
+	submitAnswerRes.correctAnswerId = m_game.getQuestionForUser(m_user.getUsername()).getCorrectAnswerId();
 	m_game.submitAnswer(m_user.getUsername(), submingAnswerReq.answerId, timeTookToAnswer); // add here function recv also the time it took to answer
 
 	std::map<string, GameData> tempPlayers = m_game.getPlayers(); // putting it all in variables so its human readable. (kinda)
@@ -106,7 +107,7 @@ RequestResult GameRequestHandler::submitAnswer(RequestInfo req)
 	// updating db with the game results.
 
 	submitAnswerRes.status = 1;
-	submitAnswerRes.correctAnswerId = m_game.getQuestionForUser(m_user.getUsername()).getCorrectAnswerId();
+	
 	res.respones = JsonResponsePacketSerializer::serializeResponse(submitAnswerRes);
 	res.newHandler = this;
 	return res;
