@@ -171,7 +171,6 @@ RequestResult GameRequestHandler::leaveGame(RequestInfo req)
 
 	leaveGameRes.status = 1;
 
-	m_game.removePlayer(m_user.getUsername());
 
 
 	res.respones = JsonResponsePacketSerializer::serializeResponse(leaveGameRes);

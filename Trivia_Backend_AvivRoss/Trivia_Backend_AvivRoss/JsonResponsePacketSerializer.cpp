@@ -165,7 +165,7 @@ Buffer JsonResponsePacketSerializer::serializeResponse(SubmitAnswerResponse resp
 Buffer JsonResponsePacketSerializer::serializeResponse(GetGameResultsResponse response)
 {
 	json res;
-	int maxScore = 0;
+	int maxScore = -1;
 	string winnerName;
 
 	for (auto user : response.results) // find the winner
