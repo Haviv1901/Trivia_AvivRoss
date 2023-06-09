@@ -1,10 +1,15 @@
 #include "Game.h"
+#include <mutex>
 
+std::mutex playersMutex;
 
 Game::Game(std::vector<Question> questions, unsigned int gameId, std::map<string, GameData> players)
 	: m_questions(questions), m_players(players), m_gameId(gameId)
 {
-	
+	for(auto player : m_players)
+	{
+		m_playerReady[player.first] = false;
+	}
 }
 
 Question Game::getQuestionForUser(LoggedUser user)
@@ -37,7 +42,10 @@ void Game::submitAnswer(LoggedUser user, unsigned int answerId, double timeTookT
 }
 void Game::removePlayer(LoggedUser user)
 {
+	playersMutex.lock();
+	m_playerReady.erase(user.getUsername());
 	m_players.erase(user.getUsername());
+	playersMutex.unlock();
 }
 
 unsigned int Game::getGameId()
@@ -48,4 +56,9 @@ unsigned int Game::getGameId()
 std::map<string, GameData> Game::getPlayers()
 {
 	return m_players;
+}
+
+std::map<string, bool>& Game::getPlayerReady()
+{
+	return m_playerReady;
 }

@@ -100,11 +100,7 @@ RequestResult GameRequestHandler::submitAnswer(RequestInfo req)
 	submitAnswerRes.correctAnswerId = m_game.getQuestionForUser(m_user.getUsername()).getCorrectAnswerId();
 	m_game.submitAnswer(m_user.getUsername(), submingAnswerReq.answerId, timeTookToAnswer); // add here function recv also the time it took to answer
 
-	std::map<string, GameData> tempPlayers = m_game.getPlayers(); // putting it all in variables so its human readable. (kinda)
-	string playerName = m_user.getUsername();
-	int totalAswers = tempPlayers[playerName].numOfCorrectAnswers + tempPlayers[playerName].numOfWrongAnswers;
-	m_handlerFactory.getStatisticsManager().addGameResult(playerName, tempPlayers[playerName].numOfCorrectAnswers, totalAswers, tempPlayers[playerName].averageAnswerTime);
-	// updating db with the game results.
+
 
 	submitAnswerRes.status = 1;
 	
@@ -116,25 +112,33 @@ RequestResult GameRequestHandler::submitAnswer(RequestInfo req)
 RequestResult GameRequestHandler::getGameResult(RequestInfo req)
 {
 
+	std::map<string, GameData> tempPlayers = m_game.getPlayers(); // putting it all in variables so its human readable. (kinda)
+	string playerName = m_user.getUsername();
+	int totalAswers = tempPlayers[playerName].numOfCorrectAnswers + tempPlayers[playerName].numOfWrongAnswers;
+	m_handlerFactory.getStatisticsManager().addGameResult(playerName, tempPlayers[playerName].numOfCorrectAnswers, totalAswers, tempPlayers[playerName].averageAnswerTime);
+	// updating db with the game results.
+
+	m_game.getPlayerReady()[m_user.getUsername()] = true;
+
 	bool flag = true;
+	Helper::debugPrint("waiting for all players to finish the quiz");
 	while (flag) // wait for all players to finish the quiz before sending the results.
 	{
 		flag = false;
-		for (auto user : m_game.getPlayers())
+		for (auto user : m_game.getPlayerReady())
 		{
-			if (user.second.numOfCorrectAnswers + user.second.numOfWrongAnswers != m_game.getPlayers()[m_user.getUsername()].numOfCorrectAnswers + m_game.getPlayers()[m_user.getUsername()].numOfWrongAnswers)
+			if (!user.second) // if a player is not ready yet
 			{
-				flag = true;
-				// go through all users, if one of them hasnt finished the quiz, keep waiting.
+				flag = true; // continue waiting
 			}
 		}
 	}
+	Helper::debugPrint("all players finished the quiz - extracting data");
 
 	RequestResult res;
-
 	GetGameResultsResponse getGameResultsRes;
 
-	for (auto iter : m_game.getPlayers())
+	for (auto iter : m_game.getPlayers()) // extracting the data from the game to the response.
 	{
 		PlayerResults res;
 		res.username = iter.first;
@@ -154,9 +158,22 @@ RequestResult GameRequestHandler::getGameResult(RequestInfo req)
 		getGameResultsRes.results.push_back(res);
 	}
 
-
-
-
+	m_game.getPlayerReady()[m_user.getUsername()] = false; // reset the player ready status to false.
+	// now check that all other threads are also reset to false to indicate they all extracted data from db
+	// and now we can close the room and delete it from the map.
+	Helper::debugPrint("waiting for all players to finish extracting data");
+	while (flag) 
+	{
+		flag = false;
+		for (auto user : m_game.getPlayerReady())
+		{
+			if (user.second) // if a player is not ready yet
+			{
+				flag = true; // continue waiting
+			}
+		}
+	}
+	Helper::debugPrint("all players finished extracting data - now leaving the game");
 	res.respones = JsonResponsePacketSerializer::serializeResponse(getGameResultsRes);
 	res.newHandler = leaveGame(req).newHandler;
 	return res;
@@ -171,7 +188,18 @@ RequestResult GameRequestHandler::leaveGame(RequestInfo req)
 
 	leaveGameRes.status = 1;
 
-
+	if (m_game.getPlayers().size() == 1) // if the player is the last one in the room
+	{
+		m_game.removePlayer(m_user.getUsername());
+		m_gameManager.deleteGame(m_game.getGameId());
+		Helper::debugPrint(m_user.getUsername() + " - left and closed the game");
+	}
+	else
+	{
+		m_game.removePlayer(m_user.getUsername());
+		Helper::debugPrint(m_user.getUsername() + " - left the game");
+	}
+	
 
 	res.respones = JsonResponsePacketSerializer::serializeResponse(leaveGameRes);
 	res.newHandler = m_handlerFactory.createMenuRequestHandler(m_user);

@@ -35,11 +35,12 @@ public:
 
 	unsigned int getGameId();
 	std::map<string, GameData> getPlayers();
+	std::map<string, bool>& getPlayerReady();
 
 private:
 
 	std::vector<Question> m_questions;
 	std::map<string, GameData> m_players;
 	unsigned int m_gameId;
-
+	std::map<string, bool> m_playerReady; // <username, isReady>
 };
