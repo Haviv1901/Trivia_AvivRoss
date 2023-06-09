@@ -45,6 +45,15 @@ namespace Trivia_Frontend_AvivRoss
             }
         }
 
+        public void LeaveGame()
+        {
+            JObject send = new JObject();
+
+            _communicator.SendMessage(send, Constants.LeaveGameCode);
+            Message recvMessage = _communicator.RecvMessage();
+
+            JObject json = JObject.Parse(recvMessage.data);
+        }
 
         /// <summary>
         /// 

@@ -44,7 +44,7 @@ void Game::removePlayer(LoggedUser user)
 {
 	playersMutex.lock();
 	m_playerReady.erase(user.getUsername());
-	m_players.erase(user.getUsername());
+	//m_players.erase(user.getUsername());
 	playersMutex.unlock();
 }
 

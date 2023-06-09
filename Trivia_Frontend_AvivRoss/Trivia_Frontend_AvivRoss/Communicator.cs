@@ -38,14 +38,23 @@ namespace Trivia_Frontend_AvivRoss
             }
             catch (Exception e)
             {
-                Console.WriteLine("could not connect to server. " + e.Message);
+                MessageBox.Show("Error connecting to server. try again later.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                throw;
             }
 
         }
 
         public void Disconnect()
         {
-            _socket.Disconnect(true);
+            try
+            {
+                _socket.Disconnect(true);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
+
         }
 
         public void SendMessage(JObject data, int code)

@@ -52,7 +52,7 @@ namespace Trivia_Frontend_AvivRoss
                 Controls.Add(button2);
             }
 
-            BTNback.Click -= button2_Click_1;
+            BTNback.Click -= BTNbackButtonClicked;
             BTNback.Click += BackButton;
 
             TXTroomId.Text += _roomId.ToString();
@@ -86,7 +86,7 @@ namespace Trivia_Frontend_AvivRoss
         private void BackButton(object sender, EventArgs e)
         {
             CloseThread();
-            button2_Click_1(sender, e);
+            BTNbackButtonClicked(sender, e);
         }
 
         private void BTNrefresh_Click(object sender, EventArgs e)

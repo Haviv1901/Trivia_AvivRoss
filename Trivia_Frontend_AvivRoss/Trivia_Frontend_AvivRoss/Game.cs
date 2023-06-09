@@ -69,6 +69,15 @@ namespace Trivia_Frontend_AvivRoss
             TMRquestionTimer.Start();
         }
 
+        private void Game_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            TMRtimeBetweenEachQuestion.Stop();
+            TMRquestionTimer.Stop();
+            TMRtimeBetweenEachQuestion.Dispose();
+            TMRquestionTimer.Dispose();
+            this.Close();
+        }
+
         private void QuestionTimeOut()
         {
             if (_questionCountIter == 0)

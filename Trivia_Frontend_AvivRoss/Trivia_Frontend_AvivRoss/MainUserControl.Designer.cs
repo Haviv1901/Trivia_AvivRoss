@@ -67,7 +67,7 @@
             BTNback.TabIndex = 8;
             BTNback.Text = "Back";
             BTNback.UseVisualStyleBackColor = false;
-            BTNback.Click += button2_Click_1;
+            BTNback.Click += BTNbackButtonClicked;
             // 
             // MainUserControl
             // 

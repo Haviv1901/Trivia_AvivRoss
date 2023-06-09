@@ -144,6 +144,7 @@
             Controls.Add(BTNanswer2);
             Controls.Add(BTNanswer3);
             Controls.Add(BTNanswer4);
+            FormClosed += Game_FormClosed;
             Name = "Game";
             Text = "Trivia";
             Load += Game_Load;

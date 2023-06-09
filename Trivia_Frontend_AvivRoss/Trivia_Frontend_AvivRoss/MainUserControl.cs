@@ -63,25 +63,38 @@ namespace Trivia_Frontend_AvivRoss
         }
 
         // Back Button
-        protected void button2_Click_1(object sender, EventArgs e)
+        protected void BTNbackButtonClicked(object sender, EventArgs e)
         {
             _soundManager.PlayButton();
 
-
-            if (_lastControl == null)
+            try
             {
-                return;
-            }
+                if (_lastControl == null)
+                {
+                    return;
+                }
 
-            if (_lastControl is LoginPage)
-            {
-                _requestHandler.Logout();
-            }
+                if (_lastControl is LoginPage)
+                {
+                    _requestHandler.Logout();
+                }
 
-            if (this is Room) // if current window is room window, leave or close rooom
-            {
-                _requestHandler.CloseOrLeaveRoom();
+                if (this is Room) // if current window is room window, leave or close rooom
+                {
+                    _requestHandler.CloseOrLeaveRoom();
+                }
+
+                if (this is Game) // if user is in game, leave it.
+                {
+                    _requestHandler.LeaveGame();
+                }
             }
+            catch (Exception exception)
+            {
+                Console.WriteLine(exception);
+            }
+            
+
 
             _mainPanel.Controls.Remove(this);
             _mainPanel.Controls.Add(_lastControl);
@@ -91,7 +104,33 @@ namespace Trivia_Frontend_AvivRoss
         private void BTNexit_Click(object sender, EventArgs e)
         {
             _soundManager.PlayButton();
-            _requestHandler.Logout();
+
+            try
+            {
+                if (_lastControl == null)
+                {
+                    return;
+                }
+
+                if (_lastControl is LoginPage)
+                {
+                    _requestHandler.Logout();
+                }
+
+                if (this is Room) // if current window is room window, leave or close rooom
+                {
+                    _requestHandler.CloseOrLeaveRoom();
+                }
+
+                if (this is Game) // if user is in game, leave it.
+                {
+                    _requestHandler.LeaveGame();
+                }
+            }
+            catch (Exception exception)
+            {
+                Console.WriteLine(exception);
+            }
 
             FindForm().Close();
         }

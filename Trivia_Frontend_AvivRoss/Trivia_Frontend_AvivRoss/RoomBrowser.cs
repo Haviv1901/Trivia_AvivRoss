@@ -15,12 +15,14 @@ namespace Trivia_Frontend_AvivRoss
     {
 
         private Thread _thread;
+        private List<Button> _buttonHandlers;
 
         public RoomBrowser(MainUserControl lastControl) : base(lastControl)
         {
             InitializeComponent();
+            _buttonHandlers = new List<Button>();
             TMRrefreshRooms.Start();
-            _thread = new Thread(new ThreadStart(RefreshRoomsThread));
+            
         }
 
 
@@ -61,27 +63,27 @@ namespace Trivia_Frontend_AvivRoss
                 FLWroomsListScorll.Controls.Clear();
             });
 
-
+            _buttonHandlers.Clear(); // delete all current buttons
             foreach (string key in rooms.Keys)
             {
-                Button roomLabel = new Button();
+                Button roomButton = new Button();
 
-                roomLabel.BackColor = SystemColors.Info;
-                roomLabel.Location = FLWroomsListScorll.AutoScrollPosition;
-                roomLabel.Name = rooms[key].ToString();
-                roomLabel.Size = new Size(75, 23);
-                roomLabel.TabIndex = 4;
-                roomLabel.Text = key;
-                roomLabel.UseVisualStyleBackColor = false;
-                roomLabel.FlatStyle = FlatStyle.Flat;
-                roomLabel.FlatAppearance.BorderSize = 0;
-                roomLabel.Click += button2_Click;
+                roomButton.BackColor = SystemColors.Info;
+                roomButton.Location = FLWroomsListScorll.AutoScrollPosition;
+                roomButton.Name = rooms[key].ToString();
+                roomButton.Size = new Size(75, 23);
+                roomButton.TabIndex = 4;
+                roomButton.Text = key;
+                roomButton.UseVisualStyleBackColor = false;
+                roomButton.FlatStyle = FlatStyle.Flat;
+                roomButton.FlatAppearance.BorderSize = 0;
+                roomButton.Click += button2_Click;
 
                 Invoke(() =>
                 {
-                    FLWroomsListScorll.Controls.Add(roomLabel);
+                    FLWroomsListScorll.Controls.Add(roomButton);
                 });
-
+                _buttonHandlers.Add(roomButton);
             }
         }
 
@@ -100,6 +102,7 @@ namespace Trivia_Frontend_AvivRoss
             {
                 Room room = new Room(_lastControl, roomid, false); // when exiting a room return to main menu
 
+                TMRrefreshRooms.Stop();
                 _mainPanel.Controls.Remove(this);
                 _mainPanel.Controls.Add(room);
             }
@@ -130,8 +133,17 @@ namespace Trivia_Frontend_AvivRoss
         /// <param name="e"></param>
         private void TMRrefreshRooms_Tick(object sender, EventArgs e)
         {
-
-            _thread.Start();
+            try
+            {
+                _thread = new Thread(new ThreadStart(RefreshRoomsThread));
+                _thread.Start();
+            }
+            catch (Exception exception)
+            {
+                TMRrefreshRooms.Stop();
+                MessageBox.Show("Error: " + exception.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            
         }
     }
 }

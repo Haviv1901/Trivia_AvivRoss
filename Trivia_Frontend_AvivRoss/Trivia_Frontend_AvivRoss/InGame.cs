@@ -57,7 +57,11 @@ namespace Trivia_Frontend_AvivRoss
                 }
                 else
                 {
-                    label1.Text = "YOU LOST LOLLLLLLLLLLLLLLLLLLLLLLLLL😂😂😂";
+                    _requestHandler.LeaveGame();
+                    label1.Text = "GIVING UP?? WEAK! LOL😂😂😂😂😂😂😂😂😂😂";
+                    BTNbackAfterGame.Text = "Press me to leave";
+                    BTNbackAfterGame.Click -= BTNbackAfterGame_Click;
+                    BTNbackAfterGame.Click += BTNbackButtonClicked;
                 }
 
                 Controls.Add(BTNbackAfterGame);
