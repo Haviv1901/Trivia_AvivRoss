@@ -125,3 +125,7 @@ struct GetGameResultsResponse
 	vector<PlayerResults> results;
 } typedef GetGameResultsResponse;
 
+struct AddQuestionResponse
+{
+	unsigned int status;
+} typedef AddQuestionResponse;

@@ -19,15 +19,22 @@ namespace Trivia_Frontend_AvivRoss
         public RoomBrowser(MainUserControl lastControl) : base(lastControl)
         {
             InitializeComponent();
+            TMRrefreshRooms.Start();
             _thread = new Thread(new ThreadStart(RefreshRoomsThread));
-            _thread.Start();
         }
+
 
         private void label1_Click(object sender, EventArgs e)
         {
             MessageBox.Show("This is the room browser. Here you can see all the rooms that are currently open and join them.", "Room Browser", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
+
+        /// <summary>
+        /// refresh button
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void button1_Click(object sender, EventArgs e)
         {
             _soundManager.PlayButton();
@@ -38,11 +45,7 @@ namespace Trivia_Frontend_AvivRoss
         {
             try
             {
-                while (true)
-                {
-                    RefreshRooms();
-                    Thread.Sleep(3000);
-                }
+                RefreshRooms();
             }
             catch (Exception e)
             {
@@ -82,6 +85,11 @@ namespace Trivia_Frontend_AvivRoss
             }
         }
 
+        /// <summary>
+        /// join button click. joins the room with the room name that displayes on the button
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void button2_Click(object sender, EventArgs e)
         {
             _soundManager.PlayButton();
@@ -97,6 +105,11 @@ namespace Trivia_Frontend_AvivRoss
             }
         }
 
+        /// <summary>
+        /// join button click. joins the room with the room id in the numeric box
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void BTNjoinButton_Click(object sender, EventArgs e)
         {
             SoundManager.instance.PlayButton();
@@ -110,5 +123,15 @@ namespace Trivia_Frontend_AvivRoss
             }
         }
 
+        /// <summary>
+        ///  timer to refresh the rooms list, every 3 seconds
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void TMRrefreshRooms_Tick(object sender, EventArgs e)
+        {
+
+            _thread.Start();
+        }
     }
 }

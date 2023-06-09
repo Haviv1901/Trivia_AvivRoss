@@ -28,11 +28,13 @@
         /// </summary>
         private void InitializeComponent()
         {
+            components = new System.ComponentModel.Container();
             label1 = new Label();
             NUMroomId = new NumericUpDown();
             FLWroomsListScorll = new FlowLayoutPanel();
             button1 = new Button();
             BTNjoinButton = new Button();
+            TMRrefreshRooms = new System.Windows.Forms.Timer(components);
             ((System.ComponentModel.ISupportInitialize)NUMroomId).BeginInit();
             SuspendLayout();
             // 
@@ -85,6 +87,11 @@
             BTNjoinButton.UseVisualStyleBackColor = false;
             BTNjoinButton.Click += BTNjoinButton_Click;
             // 
+            // TMRrefreshRooms
+            // 
+            TMRrefreshRooms.Interval = 3000;
+            TMRrefreshRooms.Tick += TMRrefreshRooms_Tick;
+            // 
             // RoomBrowser
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -96,6 +103,9 @@
             Controls.Add(label1);
             Name = "RoomBrowser";
             Size = new Size(800, 450);
+            Controls.SetChildIndex(BTNsound, 0);
+            Controls.SetChildIndex(BTNexit, 0);
+            Controls.SetChildIndex(BTNback, 0);
             Controls.SetChildIndex(label1, 0);
             Controls.SetChildIndex(NUMroomId, 0);
             Controls.SetChildIndex(FLWroomsListScorll, 0);
@@ -113,5 +123,6 @@
         private FlowLayoutPanel FLWroomsListScorll;
         private Button button1;
         private Button BTNjoinButton;
+        private System.Windows.Forms.Timer TMRrefreshRooms;
     }
 }

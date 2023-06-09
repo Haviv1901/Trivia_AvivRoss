@@ -39,7 +39,12 @@ std::vector<Room> RoomManager::getRooms()
 {
 	std::vector<Room> res;
 	for (auto it = m_rooms.begin(); it != m_rooms.end(); ++it) {
-		res.push_back(it->second);
+
+		if (!it->second.getData().isActive) // dont show rooms which have allready started the game.
+		{
+			res.push_back(it->second);
+		}
+		
 	}
 	return res;
 }
