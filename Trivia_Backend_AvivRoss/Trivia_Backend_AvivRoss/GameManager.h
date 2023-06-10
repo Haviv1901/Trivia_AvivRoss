@@ -13,6 +13,7 @@ public:
 	Game& createGame(Room);
 	void deleteGame(int gameId);
 	Game& getGameByUser(string user, Room room);
+	Game& getGameById(int id);
 
 private:
 

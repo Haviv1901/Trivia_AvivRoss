@@ -97,6 +97,7 @@ namespace Trivia_Frontend_AvivRoss
 
 
             _mainPanel.Controls.Remove(this);
+            this.Dispose();
             _mainPanel.Controls.Add(_lastControl);
 
         }
@@ -104,13 +105,9 @@ namespace Trivia_Frontend_AvivRoss
         private void BTNexit_Click(object sender, EventArgs e)
         {
             _soundManager.PlayButton();
-
+            
             try
             {
-                if (_lastControl == null)
-                {
-                    return;
-                }
 
                 if (_lastControl is LoginPage)
                 {

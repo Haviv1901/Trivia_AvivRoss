@@ -45,7 +45,16 @@ namespace Trivia_Frontend_AvivRoss
 
         private void LoadNextQuestion()
         {
-            List<string> question = _requestHandler.GetQuestion();
+            List<string> question;
+            try
+            {
+                question = _requestHandler.GetQuestion();
+            }
+            catch (Exception e)
+            {
+                return;
+            }
+            
 
             BTNanswer1.Enabled = true;
             BTNanswer2.Enabled = true;
@@ -125,7 +134,14 @@ namespace Trivia_Frontend_AvivRoss
             _didUserAnswer = true;
             int correctAnswer = 0;
             int answerIndex = int.Parse(((Button)sender).Tag.ToString());// + 1;
-            correctAnswer = _requestHandler.SendAnswer(answerIndex-1) + 1; // button's tag is the answer index
+            try
+            {
+                correctAnswer = _requestHandler.SendAnswer(answerIndex - 1) + 1; // button's tag is the answer index
+            }
+            catch (Exception e)
+            {
+            }
+            
 
             //MessageBox.Show("The correct answer is: " + correctAnswer);
 

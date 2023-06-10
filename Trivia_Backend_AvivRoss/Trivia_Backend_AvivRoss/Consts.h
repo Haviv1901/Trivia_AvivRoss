@@ -5,7 +5,7 @@
 #define EMAIL_REGEX "^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$"
 #define PASSWORD_REGEX "^^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d).{8}$"
 #define DEBUG_MODE true // on or off debug prints
-#define API_ADDRESS L"https://opentdb.com/api.php?amount=10&category=15&type=multiple"
+#define API_ADDRESS L"https://opentdb.com/api.php?amount=50&category=15&type=multiple"
 
 static const unsigned short PORT = 6969; // port to bind
 static const unsigned int IFACE = 0;

@@ -30,6 +30,10 @@ void Game::submitAnswer(LoggedUser user, unsigned int answerId, double timeTookT
 	}
 	m_players[user.getUsername()].averageAnswerTime = ((float)m_players[user.getUsername()].averageAnswerTime + timeTookToAnswer) / (float)2;
 	int questionNum = m_players[user.getUsername()].numOfWrongAnswers + m_players[user.getUsername()].numOfCorrectAnswers;
+	if (questionNum == m_questions.size())
+	{
+		questionNum--;
+	}
 	try
 	{
 		m_players[user.getUsername()].currentQuestion = m_questions[questionNum];

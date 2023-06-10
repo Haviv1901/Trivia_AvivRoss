@@ -62,7 +62,7 @@ RequestResult RoomMemberRequestHandler::getRoomState(RequestInfo req)
 	try
 	{
 		m_room = m_roomManager.getRoom(m_room.getData().id);
-
+		
 		RoomData roomData = m_room.getData();
 
 		getRoomRes.status = 1;
@@ -74,7 +74,6 @@ RequestResult RoomMemberRequestHandler::getRoomState(RequestInfo req)
 		if (roomData.isActive) // if game started, set handler to game handler
 		{
 			res.newHandler = m_handlerFactory.createGameRequestHandler(m_room, m_user);
-			m_roomManager.deleteRoom(m_room.getData().id);
 		}
 		else
 		{

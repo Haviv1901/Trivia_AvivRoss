@@ -41,10 +41,21 @@ void GameManager::deleteGame(int gameId)
 
 }
 
+Game& GameManager::getGameById(int id)
+{
+	for (auto& element : m_games)
+	{
+		if (element.getGameId() == id)
+		{
+			return element;
+		}
+	}
+
+}
+
+
 Game& GameManager::getGameByUser(string user, Room room)
 {
-
-
 	for (auto& element : m_games)
 	{
 		if (element.getPlayers().count(user) > 0)

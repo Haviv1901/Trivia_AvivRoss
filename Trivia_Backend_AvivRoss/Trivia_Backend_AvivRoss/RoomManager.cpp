@@ -43,6 +43,8 @@ std::vector<Room> RoomManager::getRooms()
 		if (!it->second.getData().isActive) // dont show rooms which have allready started the game.
 		{
 			res.push_back(it->second);
+			//deleteRoom(it->second.getData().id);
+			//continue;
 		}
 		
 	}

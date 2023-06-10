@@ -253,7 +253,7 @@ void SqliteDatabase::createTables() const
 	}
 	
 	string question, correctAnswer, wrongAnswer1, wrongAnswer2, wrongAnswer3;
-	for (int i = 0; i < 10; i++)
+	for (int i = 0; i < 50; i++)
 	{
 		for (auto it = jsonQuestions["results"][i].begin(); it != jsonQuestions["results"][i].end(); ++it)
 		{
@@ -312,6 +312,8 @@ std::list<Question> SqliteDatabase::getQuestions(int num)
 {
 	std::list<Question> res;
 	getQuestionsFromDB(&res);
+
+
 
 	auto end = std::next(res.begin(), num);
 

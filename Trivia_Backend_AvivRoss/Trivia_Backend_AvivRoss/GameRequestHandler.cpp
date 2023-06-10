@@ -1,8 +1,12 @@
 #include "GameRequestHandler.h"
 
+#include <mutex>
+
 #include "JsonRequestPacketDeserializer.h"
 #include "JsonResponsePacketSerializer.h"
 #include "Responses.h"
+
+std::mutex leaveGameMutex;
 
 
 GameRequestHandler::GameRequestHandler(Game& game, LoggedUser& user, GameManager& gameManager, RequestHandlerFactory& handlerFactory)
@@ -73,15 +77,22 @@ RequestResult GameRequestHandler::getQuestion(RequestInfo req)
 	getQuestionRes.status = 1;
 
 	//m_game = m_gameManager.getGameByUser(m_user.getUsername());
+	try
+	{
+		Question temp = m_game.getQuestionForUser(m_user.getUsername());
 
-	Question temp = m_game.getQuestionForUser(m_user.getUsername());
+		getQuestionRes.question = temp.getQuestion(); // insertr question
 
-	getQuestionRes.question = temp.getQuestion(); // insertr question
+		getQuestionRes.answers.insert({ 0 , temp.getPossibleAnswers()[0] });
+		getQuestionRes.answers.insert({ 1 , temp.getPossibleAnswers()[1] });
+		getQuestionRes.answers.insert({ 2 , temp.getPossibleAnswers()[2] });
+		getQuestionRes.answers.insert({ 3 , temp.getPossibleAnswers()[3] });
+	}
+	catch (...)
+	{
+		error(req, "Could not get question.");
+	}
 
-	getQuestionRes.answers.insert({ 0 , temp.getPossibleAnswers()[0] });
-	getQuestionRes.answers.insert({ 1 , temp.getPossibleAnswers()[1] });
-	getQuestionRes.answers.insert({ 2 , temp.getPossibleAnswers()[2] });
-	getQuestionRes.answers.insert({ 3 , temp.getPossibleAnswers()[3] });
 	
 
 	res.respones = JsonResponsePacketSerializer::serializeResponse(getQuestionRes);
@@ -96,9 +107,16 @@ RequestResult GameRequestHandler::submitAnswer(RequestInfo req)
 
 	SubmitAnswerRequest submingAnswerReq = JsonRequestPacketDeserializer::deserializeSubmitAnswerRequest(req.buffer);
 	SubmitAnswerResponse submitAnswerRes;
+	try
+	{
+		submitAnswerRes.correctAnswerId = m_game.getQuestionForUser(m_user.getUsername()).getCorrectAnswerId();
+		m_game.submitAnswer(m_user.getUsername(), submingAnswerReq.answerId, timeTookToAnswer); // add here function recv also the time it took to answer
 
-	submitAnswerRes.correctAnswerId = m_game.getQuestionForUser(m_user.getUsername()).getCorrectAnswerId();
-	m_game.submitAnswer(m_user.getUsername(), submingAnswerReq.answerId, timeTookToAnswer); // add here function recv also the time it took to answer
+	}
+	catch (...)
+	{
+		error(req, "Could not submit answer.");
+	}
 
 
 
@@ -175,7 +193,9 @@ RequestResult GameRequestHandler::getGameResult(RequestInfo req)
 	}
 	Helper::debugPrint("all players finished extracting data - now leaving the game");
 	res.respones = JsonResponsePacketSerializer::serializeResponse(getGameResultsRes);
+	leaveGameMutex.lock();
 	res.newHandler = leaveGame(req).newHandler;
+	leaveGameMutex.unlock();
 	return res;
 }
 
@@ -188,6 +208,9 @@ RequestResult GameRequestHandler::leaveGame(RequestInfo req)
 
 	leaveGameRes.status = 1;
 
+
+	// THIS IS NOT WORKING FOR 2 OR MORE PLAYERS !!!
+	m_game = m_gameManager.getGameById(m_game.getGameId());
 	if (m_game.getPlayers().size() == 1) // if the player is the last one in the room
 	{
 		m_game.removePlayer(m_user.getUsername());
