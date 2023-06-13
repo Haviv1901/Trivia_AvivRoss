@@ -63,18 +63,27 @@ namespace Trivia_Frontend_AvivRoss.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.IO.UnmanagedMemoryStream similar to System.IO.MemoryStream.
         /// </summary>
-        internal static System.IO.UnmanagedMemoryStream ButtonClick {
+        internal static System.IO.UnmanagedMemoryStream ButtonClickSound {
             get {
-                return ResourceManager.GetStream("ButtonClick", resourceCulture);
+                return ResourceManager.GetStream("ButtonClickSound", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to music\ButtonClick.wav.
+        ///   Looks up a localized resource of type System.IO.UnmanagedMemoryStream similar to System.IO.MemoryStream.
         /// </summary>
-        internal static string ButtonPath {
+        internal static System.IO.UnmanagedMemoryStream correct_answer {
             get {
-                return ResourceManager.GetString("ButtonPath", resourceCulture);
+                return ResourceManager.GetStream("correct_answer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.IO.UnmanagedMemoryStream similar to System.IO.MemoryStream.
+        /// </summary>
+        internal static System.IO.UnmanagedMemoryStream game_start_sound {
+            get {
+                return ResourceManager.GetStream("game_start_sound", resourceCulture);
             }
         }
         
@@ -84,6 +93,15 @@ namespace Trivia_Frontend_AvivRoss.Properties {
         internal static System.IO.UnmanagedMemoryStream MainMenuMusic {
             get {
                 return ResourceManager.GetStream("MainMenuMusic", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.IO.UnmanagedMemoryStream similar to System.IO.MemoryStream.
+        /// </summary>
+        internal static System.IO.UnmanagedMemoryStream wrong_answer {
+            get {
+                return ResourceManager.GetStream("wrong_answer", resourceCulture);
             }
         }
     }

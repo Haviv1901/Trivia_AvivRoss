@@ -7,7 +7,6 @@ using System.Text;
 using System.Threading.Tasks;
 
 using NAudio.Wave;
-using NAudio.Wave.SampleProviders;
 
 namespace Trivia_Frontend_AvivRoss
 {
@@ -16,12 +15,10 @@ namespace Trivia_Frontend_AvivRoss
 
         public static SoundManager? instance = null;
 
-        private SoundPlayer _Button;
-        private SoundPlayer _BackgroundMusic;
         private bool _sound;
 
-        private WaveOutEvent outputDevice;
-        private AudioFileReader audioFile;
+        private WaveOut waveOut;
+        private RawSourceWaveStream audioFile;
 
         public SoundManager()
         {
@@ -32,75 +29,64 @@ namespace Trivia_Frontend_AvivRoss
 
             this._sound = true;
 
-            _Button = new SoundPlayer(@"C:\Users\UserPC\Desktop\ekronot\Trivia\trivia_avivross\Trivia_Frontend_AvivRoss\Trivia_Frontend_AvivRoss\music\ButtonClick.wav");
-
-            _BackgroundMusic = new SoundPlayer(@"C:\Users\UserPC\Desktop\ekronot\Trivia\trivia_avivross\Trivia_Frontend_AvivRoss\Trivia_Frontend_AvivRoss\music\MainMenuMusic.wav");
 
         }
 
         public void PlayMusic()
-        {
-            if (_BackgroundMusic == null)
+        { 
+            if (waveOut == null)
             {
-                _BackgroundMusic = new SoundPlayer(@"C:\Users\UserPC\Desktop\ekronot\Trivia\trivia_avivross\Trivia_Frontend_AvivRoss\Trivia_Frontend_AvivRoss\music\MainMenuMusic.wav");
+                waveOut = new WaveOut();
+                waveOut.PlaybackStopped += OnPlaybackStopped;
             }
-            _BackgroundMusic.PlayLooping();
+            if (audioFile == null)
+            {
+                audioFile = new RawSourceWaveStream(Properties.Resources.MainMenuMusic, new WaveFormat());
+                LoopStream loop = new LoopStream(audioFile);
+                waveOut.Init(loop);
+            }
+            waveOut.Play();
         }
         public void StopMusic()
         {
-            if (_BackgroundMusic == null)
+            if (waveOut != null)
             {
-                _BackgroundMusic = new SoundPlayer(@"C:\Users\UserPC\Desktop\ekronot\Trivia\trivia_avivross\Trivia_Frontend_AvivRoss\Trivia_Frontend_AvivRoss\music\MainMenuMusic.wav");
+                waveOut.Stop();
             }
-            _BackgroundMusic.Stop();
         }
 
         public void PlayWrongAnswer()
         {
-            PlaySound(
-                @"C:\Users\UserPC\Desktop\ekronot\Trivia\trivia_avivross\Trivia_Frontend_AvivRoss\Trivia_Frontend_AvivRoss\music\wrong answer.wav");
+            PlaySound(Properties.Resources.wrong_answer);
         }
 
         public void StartQuizSound()
         {
-            PlaySound(
-                @"C:\Users\UserPC\Desktop\ekronot\Trivia\trivia_avivross\Trivia_Frontend_AvivRoss\Trivia_Frontend_AvivRoss\music\game start sound.wav");
+            PlaySound(Properties.Resources.game_start_sound);
         }
 
         public void PlayCorrectAnswer()
         {
-            PlaySound(
-                @"C:\Users\UserPC\Desktop\ekronot\Trivia\trivia_avivross\Trivia_Frontend_AvivRoss\Trivia_Frontend_AvivRoss\music\correct answer.wav");
+            PlaySound(Properties.Resources.correct_answer);
         }
 
-        public void PlaySound(string path)
+        public void PlaySound(Stream path)
         {
-            if (_sound)
-            {
-                if (outputDevice == null)
-                {
-                    outputDevice = new WaveOutEvent();
-                    outputDevice.PlaybackStopped += OnPlaybackStopped;
-                }
-                if (audioFile == null)
-                {
-                    audioFile = new AudioFileReader(path);
-                    outputDevice.Init(audioFile);
-                }
-                outputDevice.Play();
-            }
+            if (!_sound)
+                return;
+            SoundPlayer temp = new SoundPlayer(path);
+            temp.Play();
         }
 
         public void PlayButton()
         {
-            PlaySound(
-                @"C:\Users\UserPC\Desktop\ekronot\Trivia\trivia_avivross\Trivia_Frontend_AvivRoss\Trivia_Frontend_AvivRoss\music\ButtonClick.wav");
+            PlaySound(Properties.Resources.ButtonClickSound);
         }
 
         private void OnPlaybackStopped(object sender, StoppedEventArgs args)
         {
-            outputDevice.Dispose();
-            outputDevice = null;
+            waveOut.Dispose();
+            waveOut = null;
             audioFile.Dispose();
             audioFile = null;
         }

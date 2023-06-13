@@ -153,7 +153,7 @@ RequestResult GameRequestHandler::getGameResult(RequestInfo req)
 	}
 	Helper::debugPrint("all players finished the quiz - extracting data");
 
-	RequestResult res;
+
 	GetGameResultsResponse getGameResultsRes;
 
 	for (auto iter : m_game.getPlayers()) // extracting the data from the game to the response.
@@ -192,8 +192,9 @@ RequestResult GameRequestHandler::getGameResult(RequestInfo req)
 		}
 	}
 	Helper::debugPrint("all players finished extracting data - now leaving the game");
-	res.respones = JsonResponsePacketSerializer::serializeResponse(getGameResultsRes);
 	leaveGameMutex.lock();
+	RequestResult res;
+	res.respones = JsonResponsePacketSerializer::serializeResponse(getGameResultsRes);
 	res.newHandler = leaveGame(req).newHandler;
 	leaveGameMutex.unlock();
 	return res;
@@ -211,7 +212,7 @@ RequestResult GameRequestHandler::leaveGame(RequestInfo req)
 
 	// THIS IS NOT WORKING FOR 2 OR MORE PLAYERS !!!
 	m_game = m_gameManager.getGameById(m_game.getGameId());
-	if (m_game.getPlayers().size() == 1) // if the player is the last one in the room
+	if (m_game.getPlayerReady().size() == 1) // if the player is the last one in the room
 	{
 		m_game.removePlayer(m_user.getUsername());
 		m_gameManager.deleteGame(m_game.getGameId());
