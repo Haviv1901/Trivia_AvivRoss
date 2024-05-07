@@ -1,0 +1,128 @@
+﻿namespace Trivia_Frontend_AvivRoss
+{
+    partial class RoomBrowser
+    {
+        /// <summary>
+        /// Required designer variable.
+        /// </summary>
+        private System.ComponentModel.IContainer components = null;
+
+        /// <summary>
+        /// Clean up any resources being used.
+        /// </summary>
+        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing && (components != null))
+            {
+                components.Dispose();
+            }
+            base.Dispose(disposing);
+        }
+
+        #region Windows Form Designer generated code
+
+        /// <summary>
+        /// Required method for Designer support - do not modify
+        /// the contents of this method with the code editor.
+        /// </summary>
+        private void InitializeComponent()
+        {
+            components = new System.ComponentModel.Container();
+            label1 = new Label();
+            NUMroomId = new NumericUpDown();
+            FLWroomsListScorll = new FlowLayoutPanel();
+            button1 = new Button();
+            BTNjoinButton = new Button();
+            TMRrefreshRooms = new System.Windows.Forms.Timer(components);
+            ((System.ComponentModel.ISupportInitialize)NUMroomId).BeginInit();
+            SuspendLayout();
+            // 
+            // label1
+            // 
+            label1.AutoSize = true;
+            label1.Font = new Font("Segoe UI", 15F, FontStyle.Regular, GraphicsUnit.Point);
+            label1.ForeColor = SystemColors.MenuHighlight;
+            label1.Location = new Point(322, 37);
+            label1.Name = "label1";
+            label1.Size = new Size(72, 28);
+            label1.TabIndex = 0;
+            label1.Text = "Rooms";
+            label1.Click += label1_Click;
+            // 
+            // NUMroomId
+            // 
+            NUMroomId.Anchor = AnchorStyles.Left | AnchorStyles.Right;
+            NUMroomId.Location = new Point(289, 68);
+            NUMroomId.Name = "NUMroomId";
+            NUMroomId.Size = new Size(142, 23);
+            NUMroomId.TabIndex = 1;
+            // 
+            // FLWroomsListScorll
+            // 
+            FLWroomsListScorll.Location = new Point(189, 127);
+            FLWroomsListScorll.Name = "FLWroomsListScorll";
+            FLWroomsListScorll.Size = new Size(385, 331);
+            FLWroomsListScorll.TabIndex = 2;
+            // 
+            // button1
+            // 
+            button1.BackColor = SystemColors.GradientActiveCaption;
+            button1.Location = new Point(319, 98);
+            button1.Name = "button1";
+            button1.Size = new Size(75, 23);
+            button1.TabIndex = 3;
+            button1.Text = "Refresh";
+            button1.UseVisualStyleBackColor = false;
+            button1.Click += button1_Click;
+            // 
+            // BTNjoinButton
+            // 
+            BTNjoinButton.BackColor = Color.YellowGreen;
+            BTNjoinButton.Location = new Point(437, 68);
+            BTNjoinButton.Name = "BTNjoinButton";
+            BTNjoinButton.Size = new Size(37, 23);
+            BTNjoinButton.TabIndex = 5;
+            BTNjoinButton.Text = "Join";
+            BTNjoinButton.UseVisualStyleBackColor = false;
+            BTNjoinButton.Click += BTNjoinButton_Click;
+            // 
+            // TMRrefreshRooms
+            // 
+            TMRrefreshRooms.Interval = 3000;
+            TMRrefreshRooms.Tick += TMRrefreshRooms_Tick;
+            // 
+            // RoomBrowser
+            // 
+            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleMode = AutoScaleMode.Font;
+            Controls.Add(BTNjoinButton);
+            Controls.Add(button1);
+            Controls.Add(FLWroomsListScorll);
+            Controls.Add(NUMroomId);
+            Controls.Add(label1);
+            Name = "RoomBrowser";
+            Size = new Size(800, 450);
+            Controls.SetChildIndex(BTNsound, 0);
+            Controls.SetChildIndex(BTNexit, 0);
+            Controls.SetChildIndex(BTNback, 0);
+            Controls.SetChildIndex(label1, 0);
+            Controls.SetChildIndex(NUMroomId, 0);
+            Controls.SetChildIndex(FLWroomsListScorll, 0);
+            Controls.SetChildIndex(button1, 0);
+            Controls.SetChildIndex(BTNjoinButton, 0);
+            ((System.ComponentModel.ISupportInitialize)NUMroomId).EndInit();
+            ResumeLayout(false);
+            PerformLayout();
+        }
+
+        #endregion
+
+        private Label label1;
+        private NumericUpDown NUMroomId;
+        private FlowLayoutPanel FLWroomsListScorll;
+        private Button button1;
+        private Button BTNjoinButton;
+        private System.Windows.Forms.Timer TMRrefreshRooms;
+    }
+}

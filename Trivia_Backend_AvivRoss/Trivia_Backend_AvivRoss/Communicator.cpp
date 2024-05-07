@@ -6,7 +6,7 @@
 #include <mutex>
 #include <string>
 #include <thread>
-
+#include <ctime>
 #include "Helper.h"
 
 
@@ -19,8 +19,8 @@ std::mutex mtx;
 //void debugPrint(string msg);
 //void sendData(const SOCKET sc, const std::string message);
 
-
-Communicator::Communicator()
+// ctor
+Communicator::Communicator(RequestHandlerFactory& handlerFactory) : m_handlerFactory(handlerFactory)
 {
 	// create socket handle
 	m_serverSocket = ::socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
@@ -28,6 +28,7 @@ Communicator::Communicator()
 		throw std::exception(__FUNCTION__ " - socket");
 }
 
+// dotr
 Communicator::~Communicator()
 {
 	// close socket handle
@@ -36,8 +37,20 @@ Communicator::~Communicator()
 		::closesocket(m_serverSocket);
 	}
 	catch (...) {}
+
+	if(m_clients.size() > 0) // clearing the allocated memory in the map.
+	{
+		for (auto pair : m_clients)
+		{
+			delete pair.second;
+		}
+	}
+
 }
 
+/**
+ * \brief server thread
+ */
 void Communicator::startHandleRequests()
 {
 	bindAndListen();
@@ -50,7 +63,7 @@ void Communicator::startHandleRequests()
 	{
 		// this thread is only accepting clients 
 		// and add then to the list of handlers
-		debugPrint("accepting client...");
+		Helper::debugPrint("accepting client...");
 		handleNewClient();
 	}
 
@@ -75,13 +88,17 @@ void Communicator::bindAndListen()
 	// again stepping out to the global namespace
 	if (::bind(m_serverSocket, (struct sockaddr*)&sa, sizeof(sa)) == SOCKET_ERROR)
 		throw std::exception(__FUNCTION__ " - bind");
-	debugPrint("binded");
+	Helper::debugPrint("binded");
 
 	if (::listen(m_serverSocket, SOMAXCONN) == SOCKET_ERROR)
 		throw std::exception(__FUNCTION__ " - listen");
-	debugPrint("listening...");
+	Helper::debugPrint("listening...");
 
 }
+
+/**
+ * \brief function recevies new client, add an handle to the sockets client to the clients list.
+ */
 void Communicator::handleNewClient()
 {
 	SOCKET client_socket = accept(m_serverSocket, NULL, NULL);
@@ -89,33 +106,69 @@ void Communicator::handleNewClient()
 		throw std::exception(__FUNCTION__);
 
 	mtx.lock();
-	m_clients.insert({ client_socket,  new LoginRequestHandler });
+	m_clients.insert({ client_socket,  m_handlerFactory.createLoginRequestHandler() });
 	mtx.unlock();
 
-	debugPrint("Client accepted !");
+	Helper::debugPrint("Client accepted !");
 	// create new thread for client	and detach from it
 	std::thread tr(&Communicator::clientHandler, this, client_socket);
 	tr.detach();
 
 }
 
-
+/**
+ * \brief client's function thread.
+ * \param client_socket 
+ */
 void Communicator::clientHandler(SOCKET client_socket)
 {
+	RequestResult res;
+	RequestInfo msg;
 	try
 	{
-		string user_sent;
-		sendData(client_socket, "Hello");
-		user_sent = getPartFromSocket(client_socket, 5, 0);
-
-		cout << user_sent << std::endl;
-		while(true)
+		
+		
+		res.newHandler = m_clients[client_socket];
+		while (true)
 		{
+			int i = 0;
+			int code;
+			int length;
+
+			code = Helper::getMessageTypeCode(client_socket);
+			length = Helper::getLengthFromSocket(client_socket);
+			Buffer data = Helper::getDataFromSocketBuffer(client_socket, length);
+
 			
-		} // stay ideal
+			msg.buffer = data;
+			msg.id = code;
+			msg.receivalTime = time(nullptr);
+
+			Helper::debugPrint("recieved msg. code: " + std::to_string(code) + " length: " + std::to_string(length) + " data: " + Helper::bufferToString(msg.buffer));
+
+			res = res.newHandler->handleRequest(msg);
+			Helper::sendData(client_socket, res.respones);
+			
+
+		}
 	}
 	catch (const std::exception& e)
 	{
+		if (typeid(*res.newHandler) == typeid(RoomAdminRequestHandler*) || typeid(*res.newHandler) == typeid(RoomMemberRequestHandler*))
+		{
+			msg.id = CLOSE_OR_LEAVE_ROOM_CODE;
+			res = res.newHandler->handleRequest(msg); // close or leave room
+		}
+		if (typeid(*res.newHandler) == typeid(MenuRequestHandler*))
+		{
+			msg.id = SIGNOUT_CODE;
+			res = res.newHandler->handleRequest(msg); // log out
+		}
+		if(typeid(*res.newHandler) == typeid(GameRequestHandler*))
+		{
+			msg.id = LEAVE_GAME_CODE;
+			res = res.newHandler->handleRequest(msg); // leave game
+		}
 		std::cout << "Exception was catch in function clientHandler. socket=" << client_socket << ", what=" << e.what() << std::endl;
 	}
 	closesocket(client_socket);
