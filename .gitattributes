@@ -2,3 +2,5 @@
 *.cpp linguist-language=C++
 *.cs linguist-language=C#
 *sqlite3.c linguist-detectable=false
+*json.hpp linguist-detectable=false
+*HTTPRequest.hpp linguist-detectable=false
